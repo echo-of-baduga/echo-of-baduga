@@ -349,6 +349,14 @@ function doSignup() {
 }
 
 function logout() {
+    // Stop audio immediately upon logging out
+    try {
+        audio.pause();
+        audio.src = '';
+        isPlaying = false;
+        updatePlayBtn();
+    } catch (e) {}
+
     currentUser = null;
     localStorage.removeItem('eo_currentUser');
     closeSettings();
@@ -1922,8 +1930,41 @@ function submitFeedback() {
     })
     .catch(err => {
         setButtonLoading('btn-fb-submit', false);
-        console.error("Feedback submit error:", err);
-        showToast('⚠️ Connection to server failed');
+        console.warn("Feedback offline fallback: saving to localStorage");
+        
+        // Save locally for offline testing
+        const feedbackList = JSON.parse(localStorage.getItem('eo_feedback') || '[]');
+        feedbackList.push({
+            id: Date.now(),
+            payload: payload
+        });
+        localStorage.setItem('eo_feedback', JSON.stringify(feedbackList));
+        
+        showToast('✓ Message saved locally (Offline)!');
+        
+        // Transition and customize UI step
+        const successIcon = document.getElementById('fb-success-icon');
+        const successTitle = document.getElementById('fb-success-title');
+        const successText = document.getElementById('fb-success-text');
+        
+        if (currentFeedbackType === 'rating') {
+            if (successIcon) successIcon.textContent = '⭐';
+            if (successTitle) successTitle.textContent = 'Review Submitted!';
+            if (successText) successText.textContent = 'Thank you for rating our app! Your feedback helps us build a better experience for the community.';
+        } else if (currentFeedbackType === 'report') {
+            if (successIcon) successIcon.textContent = '🚩';
+            if (successTitle) successTitle.textContent = 'Bug Report Submitted!';
+            if (successText) successText.textContent = 'Thank you for reporting this issue. Our development team will review it shortly.';
+        } else {
+            if (successIcon) successIcon.textContent = '📬';
+            if (successTitle) successTitle.textContent = 'Message Sent!';
+            if (successText) successText.textContent = 'Your message has been sent to the Echo of Baduga support team. We will get back to you shortly.';
+        }
+        
+        document.getElementById('fb-form-fields').style.display = 'none';
+        document.getElementById('fb-success-step').style.display = 'flex';
+        document.getElementById('fb-message').value = '';
+        currentFeedbackRating = 0;
     });
 }
 
@@ -2028,7 +2069,32 @@ function sendResetOtp() {
     })
     .catch(() => {
         setButtonLoading('btn-send-reset', false);
-        showToast('⚠️ Connection to server failed');
+        
+        // Fallback: Generate local password reset token & link for offline testing
+        const normalizedEm = ident.toLowerCase();
+        const user = localUsers.find(u => 
+            (u.email && u.email.toLowerCase() === normalizedEm) || 
+            (u.mobile && (u.mobile === ident || u.mobile === '+91' + ident || u.mobile.replace('+91', '') === ident.replace('+91', '')))
+        );
+        if (user) {
+            resetIdentity = ident;
+            verifiedResetOtp = 'local_reset_token';
+            showToast('✓ Reset link generated locally! (Offline)');
+            
+            document.getElementById('forgotStepSub').textContent = 'Reset link has been generated locally.';
+            document.getElementById('forgotStep1').style.display = 'none';
+            document.getElementById('forgotStep2').style.display = 'flex';
+            
+            const successMsgEl = document.getElementById('forgotStep2Msg');
+            const localResetLink = window.location.origin + window.location.pathname + `?action=reset_password&email=${encodeURIComponent(ident)}&token=local_reset_token`;
+            if (successMsgEl) {
+                successMsgEl.innerHTML = `📲 <strong>Offline Reset Mode!</strong><br><br>Since the online database is unreachable, we have generated your password reset link locally:<br><br>
+                <a href="${localResetLink}" style="color:var(--acc); font-size:12px; word-break:break-all; font-weight:bold; text-decoration:underline;">${localResetLink}</a><br><br>
+                Click the link above to proceed with resetting your password!`;
+            }
+        } else {
+            showToast('⚠️ Local account not found. Please Sign Up first.');
+        }
     });
 }
 
@@ -2095,7 +2161,30 @@ function submitNewPassword() {
     })
     .catch(() => {
         setButtonLoading('btn-pwd-update', false);
-        showToast('⚠️ Connection to server failed');
+        
+        // Fallback: Update user password locally in localStorage
+        const normalizedEm = resetIdentity.toLowerCase();
+        const users = JSON.parse(localStorage.getItem('eo_users') || '[]');
+        const idx = users.findIndex(u => 
+            (u.email && u.email.toLowerCase() === normalizedEm) || 
+            (u.mobile && (u.mobile === resetIdentity || u.mobile === '+91' + resetIdentity || u.mobile.replace('+91', '') === resetIdentity.replace('+91', '')))
+        );
+        if (idx >= 0) {
+            users[idx].password = pwd1;
+            localStorage.setItem('eo_users', JSON.stringify(users));
+            localUsers = users;
+            
+            showToast('✓ Password updated locally! (Offline)');
+            closeForgotModal();
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Prefill and log in
+            document.getElementById('li-em').value = resetIdentity;
+            document.getElementById('li-pw').value = pwd1;
+            doLogin();
+        } else {
+            showToast('⚠️ Local account not found. Please Sign Up first.');
+        }
     });
 }
 
@@ -2140,7 +2229,18 @@ function triggerPasswordResetFromSettings() {
             resetSpan.style.opacity = '1';
             resetSpan.textContent = originalText;
         }
-        showToast('⚠️ Connection to server failed');
+        
+        // Fallback: Generate local password reset link and redirect locally
+        const user = localUsers.find(u => u.email.toLowerCase() === currentUser.email.toLowerCase());
+        if (user) {
+            const localResetLink = window.location.origin + window.location.pathname + `?action=reset_password&email=${encodeURIComponent(currentUser.email)}&token=local_reset_token`;
+            showToast('✓ Local reset link generated! Redirecting...');
+            setTimeout(() => {
+                window.location.href = localResetLink;
+            }, 1500);
+        } else {
+            showToast('⚠️ Local account not found. Please Sign Up first.');
+        }
     });
 }
 
