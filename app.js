@@ -146,18 +146,12 @@ window.addEventListener('DOMContentLoaded', () => {
         } catch (e) { }
     }
 
-    // Local File Mode Warning for development guidance
-    if (window.location.protocol === 'file:') {
-        const errEl = document.getElementById('loginErr');
-        if (errEl) {
-            errEl.innerHTML = '⚠️ <strong>PHP Server Required</strong><br>You opened index.html directly from a file. To run the login & database systems, please serve this project using a local PHP server (e.g. XAMPP Apache) and access <a href="http://localhost/echobaduga/" target="_blank" style="color:#22ddaa;text-decoration:underline;">http://localhost/echobaduga/</a>.';
-            errEl.style.display = 'block';
-        }
-        const suErrEl = document.getElementById('signupErr');
-        if (suErrEl) {
-            suErrEl.innerHTML = '⚠️ <strong>PHP Server Required</strong><br>To create an account, please access <a href="http://localhost/echobaduga/" target="_blank" style="color:#22ddaa;text-decoration:underline;">http://localhost/echobaduga/</a>.';
-            suErrEl.style.display = 'block';
-        }
+    // Hide download app button/banner in native app mode
+    if (window.Capacitor) {
+        const btn = document.getElementById('webDownloadBtn');
+        if (btn) btn.style.display = 'none';
+        const banner = document.getElementById('authDownloadBanner');
+        if (banner) banner.style.display = 'none';
     }
 
     // Parse URL query parameters to check if they came from a password reset link
@@ -280,6 +274,24 @@ function doLogin() {
             errEl.style.display = 'block';
         }
     });
+}
+
+function enterGuestMode() {
+    currentUser = {
+        id: 9999,
+        name: "Guest User",
+        email: "guest@echobaduga.com",
+        mobile: "",
+        initial: "G"
+    };
+    localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
+    const loginErr = document.getElementById('loginErr');
+    if (loginErr) loginErr.style.display = 'none';
+    const signupErr = document.getElementById('signupErr');
+    if (signupErr) signupErr.style.display = 'none';
+    document.getElementById('auth').classList.remove('active');
+    enterApp();
+    showToast('Welcome, Guest! Enjoy the music. ✦');
 }
 
 function doSignup() {
@@ -1022,8 +1034,23 @@ audio.addEventListener('ended', () => {
     }
 });
 
+let errorStreak = 0;
 audio.addEventListener('error', (e) => {
     console.warn('Audio error:', e);
+    errorStreak++;
+    if (errorStreak > 3) {
+        showToast('Playback error. Please check your internet connection. ⚠️');
+        errorStreak = 0;
+        return;
+    }
+    showToast('Failed to play track. Trying next song... ⚠️');
+    setTimeout(() => {
+        nextT();
+    }, 2000);
+});
+
+audio.addEventListener('play', () => {
+    errorStreak = 0;
 });
 
 function getEventX(e) {
