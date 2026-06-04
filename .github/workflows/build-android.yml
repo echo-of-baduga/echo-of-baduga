@@ -141,6 +141,7 @@ jobs:
           cp -r assets www/ || true
           cp manifest.json www/ || true
           cp sw.js www/ || true
+          cp CNAME www/ || true
           cp android-apks/app-debug.apk www/app-release.apk || true
 
       - name: Deploy to GitHub Pages
