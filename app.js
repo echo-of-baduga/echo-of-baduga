@@ -3,8 +3,80 @@
 // ════════════════════════════════════════════════════════════════
 
 // ── CONFIG ──
-const PRODUCTION_URL = 'https://echobaduga.com'; // Change this to your live production domain
-const API = (window.Capacitor || window.location.origin.startsWith('file://')) ? `${PRODUCTION_URL}/api/api.php` : 'api/api.php';
+// ── CONFIG ──
+let customServerUrl = localStorage.getItem('eo_custom_server_url') || '';
+const PRODUCTION_URL = customServerUrl || 'https://echobaduga.com'; // Change this to your live production domain
+const API = (window.Capacitor || window.location.origin.startsWith('file://') || customServerUrl) ? `${PRODUCTION_URL}/api/api.php` : 'api/api.php';
+
+// Server Config Helper Functions
+function openServerConfigModal() {
+    let modal = document.getElementById('serverConfigModal');
+    if (!modal) {
+        createServerConfigModalHtml();
+        modal = document.getElementById('serverConfigModal');
+    }
+    const currentUrl = localStorage.getItem('eo_custom_server_url') || '';
+    document.getElementById('cfgServerUrlInp').value = currentUrl;
+    modal.classList.add('active');
+}
+
+function closeServerConfigModal() {
+    const modal = document.getElementById('serverConfigModal');
+    if (modal) modal.classList.remove('active');
+}
+
+function saveServerConfig() {
+    let url = document.getElementById('cfgServerUrlInp').value.trim();
+    if (url) {
+        // Strip trailing slash if any
+        if (url.endsWith('/')) {
+            url = url.slice(0, -1);
+        }
+        localStorage.setItem('eo_custom_server_url', url);
+    } else {
+        localStorage.removeItem('eo_custom_server_url');
+    }
+    showToast('Server URL configured! Reloading application... ✦');
+    closeServerConfigModal();
+    setTimeout(() => {
+        window.location.reload();
+    }, 1200);
+}
+
+function createServerConfigModalHtml() {
+    const div = document.createElement('div');
+    div.id = 'serverConfigModal';
+    div.className = 'set-ov';
+    div.style.zIndex = '99999';
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';
+    div.style.justifyContent = 'center';
+    div.innerHTML = `
+        <div class="set-drawer" style="max-width: 400px; height: auto; border-radius: 20px; position: relative; margin: 20px; transform: scale(1); opacity: 1; pointer-events: auto;">
+            <div class="sh-hdr">
+                <div class="sh-ttl">⚙️ Server Connection Settings</div>
+                <div class="sh-cls" onclick="closeServerConfigModal()">✕</div>
+            </div>
+            <div class="sh-body" style="padding: 24px;">
+                <p style="color: var(--text3); font-size: 13px; line-height: 1.5; margin-bottom: 20px; text-align: left;">
+                    If you are hosting the database/PHP server locally on your PC (e.g. with XAMPP) and testing the app on a phone/emulator, enter your computer's local IP address or custom URL below.
+                </p>
+                <div style="margin-bottom: 20px; text-align: left;">
+                    <label class="fl" style="display: block; margin-bottom: 8px; font-weight: 600;">Server API Base URL</label>
+                    <input class="fi" id="cfgServerUrlInp" type="url" placeholder="http://192.168.1.100/echo of badaga" style="margin-bottom: 8px; width: 100%;">
+                    <small style="color: var(--text4); font-size: 11px; display: block; line-height: 1.4;">
+                        Example: <code>http://192.168.1.5/echo of badaga</code> (Use your local Wi-Fi IP instead of localhost so your phone can reach it). Leave blank to use the default live server.
+                    </small>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn-logout" onclick="closeServerConfigModal()" style="margin: 0; flex: 1; background: rgba(255,255,255,0.05); color: var(--text2);">Cancel</button>
+                    <button class="btn-pr" onclick="saveServerConfig()" style="margin: 0; flex: 1; padding: 12px;">Save &amp; Reload</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(div);
+}
 
 function getAudioUrl(fileUrl) {
     if (!fileUrl) return '';
@@ -183,7 +255,11 @@ function doLogin() {
             enterApp();
             showToast('Welcome back, ' + currentUser.name + '! ✦');
         } else {
-            errEl.textContent = data.error || 'Invalid credentials';
+            if (data.error && (data.error.includes('Database connection') || data.error.includes('Server connection'))) {
+                errEl.innerHTML = data.error + '<br><span onclick="openServerConfigModal()" style="color:var(--acc); text-decoration:underline; cursor:pointer; margin-top:8px; display:inline-block; font-weight:700;">⚙️ Configure Server URL</span>';
+            } else {
+                errEl.textContent = data.error || 'Invalid credentials';
+            }
             errEl.style.display = 'block';
         }
     })
@@ -200,7 +276,7 @@ function doLogin() {
             enterApp();
             showToast('Welcome back (Offline), ' + currentUser.name + '! ✦');
         } else {
-            errEl.textContent = 'Server connection failed. To login offline, please sign up locally first.';
+            errEl.innerHTML = 'Server connection failed. To login offline, please sign up locally first.<br><span onclick="openServerConfigModal()" style="color:var(--acc); text-decoration:underline; cursor:pointer; margin-top:8px; display:inline-block; font-weight:700;">⚙️ Configure Server URL</span>';
             errEl.style.display = 'block';
         }
     });
@@ -270,7 +346,11 @@ function doSignup() {
             document.getElementById('su-pw').value = '';
             showToast('Account registered successfully! Please sign in. ✦');
         } else {
-            errEl.textContent = data.error || 'Registration failed';
+            if (data.error && (data.error.includes('Database connection') || data.error.includes('Server connection'))) {
+                errEl.innerHTML = data.error + '<br><span onclick="openServerConfigModal()" style="color:var(--acc); text-decoration:underline; cursor:pointer; margin-top:8px; display:inline-block; font-weight:700;">⚙️ Configure Server URL</span>';
+            } else {
+                errEl.textContent = data.error || 'Registration failed';
+            }
             errEl.style.display = 'block';
         }
     })
@@ -333,19 +413,95 @@ function togPwd(id, el) {
     }
 }
 
-// ════════════════════════════════════
-// ENTER APP
-// ════════════════════════════════════
-function enterApp() {
-    document.getElementById('appMain').classList.add('active');
+// Load songs dynamically from the server API, falling back to local bundle if offline
+function loadSongs() {
+    // 1. Initial local offline songs loading
     songs = [...DEMO_SONGS];
-
-    // Fix file URLs to be relative (remove leading /)
     songs.forEach(s => {
         if (s.file_url && s.file_url.startsWith('/')) {
             s.file_url = s.file_url.substring(1);
         }
     });
+
+    // Build initial queue from local offline songs
+    queue = [...songs];
+    if (shuffleOn) shuffleArray(queue);
+    qIdx = 0;
+    renderQueue();
+    showHome();
+
+    // 2. Fetch live list of songs from the MySQL database API
+    fetch(API + '?action=songs')
+        .then(res => res.json())
+        .then(data => {
+            if (data.success && data.songs && data.songs.length > 0) {
+                const serverSongs = data.songs.map(s => ({
+                    id: parseInt(s.id),
+                    title: s.title,
+                    artist_name: s.artist_name || 'Baduga Artist',
+                    cover_emoji: s.cover_emoji || '🎵',
+                    duration: s.duration || '3:30',
+                    like_count: parseInt(s.like_count || 0),
+                    play_count: parseInt(s.play_count || 0),
+                    genre: s.genre || 'Folk',
+                    file_url: s.file_url
+                }));
+                
+                // Fix server song relative URLs
+                serverSongs.forEach(s => {
+                    if (s.file_url && s.file_url.startsWith('/')) {
+                        s.file_url = s.file_url.substring(1);
+                    }
+                });
+
+                // Update global songs array
+                songs = serverSongs;
+                
+                // Re-render home with live list
+                showHome();
+                
+                // Update queue if not playing, or keep queue
+                const currentPlaying = queue[qIdx];
+                queue = [...songs];
+                if (shuffleOn) {
+                    shuffleArray(queue);
+                }
+                
+                // Maintain current playing song index
+                if (currentPlaying) {
+                    const idx = queue.findIndex(s => s.id === currentPlaying.id);
+                    if (idx >= 0) qIdx = idx;
+                } else {
+                    qIdx = 0;
+                }
+                
+                renderQueue();
+                
+                // Update start song details in player if not playing
+                if (!isPlaying) {
+                    const startSong = queue[qIdx];
+                    if (startSong) {
+                        const pNm = document.getElementById('pNm');
+                        const pAr = document.getElementById('pAr');
+                        if (pNm) pNm.textContent = startSong.title;
+                        if (pAr) pAr.textContent = startSong.artist_name;
+                        if (startSong.file_url) {
+                            audio.src = getAudioUrl(startSong.file_url);
+                        }
+                    }
+                }
+            }
+        })
+        .catch(err => {
+            console.warn("Failed to fetch live database songs, using bundled offline fallback:", err);
+        });
+}
+
+// ════════════════════════════════════
+// ENTER APP
+// ════════════════════════════════════
+function enterApp() {
+    document.getElementById('appMain').classList.add('active');
 
     // Set user info
     if (currentUser) {
@@ -367,15 +523,8 @@ function enterApp() {
     // Greeting
     setGreeting();
 
-    // Render home
-    showHome();
-
-    // Build queue from all songs
-    queue = [...songs];
-    if (shuffleOn) shuffleArray(queue);
-
-    qIdx = 0;
-    renderQueue();
+    // Load songs (Offline fallback then query server)
+    loadSongs();
 
     // Initialize player UI with the first song (WeBaduga)
     const startSong = queue[qIdx];

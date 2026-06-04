@@ -9,12 +9,70 @@ $db = 'echobaduga';
 $user = 'root';
 $pass = '';
 
-$conn = @new mysqli($host, $user, $pass, $db);
+// Connect without selecting the database first, to ensure we can create it if missing
+$conn = @new mysqli($host, $user, $pass);
 if ($conn->connect_error) {
-    $conn = @new mysqli('127.0.0.1', $user, $pass, $db);
-    if ($conn->connect_error) {
-        die(json_encode(["success" => false, "error" => "Database connection failed"]));
-    }
+    $conn = @new mysqli('127.0.0.1', $user, $pass);
+}
+
+if ($conn->connect_error) {
+    $error_msg = "Database connection failed: " . $conn->connect_error;
+    file_put_contents(__DIR__ . '/../db_error_log.txt', date('[Y-m-d H:i:s] ') . $error_msg . "\n", FILE_APPEND);
+    die(json_encode(["success" => false, "error" => $error_msg]));
+}
+
+// Auto-create database if not exists
+if (!$conn->query("CREATE DATABASE IF NOT EXISTS `$db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")) {
+    $error_msg = "Database auto-creation failed: " . $conn->error;
+    file_put_contents(__DIR__ . '/../db_error_log.txt', date('[Y-m-d H:i:s] ') . $error_msg . "\n", FILE_APPEND);
+    die(json_encode(["success" => false, "error" => $error_msg]));
+}
+
+// Select the database
+if (!$conn->select_db($db)) {
+    $error_msg = "Database selection failed: " . $conn->error;
+    file_put_contents(__DIR__ . '/../db_error_log.txt', date('[Y-m-d H:i:s] ') . $error_msg . "\n", FILE_APPEND);
+    die(json_encode(["success" => false, "error" => $error_msg]));
+}
+
+// Auto-create users table if it does not exist
+$conn->query("CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'listener',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) CHARSET=utf8mb4");
+
+// Auto-create songs table if it does not exist
+$conn->query("CREATE TABLE IF NOT EXISTS songs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    artist_name VARCHAR(255) NOT NULL,
+    cover_emoji VARCHAR(50) DEFAULT '🎵',
+    duration VARCHAR(10) DEFAULT '3:30',
+    like_count INT DEFAULT 0,
+    play_count INT DEFAULT 0,
+    genre VARCHAR(50) DEFAULT 'Folk',
+    file_url VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) CHARSET=utf8mb4");
+
+// Populate songs table with some initial default local songs if empty
+$res_songs = $conn->query("SELECT COUNT(*) as cnt FROM songs");
+$song_count = 0;
+if ($res_songs) {
+    $row = $res_songs->fetch_assoc();
+    $song_count = (int)$row['cnt'];
+}
+if ($song_count === 0) {
+    $conn->query("INSERT INTO songs (title, artist_name, file_url, genre) VALUES 
+    ('Eera Maasi Hethey', 'Bbh Productions', 'songs/devotional/Eera%20Maasi%20Hethey.mp3', 'Devotional'),
+    ('Haalakeru Hallamadu New', '- Pedhuva Raman', 'songs/devotional/Haalakeru%20Hallamadu%20New.mp3', 'Devotional'),
+    ('Habba', 'Bbh Productions', 'songs/devotional/Habba.mp3', 'Devotional'),
+    ('Hetheya Gava', 'New', 'songs/devotional/Hetheya%20Gava.mp3', 'Devotional'),
+    ('Hetheya Morana Naalu', 'Annikorai Mano', 'songs/devotional/Hetheya%20Morana%20Naalu.mp3', 'Devotional')");
 }
 
 // ── EMAIL & SMS DELIVERY CONFIGURATION ──
