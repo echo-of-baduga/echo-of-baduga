@@ -5,7 +5,7 @@
 // ── CONFIG ──
 // ── CONFIG ──
 let customServerUrl = localStorage.getItem('eo_custom_server_url') || '';
-const PRODUCTION_URL = customServerUrl || 'https://echobaduga.com'; // Change this to your live production domain
+const PRODUCTION_URL = customServerUrl || 'https://navaneethm719-ux.github.io/echo-of-baduga'; // Your free cloud hosting
 const API = (window.Capacitor || window.location.origin.startsWith('file://') || customServerUrl) ? `${PRODUCTION_URL}/api/api.php` : 'api/api.php';
 
 // Server Config Helper Functions
