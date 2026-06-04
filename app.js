@@ -10,10 +10,10 @@ const API = (window.Capacitor || window.location.origin.startsWith('file://')) ?
 // ── SUPABASE CONFIG ──
 const supabaseUrl = 'https://iwkyfdhmbkhlpfgybsry.supabase.co';
 const supabaseKey = 'sb_publishable_UyIEXHFzRqrtXS5WDdPogw_xRhEzrs3';
-let supabase = null;
+let eo_supabase = null;
 if (window.supabase) {
     try {
-        supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        eo_supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     } catch (err) {
         console.error("Supabase client initialization failed:", err);
     }
@@ -206,7 +206,7 @@ function doLogin() {
         return;
     }
 
-    if (supabase) {
+    if (eo_supabase) {
         setButtonLoading('btn-do-login', true, 'Sign In &#8594;');
         let mobileWithPrefix = em;
         if (/^[0-9]{10}$/.test(em)) {
@@ -316,7 +316,7 @@ function doSignup() {
         return;
     }
 
-    if (supabase) {
+    if (eo_supabase) {
         setButtonLoading('btn-do-signup', true, 'Create Account &#8594;');
         supabase.from('users')
             .select('id')
@@ -1943,7 +1943,7 @@ function submitFeedback() {
     
     setButtonLoading('btn-fb-submit', true, `<span id="fb-submit-icon">${originalIcon}</span> <span id="fb-submit-text">${originalText}</span>`);
 
-    if (supabase) {
+    if (eo_supabase) {
         supabase.from('feedback')
             .insert([payload])
             .then(({ error }) => {
@@ -2064,7 +2064,7 @@ function sendResetOtp() {
     }
 
     setButtonLoading('btn-send-reset', true, 'Send Reset Link →');
-    if (supabase) {
+    if (eo_supabase) {
         let mobileWithPrefix = ident;
         if (/^[0-9]{10}$/.test(ident)) {
             mobileWithPrefix = '+91' + ident;
@@ -2172,7 +2172,7 @@ function submitNewPassword() {
     }
 
     setButtonLoading('btn-pwd-update', true, 'Update Password & Sign In ✓');
-    if (supabase) {
+    if (eo_supabase) {
         supabase.from('users')
             .update({ password: pwd1 })
             .eq('email', resetIdentity)
@@ -2248,7 +2248,7 @@ function triggerPasswordResetFromSettings() {
     }
     
     showToast('Sending password reset link...');
-    if (supabase) {
+    if (eo_supabase) {
         if (resetSpan) {
             resetSpan.style.pointerEvents = 'auto';
             resetSpan.style.opacity = '1';
