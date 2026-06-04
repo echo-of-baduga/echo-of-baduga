@@ -4,82 +4,14 @@
 
 // ── CONFIG ──
 // ── CONFIG ──
-let customServerUrl = localStorage.getItem('eo_custom_server_url') || '';
-const PRODUCTION_URL = customServerUrl || 'https://navaneethm719-ux.github.io/echo-of-baduga'; // Your free cloud hosting
-const API = (window.Capacitor || window.location.origin.startsWith('file://') || customServerUrl) ? `${PRODUCTION_URL}/api/api.php` : 'api/api.php';
-
-// Server Config Helper Functions
-function openServerConfigModal() {
-    let modal = document.getElementById('serverConfigModal');
-    if (!modal) {
-        createServerConfigModalHtml();
-        modal = document.getElementById('serverConfigModal');
-    }
-    const currentUrl = localStorage.getItem('eo_custom_server_url') || '';
-    document.getElementById('cfgServerUrlInp').value = currentUrl;
-    modal.classList.add('active');
-}
-
-function closeServerConfigModal() {
-    const modal = document.getElementById('serverConfigModal');
-    if (modal) modal.classList.remove('active');
-}
-
-function saveServerConfig() {
-    let url = document.getElementById('cfgServerUrlInp').value.trim();
-    if (url) {
-        // Strip trailing slash if any
-        if (url.endsWith('/')) {
-            url = url.slice(0, -1);
-        }
-        localStorage.setItem('eo_custom_server_url', url);
-    } else {
-        localStorage.removeItem('eo_custom_server_url');
-    }
-    showToast('Server URL configured! Reloading application... ✦');
-    closeServerConfigModal();
-    setTimeout(() => {
-        window.location.reload();
-    }, 1200);
-}
-
-function createServerConfigModalHtml() {
-    const div = document.createElement('div');
-    div.id = 'serverConfigModal';
-    div.className = 'set-ov';
-    div.style.zIndex = '99999';
-    div.style.display = 'flex';
-    div.style.alignItems = 'center';
-    div.style.justifyContent = 'center';
-    div.innerHTML = `
-        <div class="set-drawer" style="max-width: 400px; height: auto; border-radius: 20px; position: relative; margin: 20px; transform: scale(1); opacity: 1; pointer-events: auto;">
-            <div class="sh-hdr">
-                <div class="sh-ttl">⚙️ Server Connection Settings</div>
-                <div class="sh-cls" onclick="closeServerConfigModal()">✕</div>
-            </div>
-            <div class="sh-body" style="padding: 24px;">
-                <p style="color: var(--text3); font-size: 13px; line-height: 1.5; margin-bottom: 20px; text-align: left;">
-                    If you are hosting the database/PHP server locally on your PC (e.g. with XAMPP) and testing the app on a phone/emulator, enter your computer's local IP address or custom URL below.
-                </p>
-                <div style="margin-bottom: 20px; text-align: left;">
-                    <label class="fl" style="display: block; margin-bottom: 8px; font-weight: 600;">Server API Base URL</label>
-                    <input class="fi" id="cfgServerUrlInp" type="url" placeholder="http://192.168.1.100/echo of badaga" style="margin-bottom: 8px; width: 100%;">
-                    <small style="color: var(--text4); font-size: 11px; display: block; line-height: 1.4;">
-                        Example: <code>http://192.168.1.5/echo of badaga</code> (Use your local Wi-Fi IP instead of localhost so your phone can reach it). Leave blank to use the default live server.
-                    </small>
-                </div>
-                <div style="display: flex; gap: 12px; margin-top: 24px;">
-                    <button class="btn-logout" onclick="closeServerConfigModal()" style="margin: 0; flex: 1; background: rgba(255,255,255,0.05); color: var(--text2);">Cancel</button>
-                    <button class="btn-pr" onclick="saveServerConfig()" style="margin: 0; flex: 1; padding: 12px;">Save &amp; Reload</button>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(div);
-}
+const PRODUCTION_URL = 'https://echoofbaduga.com'; // Your official production URL
+const API = (window.Capacitor || window.location.origin.startsWith('file://')) ? `${PRODUCTION_URL}/api/api.php` : 'api/api.php';
 
 function getAudioUrl(fileUrl) {
     if (!fileUrl) return '';
+    if (fileUrl.startsWith('http://') || fileUrl.startsWith('https://')) {
+        return fileUrl;
+    }
     let path = fileUrl;
     if (path.startsWith('/')) {
         path = path.substring(1);
@@ -249,11 +181,7 @@ function doLogin() {
             enterApp();
             showToast('Welcome back, ' + currentUser.name + '! ✦');
         } else {
-            if (data.error && (data.error.includes('Database connection') || data.error.includes('Server connection'))) {
-                errEl.innerHTML = data.error + '<br><span onclick="openServerConfigModal()" style="color:var(--acc); text-decoration:underline; cursor:pointer; margin-top:8px; display:inline-block; font-weight:700;">⚙️ Configure Server URL</span>';
-            } else {
-                errEl.textContent = data.error || 'Invalid credentials';
-            }
+            errEl.textContent = data.error || 'Invalid credentials';
             errEl.style.display = 'block';
         }
     })
@@ -270,28 +198,10 @@ function doLogin() {
             enterApp();
             showToast('Welcome back (Offline), ' + currentUser.name + '! ✦');
         } else {
-            errEl.innerHTML = 'Server connection failed. To login offline, please sign up locally first.<br><span onclick="openServerConfigModal()" style="color:var(--acc); text-decoration:underline; cursor:pointer; margin-top:8px; display:inline-block; font-weight:700;">⚙️ Configure Server URL</span>';
+            errEl.textContent = 'Account not found. Please Sign Up first.';
             errEl.style.display = 'block';
         }
     });
-}
-
-function enterGuestMode() {
-    currentUser = {
-        id: 9999,
-        name: "Guest User",
-        email: "guest@echobaduga.com",
-        mobile: "",
-        initial: "G"
-    };
-    localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
-    const loginErr = document.getElementById('loginErr');
-    if (loginErr) loginErr.style.display = 'none';
-    const signupErr = document.getElementById('signupErr');
-    if (signupErr) signupErr.style.display = 'none';
-    document.getElementById('auth').classList.remove('active');
-    enterApp();
-    showToast('Welcome, Guest! Enjoy the music. ✦');
 }
 
 function doSignup() {
@@ -358,11 +268,7 @@ function doSignup() {
             document.getElementById('su-pw').value = '';
             showToast('Account registered successfully! Please sign in. ✦');
         } else {
-            if (data.error && (data.error.includes('Database connection') || data.error.includes('Server connection'))) {
-                errEl.innerHTML = data.error + '<br><span onclick="openServerConfigModal()" style="color:var(--acc); text-decoration:underline; cursor:pointer; margin-top:8px; display:inline-block; font-weight:700;">⚙️ Configure Server URL</span>';
-            } else {
-                errEl.textContent = data.error || 'Registration failed';
-            }
+            errEl.textContent = data.error || 'Registration failed';
             errEl.style.display = 'block';
         }
     })
