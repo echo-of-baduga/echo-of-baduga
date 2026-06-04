@@ -52,14 +52,14 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
           ./gradlew assembleRelease
+          cd ..
+          cp android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
 
       - name: Upload Compiled APKs
         uses: actions/upload-artifact@v4
         with:
           name: android-apks
-          path: |
-            android/app/build/outputs/apk/debug/app-debug.apk
-            android/app/build/outputs/apk/release/app-release-unsigned.apk
+          path: app-debug.apk
 
   ios:
     name: Build iOS App
@@ -141,8 +141,7 @@ jobs:
           cp -r assets www/ || true
           cp manifest.json www/ || true
           cp sw.js www/ || true
-          cp CNAME www/ || true
-          cp android-apks/app-debug.apk www/app-release.apk || true
+          cp android-apks/app-debug.apk www/app-release.apk
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
