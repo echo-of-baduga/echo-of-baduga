@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Mobile Apps
 
 on:
   push:
@@ -8,10 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  android:
     name: Build Android App
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
@@ -38,8 +37,10 @@ jobs:
           cp app.js www/
           cp songs_array.js www/
           cp -r assets www/ || true
+          cp manifest.json www/ || true
+          cp sw.js www/ || true
 
-      - name: Sync Capacitor
+      - name: Sync Capacitor Android
         run: npx cap sync android
 
       - name: Build Android App (Debug APK)
@@ -53,3 +54,51 @@ jobs:
         with:
           name: debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  ios:
+    name: Build iOS App
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Web Assets
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp app.js www/
+          cp songs_array.js www/
+          cp -r assets www/ || true
+          cp manifest.json www/ || true
+          cp sw.js www/ || true
+
+      - name: Initialize iOS Platform
+        run: npx cap add ios
+
+      - name: Sync Capacitor iOS
+        run: npx cap sync ios
+
+      - name: Build iOS App (Unsigned Xcode Build)
+        run: |
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO clean build
+
+      - name: Compress iOS App Bundle
+        run: |
+          cd ios/App/build/Release-iphoneos
+          zip -r App.zip App.app
+
+      - name: Upload iOS App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-app-bundle
+          path: ios/App/build/Release-iphoneos/App.zip
