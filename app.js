@@ -189,9 +189,20 @@ function doLogin() {
     })
     .catch(err => {
         setButtonLoading('btn-do-login', false);
-        console.error("Login error:", err);
-        errEl.textContent = 'Database / Server connection failed';
-        errEl.style.display = 'block';
+        console.warn("Server offline, switching to offline login fallback:", err);
+        // Fallback: Check local users in localStorage
+        const user = localUsers.find(u => u.email === em);
+        if (user && (user.password === pw)) {
+            currentUser = user;
+            localStorage.setItem('eo_currentUser', JSON.stringify(user));
+            errEl.style.display = 'none';
+            document.getElementById('auth').classList.remove('active');
+            enterApp();
+            showToast('Welcome back (Offline), ' + currentUser.name + '! ✦');
+        } else {
+            errEl.textContent = 'Server connection failed. To login offline, please sign up locally first.';
+            errEl.style.display = 'block';
+        }
     });
 }
 
@@ -265,9 +276,35 @@ function doSignup() {
     })
     .catch(err => {
         setButtonLoading('btn-do-signup', false);
-        console.error("Signup error:", err);
-        errEl.textContent = 'Server connection failed';
-        errEl.style.display = 'block';
+        console.warn("Server offline, switching to offline signup fallback:", err);
+        // Fallback: Create account locally in localStorage
+        const emailExists = localUsers.some(u => u.email === em);
+        if (emailExists) {
+            errEl.textContent = 'Email already registered locally';
+            errEl.style.display = 'block';
+            return;
+        }
+        const newUser = {
+            id: Date.now(),
+            name: nm,
+            email: em,
+            mobile: formattedMobile,
+            password: pw,
+            initial: nm.charAt(0).toUpperCase()
+        };
+        localUsers.push(newUser);
+        localStorage.setItem('eo_users', JSON.stringify(localUsers));
+        
+        errEl.style.display = 'none';
+        swAuth('login');
+        document.getElementById('li-em').value = em;
+        document.getElementById('li-pw').value = '';
+        
+        document.getElementById('su-nm').value = '';
+        document.getElementById('su-em').value = '';
+        document.getElementById('su-mobile').value = '';
+        document.getElementById('su-pw').value = '';
+        showToast('Account registered locally (Offline)! Please sign in. ✦');
     });
 }
 

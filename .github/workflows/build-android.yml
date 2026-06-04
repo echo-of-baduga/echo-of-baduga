@@ -1,4 +1,4 @@
-name: Build Mobile Apps
+name: Build Mobile Apps & Deploy Web
 
 on:
   push:
@@ -6,6 +6,9 @@ on:
       - main
       - master
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   android:
@@ -102,3 +105,35 @@ jobs:
         with:
           name: ios-app-bundle
           path: ios/App/build/Release-iphoneos/App.zip
+
+  deploy-web:
+    name: Deploy Web to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Web Assets
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp app.js www/
+          cp songs_array.js www/
+          cp -r assets www/ || true
+          cp manifest.json www/ || true
+          cp sw.js www/ || true
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: www
+          branch: gh-pages
