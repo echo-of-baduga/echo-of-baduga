@@ -153,6 +153,23 @@ function initApp() {
             }
         }
     }, 2800);
+
+    // Password strength & suggestion setup
+    const suPwInput = document.getElementById('su-pw');
+    if (suPwInput) {
+        suPwInput.addEventListener('focus', () => {
+            if (!suPwInput.value) {
+                generateAndShowSuggestedPwd();
+            }
+        });
+        suPwInput.addEventListener('input', () => {
+            updatePwdStrength(suPwInput.value);
+            const boxEl = document.getElementById('pwd-suggestion-box');
+            if (boxEl && suPwInput.value.length > 0 && document.activeElement === suPwInput) {
+                boxEl.style.display = 'none';
+            }
+        });
+    }
 }
 
 if (document.readyState === 'loading') {
@@ -207,12 +224,12 @@ function doLogin() {
     }
 
     if (eo_supabase) {
-        setButtonLoading('btn-do-login', true, 'Sign In &#8594;');
+        setButtonLoading('btn-do-login', true, 'Sign In &#8594;', 'Signing In...');
         let mobileWithPrefix = em;
         if (/^[0-9]{10}$/.test(em)) {
             mobileWithPrefix = '+91' + em;
         }
-        supabase.from('users')
+        eo_supabase.from('users')
             .select('*')
             .or(`email.eq.${em},mobile.eq.${em},mobile.eq.${mobileWithPrefix}`)
             .then(({ data: users, error }) => {
@@ -317,8 +334,8 @@ function doSignup() {
     }
 
     if (eo_supabase) {
-        setButtonLoading('btn-do-signup', true, 'Create Account &#8594;');
-        supabase.from('users')
+        setButtonLoading('btn-do-signup', true, 'Create Account &#8594;', 'Signing In...');
+        eo_supabase.from('users')
             .select('id')
             .eq('email', em)
             .then(({ data: emailCheck, error: err1 }) => {
@@ -332,7 +349,7 @@ function doSignup() {
                 
                 let checkMobilePromise = Promise.resolve({ data: [] });
                 if (formattedMobile) {
-                    checkMobilePromise = supabase.from('users')
+                    checkMobilePromise = eo_supabase.from('users')
                         .select('id')
                         .eq('mobile', formattedMobile)
                         .then(res => {
@@ -349,7 +366,7 @@ function doSignup() {
                         return;
                     }
                     
-                    supabase.from('users')
+                    eo_supabase.from('users')
                         .insert([{ name: nm, email: em, mobile: formattedMobile, password: pw }])
                         .select()
                         .then(({ data: newUser, error: err3 }) => {
@@ -1941,10 +1958,10 @@ function submitFeedback() {
     const originalText = submitTextEl ? submitTextEl.textContent : 'Send Message';
     const originalIcon = submitIconEl ? submitIconEl.textContent : '📬';
     
-    setButtonLoading('btn-fb-submit', true, `<span id="fb-submit-icon">${originalIcon}</span> <span id="fb-submit-text">${originalText}</span>`);
+    setButtonLoading('btn-fb-submit', true, `<span id="fb-submit-icon">${originalIcon}</span> <span id="fb-submit-text">${originalText}</span>`, 'Submitting...');
 
     if (eo_supabase) {
-        supabase.from('feedback')
+        eo_supabase.from('feedback')
             .insert([payload])
             .then(({ error }) => {
                 setButtonLoading('btn-fb-submit', false);
@@ -2012,7 +2029,7 @@ function showToast(msg) {
     toastTimeout = setTimeout(() => el.classList.remove('show'), 2500);
 }
 
-function setButtonLoading(btnElOrId, isLoading, originalHtml) {
+function setButtonLoading(btnElOrId, isLoading, originalHtml, loadingText = 'Sending...') {
     const btn = (typeof btnElOrId === 'string') ? document.getElementById(btnElOrId) : btnElOrId;
     if (!btn) return;
     if (isLoading) {
@@ -2020,7 +2037,7 @@ function setButtonLoading(btnElOrId, isLoading, originalHtml) {
         btn.style.opacity = '0.7';
         btn.style.cursor = 'not-allowed';
         btn.dataset.originalHtml = originalHtml || btn.innerHTML;
-        btn.innerHTML = `<span class="mini-spin" style="display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,0.3); border-radius:50%; border-top-color:#fff; animation:spin 0.8s linear infinite; margin-right:6px; vertical-align:middle;"></span> Sending...`;
+        btn.innerHTML = `<span class="mini-spin" style="display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,0.3); border-radius:50%; border-top-color:#fff; animation:spin 0.8s linear infinite; margin-right:6px; vertical-align:middle;"></span> ${loadingText}`;
     } else {
         btn.disabled = false;
         btn.style.opacity = '1';
@@ -2063,13 +2080,13 @@ function sendResetOtp() {
         return;
     }
 
-    setButtonLoading('btn-send-reset', true, 'Send Reset Link →');
+    setButtonLoading('btn-send-reset', true, 'Send Reset Link →', 'Sending...');
     if (eo_supabase) {
         let mobileWithPrefix = ident;
         if (/^[0-9]{10}$/.test(ident)) {
             mobileWithPrefix = '+91' + ident;
         }
-        supabase.from('users')
+        eo_supabase.from('users')
             .select('*')
             .or(`email.eq.${ident},mobile.eq.${ident},mobile.eq.${mobileWithPrefix}`)
             .then(({ data: users, error }) => {
@@ -2171,9 +2188,9 @@ function submitNewPassword() {
         return;
     }
 
-    setButtonLoading('btn-pwd-update', true, 'Update Password & Sign In ✓');
+    setButtonLoading('btn-pwd-update', true, 'Update Password & Sign In ✓', 'Updating...');
     if (eo_supabase) {
-        supabase.from('users')
+        eo_supabase.from('users')
             .update({ password: pwd1 })
             .eq('email', resetIdentity)
             .then(({ error }) => {
@@ -2618,6 +2635,90 @@ function initMobileGestures() {
                 showToast('✦ Next Track');
             }
         }
+    }
+}
+
+// ── PASSWORD SUGGESTION & STRENGTH GENERATOR ──
+function generateAndShowSuggestedPwd() {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+    let pwd = "";
+    const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lower = "abcdefghijklmnopqrstuvwxyz";
+    const num = "0123456789";
+    const spec = "!@#$%^&*()_+~|}{[]:;?><,./-=";
+    
+    pwd += upper[Math.floor(Math.random() * upper.length)];
+    pwd += lower[Math.floor(Math.random() * lower.length)];
+    pwd += num[Math.floor(Math.random() * num.length)];
+    pwd += spec[Math.floor(Math.random() * spec.length)];
+    
+    for (let i = 4; i < 12; i++) {
+        pwd += chars[Math.floor(Math.random() * chars.length)];
+    }
+    
+    // Shuffle
+    pwd = pwd.split('').sort(() => 0.5 - Math.random()).join('');
+    
+    const textEl = document.getElementById('suggested-pwd-text');
+    const boxEl = document.getElementById('pwd-suggestion-box');
+    if (textEl && boxEl) {
+        textEl.textContent = pwd;
+        boxEl.style.display = 'block';
+    }
+}
+
+function applySuggestedPwd() {
+    const suPwInput = document.getElementById('su-pw');
+    const textEl = document.getElementById('suggested-pwd-text');
+    const boxEl = document.getElementById('pwd-suggestion-box');
+    if (suPwInput && textEl) {
+        suPwInput.value = textEl.textContent;
+        suPwInput.dispatchEvent(new Event('input'));
+        showToast('Suggested password applied! ✦');
+        if (boxEl) boxEl.style.display = 'none';
+    }
+}
+
+function updatePwdStrength(val) {
+    const bar = document.getElementById('pw-strength-bar');
+    const label = document.getElementById('pw-strength-label');
+    const container = document.getElementById('pw-strength-container');
+    
+    if (!container) return;
+    
+    if (!val) {
+        container.style.display = 'none';
+        return;
+    }
+    
+    container.style.display = 'block';
+    
+    let score = 0;
+    if (val.length >= 6) score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    
+    let color = '#ff4466';
+    let text = 'Weak 🔴';
+    let width = '20%';
+    
+    if (score >= 4) {
+        color = '#10b981';
+        text = 'Strong 💪';
+        width = '100%';
+    } else if (score >= 2) {
+        color = '#f59e0b';
+        text = 'Medium 🟡';
+        width = '60%';
+    }
+    
+    if (bar && label) {
+        bar.style.backgroundColor = color;
+        bar.style.width = width;
+        label.textContent = text;
+        label.style.color = color;
     }
 }
 
