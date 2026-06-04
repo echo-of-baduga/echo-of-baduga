@@ -35,14 +35,14 @@ function getAudioUrl(fileUrl) {
     return encodedPath;
 }
 
-// Safe localStorage helper for restricted environments (Incognito, Safari private mode, restricted WebViews)
-let myLocalStorage = window.localStorage;
+// Safe eo_localStorage helper for restricted environments (Incognito, Safari private mode, restricted WebViews)
+let myLocalStorage = window.eo_localStorage;
 try {
     const testKey = '__eo_storage_test__';
-    window.localStorage.setItem(testKey, 'test');
-    window.localStorage.removeItem(testKey);
+    window.eo_localStorage.setItem(testKey, 'test');
+    window.eo_localStorage.removeItem(testKey);
 } catch (e) {
-    console.warn("localStorage is blocked or unavailable. Falling back to memory storage.");
+    console.warn("eo_localStorage is blocked or unavailable. Falling back to memory storage.");
     const memStore = {};
     myLocalStorage = {
         getItem: (key) => memStore[key] || null,
@@ -51,12 +51,12 @@ try {
         clear: () => { for (let key in memStore) delete memStore[key]; }
     };
 }
-const localStorage = myLocalStorage;
+const eo_localStorage = myLocalStorage;
 
 let currentUser = null;
-let localUsers = JSON.parse(localStorage.getItem('eo_users') || '[]');
-let likedIds = JSON.parse(localStorage.getItem('eo_likes') || '[]');
-let recentIds = JSON.parse(localStorage.getItem('eo_recent') || '[]');
+let localUsers = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
+let likedIds = JSON.parse(eo_localStorage.getItem('eo_likes') || '[]');
+let recentIds = JSON.parse(eo_localStorage.getItem('eo_recent') || '[]');
 
 // ── WEB AUDIO API EQUALIZER GLOBALS ──
 let audioCtx = null;
@@ -104,7 +104,7 @@ const GENRE_COLORS = {
 // ════════════════════════════════════
 function initApp() {
     // Check if already logged in
-    const savedUser = localStorage.getItem('eo_currentUser');
+    const savedUser = eo_localStorage.getItem('eo_currentUser');
     if (savedUser) {
         try {
             currentUser = JSON.parse(savedUser);
@@ -228,14 +228,14 @@ function doLogin() {
                             mobile: u.mobile || '',
                             initial: u.name.charAt(0).toUpperCase()
                         };
-                        localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
+                        eo_localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
                         
                         // Sync locally
-                        const localUsersList = JSON.parse(localStorage.getItem('eo_users') || '[]');
+                        const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
                         const idx = localUsersList.findIndex(x => x.email.toLowerCase() === u.email.toLowerCase());
                         if (idx >= 0) localUsersList[idx] = u;
                         else localUsersList.push(u);
-                        localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+                        eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
                         localUsers = localUsersList;
 
                         errEl.style.display = 'none';
@@ -269,7 +269,7 @@ function fallbackLocalLogin(em, pw, errEl) {
     );
     if (user && (user.password === pw)) {
         currentUser = user;
-        localStorage.setItem('eo_currentUser', JSON.stringify(user));
+        eo_localStorage.setItem('eo_currentUser', JSON.stringify(user));
         errEl.style.display = 'none';
         document.getElementById('auth').classList.remove('active');
         enterApp();
@@ -357,9 +357,9 @@ function doSignup() {
                             if (err3) throw err3;
                             
                             // Cache locally
-                            const localUsersList = JSON.parse(localStorage.getItem('eo_users') || '[]');
+                            const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
                             localUsersList.push({ name: nm, email: em, mobile: formattedMobile, password: pw });
-                            localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+                            eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
                             localUsers = localUsersList;
 
                             errEl.style.display = 'none';
@@ -396,7 +396,7 @@ function fallbackLocalSignup(nm, em, formattedMobile, pw, errEl) {
         initial: nm.charAt(0).toUpperCase()
     };
     localUsers.push(newUser);
-    localStorage.setItem('eo_users', JSON.stringify(localUsers));
+    eo_localStorage.setItem('eo_users', JSON.stringify(localUsers));
         
         errEl.style.display = 'none';
         swAuth('login');
@@ -420,7 +420,7 @@ function logout() {
     } catch (e) {}
 
     currentUser = null;
-    localStorage.removeItem('eo_currentUser');
+    eo_localStorage.removeItem('eo_currentUser');
     closeSettings();
     document.getElementById('appMain').classList.remove('active');
     document.getElementById('auth').classList.add('active');
@@ -579,20 +579,20 @@ function enterApp() {
     initEQ();
 
     // Restore queue toggle state for desktop
-    const qCol = localStorage.getItem('eo_queue_collapsed');
+    const qCol = eo_localStorage.getItem('eo_queue_collapsed');
     const shell = document.querySelector('.shell');
     if (qCol === 'yes' && shell && window.innerWidth > 1024) {
         shell.classList.add('queue-collapsed');
     }
 
-    // Initialize settings from localStorage
-    const alertsEnabled = localStorage.getItem('eo_alerts') !== 'off';
+    // Initialize settings from eo_localStorage
+    const alertsEnabled = eo_localStorage.getItem('eo_alerts') !== 'off';
     const alertTog = document.getElementById('alertTog');
     if (alertTog) {
         alertTog.classList.toggle('on', alertsEnabled);
     }
     
-    const historyEnabled = localStorage.getItem('eo_history_enabled') !== 'off';
+    const historyEnabled = eo_localStorage.getItem('eo_history_enabled') !== 'off';
     const historyTog = document.getElementById('historyTog');
     if (historyTog) {
         historyTog.classList.toggle('on', historyEnabled);
@@ -897,12 +897,12 @@ function loadAndPlay(song) {
     }
 
     // Update listening history (recent) if enabled
-    const historyEnabled = localStorage.getItem('eo_history_enabled') !== 'off';
+    const historyEnabled = eo_localStorage.getItem('eo_history_enabled') !== 'off';
     if (historyEnabled) {
         recentIds = recentIds.filter(r => r !== song.id);
         recentIds.unshift(song.id);
         if (recentIds.length > 50) recentIds = recentIds.slice(0, 50);
-        localStorage.setItem('eo_recent', JSON.stringify(recentIds));
+        eo_localStorage.setItem('eo_recent', JSON.stringify(recentIds));
     }
 
     // Update player UI
@@ -917,7 +917,7 @@ function loadAndPlay(song) {
     if (pLk) pLk.classList.toggle('on', likedIds.includes(song.id));
 
     // Show song alert if enabled
-    const songAlertsEnabled = localStorage.getItem('eo_alerts') !== 'off';
+    const songAlertsEnabled = eo_localStorage.getItem('eo_alerts') !== 'off';
     if (songAlertsEnabled) {
         showSongAlert(song);
     }
@@ -1223,7 +1223,7 @@ function toggleLikeSong(id, el) {
         if (el) el.classList.add('on');
         showToast('Added to liked songs ♥');
     }
-    localStorage.setItem('eo_likes', JSON.stringify(likedIds));
+    eo_localStorage.setItem('eo_likes', JSON.stringify(likedIds));
 
     // Update player like btn
     const current = queue[qIdx];
@@ -1340,7 +1340,7 @@ function closeDrop() {
 
 // Search History Helper Functions
 function renderSearchHistory() {
-    const history = JSON.parse(localStorage.getItem('eo_search_history') || '[]');
+    const history = JSON.parse(eo_localStorage.getItem('eo_search_history') || '[]');
     const results = document.getElementById('sdResults');
     const empty = document.getElementById('sdEmpty');
     const spin = document.getElementById('sdSpin');
@@ -1385,16 +1385,16 @@ function renderSearchHistory() {
 function addSearchHistory(query) {
     if (!query || !query.trim()) return;
     query = query.trim();
-    let history = JSON.parse(localStorage.getItem('eo_search_history') || '[]');
+    let history = JSON.parse(eo_localStorage.getItem('eo_search_history') || '[]');
     history = history.filter(h => h.toLowerCase() !== query.toLowerCase());
     history.unshift(query);
     if (history.length > 5) history = history.slice(0, 5);
-    localStorage.setItem('eo_search_history', JSON.stringify(history));
+    eo_localStorage.setItem('eo_search_history', JSON.stringify(history));
 }
 
 function clearSearchHistory(event) {
     if (event) event.stopPropagation();
-    localStorage.removeItem('eo_search_history');
+    eo_localStorage.removeItem('eo_search_history');
     renderSearchHistory();
 }
 
@@ -1434,12 +1434,12 @@ function toggleTheme() {
     if (mThLt) mThLt.classList.toggle('on', isDark);
     if (thLbl) thLbl.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 
-    localStorage.setItem('eo_theme', body.dataset.theme);
+    eo_localStorage.setItem('eo_theme', body.dataset.theme);
 }
 
 // Restore theme
 (function () {
-    const saved = localStorage.getItem('eo_theme') || 'dark';
+    const saved = eo_localStorage.getItem('eo_theme') || 'dark';
     document.body.dataset.theme = saved;
     const thDk = document.getElementById('thDk');
     const thLt = document.getElementById('thLt');
@@ -1472,7 +1472,7 @@ function syncProfile() {
     if (currentUser) {
         currentUser.name = nm;
         currentUser.email = em;
-        localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
+        eo_localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
 
         const initial = (nm || 'U')[0].toUpperCase();
         const av = document.getElementById('userAv');
@@ -1736,18 +1736,18 @@ function showSongAlert(song) {
 function toggleAlertSetting(el) {
     el.classList.toggle('on');
     const enabled = el.classList.contains('on');
-    localStorage.setItem('eo_alerts', enabled ? 'on' : 'off');
+    eo_localStorage.setItem('eo_alerts', enabled ? 'on' : 'off');
     showToast(enabled ? 'New song alerts enabled' : 'New song alerts disabled');
 }
 
 function toggleHistorySetting(el) {
     el.classList.toggle('on');
     const enabled = el.classList.contains('on');
-    localStorage.setItem('eo_history_enabled', enabled ? 'on' : 'off');
+    eo_localStorage.setItem('eo_history_enabled', enabled ? 'on' : 'off');
     showToast(enabled ? 'Listening history enabled' : 'Listening history disabled');
     
     if (!enabled) {
-        localStorage.removeItem('eo_recent');
+        eo_localStorage.removeItem('eo_recent');
         recentIds = [];
     }
 }
@@ -1769,7 +1769,7 @@ function toggleQueue() {
     } else {
         if (shell) {
             shell.classList.toggle('queue-collapsed');
-            localStorage.setItem('eo_queue_collapsed', shell.classList.contains('queue-collapsed') ? 'yes' : 'no');
+            eo_localStorage.setItem('eo_queue_collapsed', shell.classList.contains('queue-collapsed') ? 'yes' : 'no');
         }
     }
 }
@@ -1963,12 +1963,12 @@ function submitFeedback() {
 
 function fallbackLocalFeedback(payload) {
     setButtonLoading('btn-fb-submit', false);
-    const feedbackList = JSON.parse(localStorage.getItem('eo_feedback') || '[]');
+    const feedbackList = JSON.parse(eo_localStorage.getItem('eo_feedback') || '[]');
     feedbackList.push({
         id: Date.now(),
         payload: payload
     });
-    localStorage.setItem('eo_feedback', JSON.stringify(feedbackList));
+    eo_localStorage.setItem('eo_feedback', JSON.stringify(feedbackList));
     showToast('✓ Message saved locally (Offline)!');
     renderFeedbackSuccessStep();
 }
@@ -2181,11 +2181,11 @@ function submitNewPassword() {
                 if (error) throw error;
                 
                 // Update local storage too to keep in sync
-                const localUsersList = JSON.parse(localStorage.getItem('eo_users') || '[]');
+                const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
                 const idx = localUsersList.findIndex(x => x.email.toLowerCase() === resetIdentity.toLowerCase());
                 if (idx >= 0) {
                     localUsersList[idx].password = pwd1;
-                    localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+                    eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
                     localUsers = localUsersList;
                 }
                 
@@ -2209,14 +2209,14 @@ function submitNewPassword() {
 function fallbackLocalSubmitNewPassword(pwd1) {
     setButtonLoading('btn-pwd-update', false);
     const normalizedEm = resetIdentity.toLowerCase();
-    const users = JSON.parse(localStorage.getItem('eo_users') || '[]');
+    const users = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
     const idx = users.findIndex(u => 
         (u.email && u.email.toLowerCase() === normalizedEm) || 
         (u.mobile && (u.mobile === resetIdentity || u.mobile === '+91' + resetIdentity || u.mobile.replace('+91', '') === resetIdentity.replace('+91', '')))
     );
     if (idx >= 0) {
         users[idx].password = pwd1;
-        localStorage.setItem('eo_users', JSON.stringify(users));
+        eo_localStorage.setItem('eo_users', JSON.stringify(users));
         localUsers = users;
         
         showToast('✓ Password updated locally! (Offline)');
