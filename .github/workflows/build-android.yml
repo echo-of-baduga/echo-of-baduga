@@ -111,6 +111,7 @@ jobs:
 
   deploy-web:
     name: Deploy Web to GitHub Pages
+    needs: android
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
@@ -125,6 +126,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Download Android APK Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-apks
+          path: android-apks
+
       - name: Build Web Assets
         run: |
           mkdir -p www
@@ -134,6 +141,7 @@ jobs:
           cp -r assets www/ || true
           cp manifest.json www/ || true
           cp sw.js www/ || true
+          cp android-apks/app-debug.apk www/app-release.apk || true
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
