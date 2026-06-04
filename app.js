@@ -4,7 +4,7 @@
 
 // ── CONFIG ──
 // ── CONFIG ──
-const PRODUCTION_URL = 'https://navaneethm719-ux.github.io/echo-of-baduga'; // Your live custom domain hosting
+const PRODUCTION_URL = 'https://echo-of-baduga.github.io/echo-of-baduga'; // Your live custom domain hosting
 const API = (window.Capacitor || window.location.origin.startsWith('file://')) ? `${PRODUCTION_URL}/api/api.php` : 'api/api.php';
 
 // ── SUPABASE CONFIG ──
