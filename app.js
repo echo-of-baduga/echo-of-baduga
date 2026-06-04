@@ -45,6 +45,8 @@ const PAUSE_ICON = `<svg viewBox="0 0 24 24" class="svg-pause"><path d="M6 19h4V
 const HEART_SVG = `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
 audio.preload = 'auto';
 audio.volume = 0.7;
+const SPINNER_ICON = `<svg viewBox="0 0 24 24" class="svg-spinner" style="width:24px; height:24px; color:var(--acc);"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="38 18"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite"/></circle></svg>`;
+let isBuffering = false;
 let songs = [];
 let queue = [];
 let qIdx = 0;
@@ -917,10 +919,16 @@ function togPlay() {
 
 function updatePlayBtn() {
     const btn = document.getElementById('playBtn');
-    if (btn) btn.innerHTML = isPlaying ? PAUSE_ICON : PLAY_ICON;
+    if (btn) {
+        if (isBuffering && isPlaying) {
+            btn.innerHTML = SPINNER_ICON;
+        } else {
+            btn.innerHTML = isPlaying ? PAUSE_ICON : PLAY_ICON;
+        }
+    }
     const pArt = document.getElementById('pArt');
     if (pArt) {
-        if (isPlaying) pArt.classList.add('spin');
+        if (isPlaying && !isBuffering) pArt.classList.add('spin');
         else pArt.classList.remove('spin');
     }
     renderQueue();
@@ -978,6 +986,26 @@ audio.addEventListener('ended', () => {
     } else {
         nextT();
     }
+});
+
+audio.addEventListener('waiting', () => {
+    isBuffering = true;
+    updatePlayBtn();
+});
+
+audio.addEventListener('playing', () => {
+    isBuffering = false;
+    updatePlayBtn();
+});
+
+audio.addEventListener('canplay', () => {
+    isBuffering = false;
+    updatePlayBtn();
+});
+
+audio.addEventListener('loadstart', () => {
+    isBuffering = true;
+    updatePlayBtn();
 });
 
 let errorStreak = 0;
@@ -2155,7 +2183,11 @@ function syncMobilePlayer() {
     }
     const mPlay = document.getElementById('m-playBtn');
     if (mPlay) {
-        mPlay.innerHTML = isPlaying ? PAUSE_ICON : PLAY_ICON;
+        if (isBuffering && isPlaying) {
+            mPlay.innerHTML = SPINNER_ICON;
+        } else {
+            mPlay.innerHTML = isPlaying ? PAUSE_ICON : PLAY_ICON;
+        }
     }
     if (mDisk) {
         mDisk.classList.toggle('playing', isPlaying);
