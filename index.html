@@ -3620,6 +3620,7 @@
                 </div>
                 <div id="loginErr" style="color:#ff4466;font-size:12.5px;font-weight:600;display:none;text-align:center;"></div>
                 <button class="btn-pr" id="btn-do-login" onclick="doLogin()">Sign In &#8594;</button>
+                <button class="btn-g" id="btn-guest-login" onclick="enterGuestMode()" style="margin-top: 12px; border-radius: 12px; height: 48px; width: 100%;">Listen as Guest</button>
                 <div class="a-sw" style="margin-top:8px;"><span onclick="openForgotModal()" style="color:var(--acc4);cursor:pointer;font-weight:600;font-size:12px;">Forgot password?</span></div>
             </div>
             <!-- Signup Form -->
@@ -3648,7 +3649,14 @@
                 </div>
                 <div id="signupErr" style="color:#ff4466;font-size:12.5px;font-weight:600;display:none;text-align:center;"></div>
                 <button class="btn-pr" id="btn-do-signup" onclick="doSignup()">Create Account &#8594;</button>
-                <div class="a-sw">Have an account? <span onclick="swAuth('login')">Sign in</span></div>
+                <button class="btn-g" id="btn-guest-signup" onclick="enterGuestMode()" style="margin-top: 12px; border-radius: 12px; height: 48px; width: 100%;">Listen as Guest</button>
+                <div class="a-sw" style="margin-top:12px;">Have an account? <span onclick="swAuth('login')">Sign in</span></div>
+            </div>
+            <div id="authDownloadBanner" style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center;">
+                <p style="color: var(--text3); font-size: 12.5px; margin-bottom: 8px;">Want to listen on the go?</p>
+                <a href="app-release.apk" download style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid var(--bdr2); color: var(--text2); text-decoration: none; border-radius: 10px; padding: 10px 20px; font-weight: 700; font-size: 13px; transition: all 0.2s; cursor: pointer; width: 100%; justify-content: center;">
+                    <span>⬇️ Download Android App (APK)</span>
+                </a>
             </div>
         </div>
     </div>
@@ -3683,6 +3691,11 @@
                     <div class="pl-i" onclick="loadRecent()">
                         <div class="pld" style="background:var(--acc4)"></div>Recently Played
                     </div>
+                </div>
+                <div class="sidebar-footer" id="webDownloadBtn" style="padding: 16px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); width: 100%;">
+                    <a href="app-release.apk" download style="display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #ffffff; text-decoration: none; border-radius: 10px; padding: 12px; font-weight: 700; font-size: 13px; box-shadow: 0 4px 15px var(--glow); transition: all 0.2s; width: 100%;">
+                        <span>⬇️ Download App</span>
+                    </a>
                 </div>
             </aside>
 

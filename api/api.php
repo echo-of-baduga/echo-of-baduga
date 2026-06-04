@@ -121,10 +121,18 @@ function send_email($to, $subject, $message) {
     // Normalize all line endings to CRLF for RFC-compliant SMTP transaction
     $message = str_replace(["\r\n", "\r", "\n"], "\r\n", $message);
 
+    $domain = 'echobaduga.com';
+    $parts = explode('@', $from);
+    if (count($parts) > 1) {
+        $domain = $parts[1];
+    }
+    $messageId = "<" . md5(uniqid(time(), true)) . "@" . $domain . ">";
+
     // If SMTP credentials are empty or placeholders, fall back to built-in PHP mail()
     if (empty($host) || empty($user) || empty($pass) || strpos($user, 'your-gmail') !== false) {
         $headers = "From: Echo of Badaga <" . $from . ">\r\n";
         $headers .= "Reply-To: " . $from . "\r\n";
+        $headers .= "Message-ID: " . $messageId . "\r\n";
         $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
         $headers .= "X-Mailer: PHP/" . phpversion();
         $headers = str_replace(["\r\n", "\r", "\n"], "\r\n", $headers);
@@ -207,6 +215,10 @@ function send_email($to, $subject, $message) {
     $headers .= "Content-type: text/html; charset=utf-8\r\n";
     $headers .= "To: <$to>\r\n";
     $headers .= "From: Echo of Badaga <$from>\r\n";
+    $headers .= "Reply-To: <$from>\r\n";
+    $headers .= "Sender: <$from>\r\n";
+    $headers .= "Message-ID: $messageId\r\n";
+    $headers .= "X-Mailer: PHP/" . phpversion();
     $headers .= "Subject: $subject\r\n";
     $headers .= "Date: " . date('r') . "\r\n";
 
