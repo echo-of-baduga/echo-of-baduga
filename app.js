@@ -35,14 +35,33 @@ function getAudioUrl(fileUrl) {
     return encodedPath;
 }
 
+function supabaseTimeout(promise, timeoutMs = 6000) {
+    return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+            reject(new Error("Database request timed out"));
+        }, timeoutMs);
+        
+        promise.then(
+            (res) => {
+                clearTimeout(timer);
+                resolve(res);
+            },
+            (err) => {
+                clearTimeout(timer);
+                reject(err);
+            }
+        );
+    });
+}
+
 // Safe eo_localStorage helper for restricted environments (Incognito, Safari private mode, restricted WebViews)
-let myLocalStorage = window.eo_localStorage;
+let myLocalStorage = window.localStorage;
 try {
     const testKey = '__eo_storage_test__';
-    window.eo_localStorage.setItem(testKey, 'test');
-    window.eo_localStorage.removeItem(testKey);
+    window.localStorage.setItem(testKey, 'test');
+    window.localStorage.removeItem(testKey);
 } catch (e) {
-    console.warn("eo_localStorage is blocked or unavailable. Falling back to memory storage.");
+    console.warn("localStorage is blocked or unavailable. Falling back to memory storage.");
     const memStore = {};
     myLocalStorage = {
         getItem: (key) => memStore[key] || null,
@@ -158,16 +177,18 @@ function initApp() {
     const suPwInput = document.getElementById('su-pw');
     if (suPwInput) {
         suPwInput.addEventListener('focus', () => {
-            if (!suPwInput.value) {
-                generateAndShowSuggestedPwd();
-            }
+            generateAndShowSuggestedPwd();
         });
         suPwInput.addEventListener('input', () => {
             updatePwdStrength(suPwInput.value);
-            const boxEl = document.getElementById('pwd-suggestion-box');
-            if (boxEl && suPwInput.value.length > 0 && document.activeElement === suPwInput) {
-                boxEl.style.display = 'none';
-            }
+        });
+        suPwInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                const boxEl = document.getElementById('pwd-suggestion-box');
+                if (boxEl && document.activeElement !== suPwInput) {
+                    boxEl.style.display = 'none';
+                }
+            }, 200);
         });
     }
 }
@@ -203,7 +224,7 @@ function swAuth(mode) {
     }
 }
 
-function doLogin() {
+async function doLogin() {
     const em = document.getElementById('li-em').value.trim();
     const pw = document.getElementById('li-pw').value;
     const errEl = document.getElementById('loginErr');
@@ -225,54 +246,56 @@ function doLogin() {
 
     if (eo_supabase) {
         setButtonLoading('btn-do-login', true, 'Sign In &#8594;', 'Signing In...');
-        let mobileWithPrefix = em;
-        if (/^[0-9]{10}$/.test(em)) {
-            mobileWithPrefix = '+91' + em;
-        }
-        eo_supabase.from('users')
-            .select('*')
-            .or(`email.eq.${em},mobile.eq.${em},mobile.eq.${mobileWithPrefix}`)
-            .then(({ data: users, error }) => {
-                setButtonLoading('btn-do-login', false);
-                if (error) throw error;
-                if (users && users.length > 0) {
-                    const u = users[0];
-                    if (u.password === pw) {
-                        currentUser = {
-                            id: u.id,
-                            name: u.name,
-                            email: u.email,
-                            mobile: u.mobile || '',
-                            initial: u.name.charAt(0).toUpperCase()
-                        };
-                        eo_localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
-                        
-                        // Sync locally
-                        const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
-                        const idx = localUsersList.findIndex(x => x.email.toLowerCase() === u.email.toLowerCase());
-                        if (idx >= 0) localUsersList[idx] = u;
-                        else localUsersList.push(u);
-                        eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
-                        localUsers = localUsersList;
+        try {
+            let mobileWithPrefix = em;
+            if (/^[0-9]{10}$/.test(em)) {
+                mobileWithPrefix = '+91' + em;
+            }
+            const { data: users, error } = await supabaseTimeout(
+                eo_supabase.from('users')
+                    .select('*')
+                    .or(`email.eq.${em},mobile.eq.${em},mobile.eq.${mobileWithPrefix}`)
+            );
+            setButtonLoading('btn-do-login', false);
+            if (error) throw error;
 
-                        errEl.style.display = 'none';
-                        document.getElementById('auth').classList.remove('active');
-                        enterApp();
-                        showToast('Welcome back, ' + currentUser.name + '! ✦');
-                    } else {
-                        errEl.textContent = 'Invalid password';
-                        errEl.style.display = 'block';
-                    }
+            if (users && users.length > 0) {
+                const u = users[0];
+                if (u.password === pw) {
+                    currentUser = {
+                        id: u.id,
+                        name: u.name,
+                        email: u.email,
+                        mobile: u.mobile || '',
+                        initial: u.name.charAt(0).toUpperCase()
+                    };
+                    eo_localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
+                    
+                    // Sync locally
+                    const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
+                    const idx = localUsersList.findIndex(x => x.email.toLowerCase() === u.email.toLowerCase());
+                    if (idx >= 0) localUsersList[idx] = u;
+                    else localUsersList.push(u);
+                    eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+                    localUsers = localUsersList;
+
+                    errEl.style.display = 'none';
+                    document.getElementById('auth').classList.remove('active');
+                    enterApp();
+                    showToast('Welcome back, ' + currentUser.name + '! ✦');
                 } else {
-                    errEl.textContent = 'Account not found. Please Sign Up first.';
+                    errEl.textContent = 'Invalid password';
                     errEl.style.display = 'block';
                 }
-            })
-            .catch(err => {
-                setButtonLoading('btn-do-login', false);
-                console.warn("Supabase query failed, falling back to local:", err);
-                fallbackLocalLogin(em, pw, errEl);
-            });
+            } else {
+                errEl.textContent = 'Account not found. Please Sign Up first.';
+                errEl.style.display = 'block';
+            }
+        } catch (err) {
+            setButtonLoading('btn-do-login', false);
+            console.warn("Supabase query failed, falling back to local:", err);
+            fallbackLocalLogin(em, pw, errEl);
+        }
     } else {
         fallbackLocalLogin(em, pw, errEl);
     }
@@ -297,7 +320,7 @@ function fallbackLocalLogin(em, pw, errEl) {
     }
 }
 
-function doSignup() {
+async function doSignup() {
     const nm = document.getElementById('su-nm').value.trim();
     const em = document.getElementById('su-em').value.trim();
     const mb = document.getElementById('su-mobile').value.trim();
@@ -334,64 +357,63 @@ function doSignup() {
     }
 
     if (eo_supabase) {
-        setButtonLoading('btn-do-signup', true, 'Create Account &#8594;', 'Signing In...');
-        eo_supabase.from('users')
-            .select('id')
-            .eq('email', em)
-            .then(({ data: emailCheck, error: err1 }) => {
-                if (err1) throw err1;
-                if (emailCheck && emailCheck.length > 0) {
+        setButtonLoading('btn-do-signup', true, 'Create Account &#8594;', 'Signing Up...');
+        try {
+            const { data: emailCheck, error: err1 } = await supabaseTimeout(
+                eo_supabase.from('users').select('id').eq('email', em)
+            );
+            if (err1) throw err1;
+            if (emailCheck && emailCheck.length > 0) {
+                setButtonLoading('btn-do-signup', false);
+                errEl.textContent = 'Email already exists';
+                errEl.style.display = 'block';
+                return;
+            }
+            
+            if (formattedMobile) {
+                const { data: mobileCheck, error: err2 } = await supabaseTimeout(
+                    eo_supabase.from('users').select('id').eq('mobile', formattedMobile)
+                );
+                if (err2) throw err2;
+                if (mobileCheck && mobileCheck.length > 0) {
                     setButtonLoading('btn-do-signup', false);
-                    errEl.textContent = 'Email already exists';
+                    errEl.textContent = 'Mobile number already registered';
                     errEl.style.display = 'block';
                     return;
                 }
-                
-                let checkMobilePromise = Promise.resolve({ data: [] });
-                if (formattedMobile) {
-                    checkMobilePromise = eo_supabase.from('users')
-                        .select('id')
-                        .eq('mobile', formattedMobile)
-                        .then(res => {
-                            if (res.error) throw res.error;
-                            return res;
-                        });
-                }
-                
-                checkMobilePromise.then(({ data: mobileCheck }) => {
-                    if (mobileCheck && mobileCheck.length > 0) {
-                        setButtonLoading('btn-do-signup', false);
-                        errEl.textContent = 'Mobile number already registered';
-                        errEl.style.display = 'block';
-                        return;
-                    }
-                    
-                    eo_supabase.from('users')
-                        .insert([{ name: nm, email: em, mobile: formattedMobile, password: pw }])
-                        .select()
-                        .then(({ data: newUser, error: err3 }) => {
-                            setButtonLoading('btn-do-signup', false);
-                            if (err3) throw err3;
-                            
-                            // Cache locally
-                            const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
-                            localUsersList.push({ name: nm, email: em, mobile: formattedMobile, password: pw });
-                            eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
-                            localUsers = localUsersList;
+            }
+            
+            const { data: newUser, error: err3 } = await supabaseTimeout(
+                eo_supabase.from('users')
+                    .insert([{ name: nm, email: em, mobile: formattedMobile, password: pw }])
+                    .select()
+            );
+            setButtonLoading('btn-do-signup', false);
+            if (err3) throw err3;
+            
+            // Cache locally
+            const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
+            localUsersList.push({ name: nm, email: em, mobile: formattedMobile, password: pw });
+            eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+            localUsers = localUsersList;
 
-                            errEl.style.display = 'none';
-                            swAuth('login');
-                            document.getElementById('li-em').value = em;
-                            document.getElementById('li-pw').value = '';
-                            showToast('Account registered successfully! Please sign in. ✦');
-                        });
-                });
-            })
-            .catch(err => {
-                setButtonLoading('btn-do-signup', false);
-                console.warn("Supabase signup failed, falling back to local:", err);
-                fallbackLocalSignup(nm, em, formattedMobile, pw, errEl);
-            });
+            errEl.style.display = 'none';
+            swAuth('login');
+            document.getElementById('li-em').value = em;
+            document.getElementById('li-pw').value = '';
+            
+            // Clear signup fields
+            document.getElementById('su-nm').value = '';
+            document.getElementById('su-em').value = '';
+            document.getElementById('su-mobile').value = '';
+            document.getElementById('su-pw').value = '';
+            
+            showToast('Account registered successfully! Please sign in. ✦');
+        } catch (err) {
+            setButtonLoading('btn-do-signup', false);
+            console.warn("Supabase signup failed, falling back to local:", err);
+            fallbackLocalSignup(nm, em, formattedMobile, pw, errEl);
+        }
     } else {
         fallbackLocalSignup(nm, em, formattedMobile, pw, errEl);
     }
@@ -1920,7 +1942,7 @@ function setFeedbackRating(rating) {
     }
 }
 
-function submitFeedback() {
+async function submitFeedback() {
     const name = document.getElementById('fb-name').value.trim() || 'Guest';
     const email = document.getElementById('fb-email').value.trim();
     const message = document.getElementById('fb-message').value.trim();
@@ -1961,18 +1983,18 @@ function submitFeedback() {
     setButtonLoading('btn-fb-submit', true, `<span id="fb-submit-icon">${originalIcon}</span> <span id="fb-submit-text">${originalText}</span>`, 'Submitting...');
 
     if (eo_supabase) {
-        eo_supabase.from('feedback')
-            .insert([payload])
-            .then(({ error }) => {
-                setButtonLoading('btn-fb-submit', false);
-                if (error) throw error;
-                showToast('✓ Feedback submitted online!');
-                renderFeedbackSuccessStep();
-            })
-            .catch(err => {
-                console.warn("Supabase feedback submit failed, falling back to local:", err);
-                fallbackLocalFeedback(payload);
-            });
+        try {
+            const { error } = await supabaseTimeout(
+                eo_supabase.from('feedback').insert([payload])
+            );
+            setButtonLoading('btn-fb-submit', false);
+            if (error) throw error;
+            showToast('✓ Feedback submitted online!');
+            renderFeedbackSuccessStep();
+        } catch (err) {
+            console.warn("Supabase feedback submit failed, falling back to local:", err);
+            fallbackLocalFeedback(payload);
+        }
     } else {
         fallbackLocalFeedback(payload);
     }
@@ -2073,7 +2095,7 @@ function closeForgotBg(e) {
     if (e.target === document.getElementById('forgotOv')) closeForgotModal();
 }
 
-function sendResetOtp() {
+async function sendResetOtp() {
     const ident = document.getElementById('forgot-identity').value.trim();
     if (!ident) {
         showToast('Please enter your Email or Mobile');
@@ -2082,41 +2104,44 @@ function sendResetOtp() {
 
     setButtonLoading('btn-send-reset', true, 'Send Reset Link →', 'Sending...');
     if (eo_supabase) {
-        let mobileWithPrefix = ident;
-        if (/^[0-9]{10}$/.test(ident)) {
-            mobileWithPrefix = '+91' + ident;
-        }
-        eo_supabase.from('users')
-            .select('*')
-            .or(`email.eq.${ident},mobile.eq.${ident},mobile.eq.${mobileWithPrefix}`)
-            .then(({ data: users, error }) => {
-                setButtonLoading('btn-send-reset', false);
-                if (error) throw error;
-                if (users && users.length > 0) {
-                    const u = users[0];
-                    resetIdentity = u.email;
-                    verifiedResetOtp = 'supabase_reset_token'; // local token verification bypass
-                    
-                    showToast('✓ Reset link generated successfully!');
-                    
-                    document.getElementById('forgotStepSub').textContent = 'Reset link has been generated.';
-                    document.getElementById('forgotStep1').style.display = 'none';
-                    document.getElementById('forgotStep2').style.display = 'flex';
-                    
-                    const successMsgEl = document.getElementById('forgotStep2Msg');
-                    const localResetLink = window.location.origin + window.location.pathname + `?action=reset_password&email=${encodeURIComponent(u.email)}&token=supabase_reset_token`;
-                    if (successMsgEl) {
-                        successMsgEl.innerHTML = `📩 <strong>Reset Link Generated!</strong><br><br>Since the mail server is bypassed, please click the secure link below to reset your password:<br><br>
-                        <a href="${localResetLink}" style="color:var(--acc); font-size:12px; word-break:break-all; font-weight:bold; text-decoration:underline;">${localResetLink}</a>`;
-                    }
-                } else {
-                    showToast('⚠️ Account not found. Please Sign Up first.');
+        try {
+            let mobileWithPrefix = ident;
+            if (/^[0-9]{10}$/.test(ident)) {
+                mobileWithPrefix = '+91' + ident;
+            }
+            const { data: users, error } = await supabaseTimeout(
+                eo_supabase.from('users')
+                    .select('*')
+                    .or(`email.eq.${ident},mobile.eq.${ident},mobile.eq.${mobileWithPrefix}`)
+            );
+            setButtonLoading('btn-send-reset', false);
+            if (error) throw error;
+
+            if (users && users.length > 0) {
+                const u = users[0];
+                resetIdentity = u.email;
+                verifiedResetOtp = 'supabase_reset_token'; // local token verification bypass
+                
+                showToast('✓ Reset link generated successfully!');
+                
+                document.getElementById('forgotStepSub').textContent = 'Reset link has been generated.';
+                document.getElementById('forgotStep1').style.display = 'none';
+                document.getElementById('forgotStep2').style.display = 'flex';
+                
+                const successMsgEl = document.getElementById('forgotStep2Msg');
+                const localResetLink = window.location.origin + window.location.pathname + `?action=reset_password&email=${encodeURIComponent(u.email)}&token=supabase_reset_token`;
+                if (successMsgEl) {
+                    successMsgEl.innerHTML = `📩 <strong>Reset Link Generated!</strong><br><br>Since the mail server is bypassed, please click the secure link below to reset your password:<br><br>
+                    <a href="${localResetLink}" style="color:var(--acc); font-size:12px; word-break:break-all; font-weight:bold; text-decoration:underline;">${localResetLink}</a>`;
                 }
-            })
-            .catch(err => {
-                console.warn("Supabase sendResetOtp failed, falling back to local:", err);
-                fallbackLocalSendResetOtp(ident);
-            });
+            } else {
+                showToast('⚠️ Account not found. Please Sign Up first.');
+            }
+        } catch (err) {
+            setButtonLoading('btn-send-reset', false);
+            console.warn("Supabase sendResetOtp failed, falling back to local:", err);
+            fallbackLocalSendResetOtp(ident);
+        }
     } else {
         fallbackLocalSendResetOtp(ident);
     }
@@ -2169,7 +2194,7 @@ function verifyResetLinkToken(email, token, successCallback) {
     .catch(() => showToast('⚠️ Verification request failed'));
 }
 
-function submitNewPassword() {
+async function submitNewPassword() {
     const pwd1 = document.getElementById('forgot-new-pwd').value;
     const pwd2 = document.getElementById('forgot-confirm-pwd').value;
 
@@ -2190,34 +2215,35 @@ function submitNewPassword() {
 
     setButtonLoading('btn-pwd-update', true, 'Update Password & Sign In ✓', 'Updating...');
     if (eo_supabase) {
-        eo_supabase.from('users')
-            .update({ password: pwd1 })
-            .eq('email', resetIdentity)
-            .then(({ error }) => {
-                setButtonLoading('btn-pwd-update', false);
-                if (error) throw error;
-                
-                // Update local storage too to keep in sync
-                const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
-                const idx = localUsersList.findIndex(x => x.email.toLowerCase() === resetIdentity.toLowerCase());
-                if (idx >= 0) {
-                    localUsersList[idx].password = pwd1;
-                    eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
-                    localUsers = localUsersList;
-                }
-                
-                showToast('✓ Password updated successfully!');
-                closeForgotModal();
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
-                document.getElementById('li-em').value = resetIdentity;
-                document.getElementById('li-pw').value = pwd1;
-                doLogin();
-            })
-            .catch(err => {
-                console.warn("Supabase password update failed, falling back to local:", err);
-                fallbackLocalSubmitNewPassword(pwd1);
-            });
+        try {
+            const { error } = await supabaseTimeout(
+                eo_supabase.from('users')
+                    .update({ password: pwd1 })
+                    .eq('email', resetIdentity)
+            );
+            setButtonLoading('btn-pwd-update', false);
+            if (error) throw error;
+            
+            // Update local storage too to keep in sync
+            const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
+            const idx = localUsersList.findIndex(x => x.email.toLowerCase() === resetIdentity.toLowerCase());
+            if (idx >= 0) {
+                localUsersList[idx].password = pwd1;
+                eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+                localUsers = localUsersList;
+            }
+            
+            showToast('✓ Password updated successfully!');
+            closeForgotModal();
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            document.getElementById('li-em').value = resetIdentity;
+            document.getElementById('li-pw').value = pwd1;
+            doLogin();
+        } catch (err) {
+            console.warn("Supabase password update failed, falling back to local:", err);
+            fallbackLocalSubmitNewPassword(pwd1);
+        }
     } else {
         fallbackLocalSubmitNewPassword(pwd1);
     }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'echo-baduga-v3';
+const CACHE_NAME = 'echo-baduga-v4';
 const ASSETS = [
   'index.html',
   'app.js',
