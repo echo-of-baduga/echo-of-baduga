@@ -1,0 +1,8 @@
+{
+  "appId": "com.echobaduga.app",
+  "appName": "Echo of Baduga",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

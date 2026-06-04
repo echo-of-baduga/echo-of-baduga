@@ -1,0 +1,10 @@
+node_modules/
+.gradle/
+android/app/build/
+android/app/src/main/assets/public/
+capacitor.config.json.bak
+*.bak
+*.log
+songs/
+songs_old/
+www/
