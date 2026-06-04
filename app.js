@@ -39,6 +39,7 @@ let isVisualizerRunning = false;
 
 // ── AUDIO ENGINE ──
 const audio = new Audio();
+audio.crossOrigin = 'anonymous';
 const PLAY_ICON = `<svg viewBox="0 0 24 24" class="svg-play"><path d="M8 5v14l11-7z"/></svg>`;
 const PAUSE_ICON = `<svg viewBox="0 0 24 24" class="svg-pause"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
 const HEART_SVG = `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
@@ -176,6 +177,26 @@ function doLogin() {
         if (data.success) {
             currentUser = data.user;
             localStorage.setItem('eo_currentUser', JSON.stringify(data.user));
+            
+            // Cache user locally for robust offline login fallback
+            const users = JSON.parse(localStorage.getItem('eo_users') || '[]');
+            const idx = users.findIndex(u => u.email.toLowerCase() === data.user.email.toLowerCase());
+            const localUserData = {
+                id: data.user.id || Date.now(),
+                name: data.user.name,
+                email: data.user.email,
+                mobile: data.user.mobile || '',
+                password: pw,
+                initial: (data.user.name || 'U').charAt(0).toUpperCase()
+            };
+            if (idx >= 0) {
+                users[idx] = localUserData;
+            } else {
+                users.push(localUserData);
+            }
+            localStorage.setItem('eo_users', JSON.stringify(users));
+            localUsers = users;
+            
             errEl.style.display = 'none';
             document.getElementById('auth').classList.remove('active');
             enterApp();
@@ -188,8 +209,12 @@ function doLogin() {
     .catch(err => {
         setButtonLoading('btn-do-login', false);
         console.warn("Server offline, switching to offline login fallback:", err);
-        // Fallback: Check local users in localStorage
-        const user = localUsers.find(u => u.email === em);
+        // Fallback: Check local users in localStorage (case-insensitive email & mobile formats support)
+        const normalizedEm = em.toLowerCase();
+        const user = localUsers.find(u => 
+            (u.email && u.email.toLowerCase() === normalizedEm) || 
+            (u.mobile && (u.mobile === em || u.mobile === '+91' + em || u.mobile.replace('+91', '') === em.replace('+91', '')))
+        );
         if (user && (user.password === pw)) {
             currentUser = user;
             localStorage.setItem('eo_currentUser', JSON.stringify(user));
@@ -255,6 +280,21 @@ function doSignup() {
     .then(data => {
         setButtonLoading('btn-do-signup', false);
         if (data.success) {
+            // Sync with local fallback DB to allow offline logins
+            const users = JSON.parse(localStorage.getItem('eo_users') || '[]');
+            if (!users.some(u => u.email.toLowerCase() === em.toLowerCase())) {
+                users.push({
+                    id: Date.now(),
+                    name: nm,
+                    email: em,
+                    mobile: formattedMobile,
+                    password: pw,
+                    initial: nm.charAt(0).toUpperCase()
+                });
+                localStorage.setItem('eo_users', JSON.stringify(users));
+                localUsers = users;
+            }
+            
             errEl.style.display = 'none';
             // Switch to Login Tab
             swAuth('login');
@@ -275,8 +315,8 @@ function doSignup() {
     .catch(err => {
         setButtonLoading('btn-do-signup', false);
         console.warn("Server offline, switching to offline signup fallback:", err);
-        // Fallback: Create account locally in localStorage
-        const emailExists = localUsers.some(u => u.email === em);
+        // Fallback: Create account locally in localStorage (case-insensitive check)
+        const emailExists = localUsers.some(u => u.email.toLowerCase() === em.toLowerCase());
         if (emailExists) {
             errEl.textContent = 'Email already registered locally';
             errEl.style.display = 'block';
