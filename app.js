@@ -12,7 +12,11 @@ const supabaseUrl = 'https://iwkyfdhmbkhlpfgybsry.supabase.co';
 const supabaseKey = 'sb_publishable_UyIEXHFzRqrtXS5WDdPogw_xRhEzrs3';
 let supabase = null;
 if (window.supabase) {
-    supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    try {
+        supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    } catch (err) {
+        console.error("Supabase client initialization failed:", err);
+    }
 }
 
 function getAudioUrl(fileUrl) {
@@ -30,6 +34,24 @@ function getAudioUrl(fileUrl) {
     }
     return encodedPath;
 }
+
+// Safe localStorage helper for restricted environments (Incognito, Safari private mode, restricted WebViews)
+let myLocalStorage = window.localStorage;
+try {
+    const testKey = '__eo_storage_test__';
+    window.localStorage.setItem(testKey, 'test');
+    window.localStorage.removeItem(testKey);
+} catch (e) {
+    console.warn("localStorage is blocked or unavailable. Falling back to memory storage.");
+    const memStore = {};
+    myLocalStorage = {
+        getItem: (key) => memStore[key] || null,
+        setItem: (key, val) => { memStore[key] = String(val); },
+        removeItem: (key) => { delete memStore[key]; },
+        clear: () => { for (let key in memStore) delete memStore[key]; }
+    };
+}
+const localStorage = myLocalStorage;
 
 let currentUser = null;
 let localUsers = JSON.parse(localStorage.getItem('eo_users') || '[]');
@@ -80,7 +102,7 @@ const GENRE_COLORS = {
 // ════════════════════════════════════
 // SPLASH → AUTH FLOW
 // ════════════════════════════════════
-window.addEventListener('DOMContentLoaded', () => {
+function initApp() {
     // Check if already logged in
     const savedUser = localStorage.getItem('eo_currentUser');
     if (savedUser) {
@@ -104,12 +126,15 @@ window.addEventListener('DOMContentLoaded', () => {
     const token = urlParams.get('token');
 
     setTimeout(() => {
-        document.getElementById('splash').classList.remove('active');
+        const splashEl = document.getElementById('splash');
+        if (splashEl) splashEl.classList.remove('active');
+        
         if (currentUser && action !== 'reset_password') {
             enterApp();
             showToast('Welcome back, ' + currentUser.name + '! ✦');
         } else {
-            document.getElementById('auth').classList.add('active');
+            const authEl = document.getElementById('auth');
+            if (authEl) authEl.classList.add('active');
             
             // If action is reset_password, open the Forgot Password modal directly to Step 3
             if (action === 'reset_password' && email && token) {
@@ -117,14 +142,24 @@ window.addEventListener('DOMContentLoaded', () => {
                 verifiedResetOtp = token;
                 
                 openForgotModal();
-                document.getElementById('forgotStep1').style.display = 'none';
-                document.getElementById('forgotStep2').style.display = 'none';
-                document.getElementById('forgotStep3').style.display = 'flex';
-                document.getElementById('forgotStepSub').textContent = 'Create a secure new password for your account.';
+                const step1 = document.getElementById('forgotStep1');
+                const step2 = document.getElementById('forgotStep2');
+                const step3 = document.getElementById('forgotStep3');
+                const stepSub = document.getElementById('forgotStepSub');
+                if (step1) step1.style.display = 'none';
+                if (step2) step2.style.display = 'none';
+                if (step3) step3.style.display = 'flex';
+                if (stepSub) stepSub.textContent = 'Create a secure new password for your account.';
             }
         }
     }, 2800);
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
 
 
 // ════════════════════════════════════
