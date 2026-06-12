@@ -103,6 +103,89 @@ let isPlaying = false;
 let shuffleOn = true;
 let repeatOn = false;
 
+// ── WEB MEDIA SESSION HELPERS ──
+let mediaSessionHandlersRegistered = false;
+
+function updateMediaSession(song) {
+    if (!song) return;
+    if ('mediaSession' in navigator) {
+        try {
+            const basePath = window.location.origin + window.location.pathname.replace(/index\.html|player\.html/g, '');
+            const logoUrl = basePath + 'assets/logo.png';
+            
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: song.title,
+                artist: song.artist_name || 'Baduga Artist',
+                album: 'Echo of Baduga',
+                artwork: [
+                    { src: logoUrl, sizes: '96x96', type: 'image/png' },
+                    { src: logoUrl, sizes: '128x128', type: 'image/png' },
+                    { src: logoUrl, sizes: '192x192', type: 'image/png' },
+                    { src: logoUrl, sizes: '256x256', type: 'image/png' },
+                    { src: logoUrl, sizes: '384x384', type: 'image/png' },
+                    { src: logoUrl, sizes: '512x512', type: 'image/png' }
+                ]
+            });
+            
+            navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+            
+            setupMediaSessionHandlers();
+            updatePositionState();
+        } catch (e) {
+            console.warn("Failed to update media session:", e);
+        }
+    }
+}
+
+function setupMediaSessionHandlers() {
+    if (mediaSessionHandlersRegistered) return;
+    if ('mediaSession' in navigator) {
+        try {
+            navigator.mediaSession.setActionHandler('play', () => {
+                if (!isPlaying) {
+                    togPlay();
+                }
+            });
+            navigator.mediaSession.setActionHandler('pause', () => {
+                if (isPlaying) {
+                    togPlay();
+                }
+            });
+            navigator.mediaSession.setActionHandler('previoustrack', () => {
+                prevT();
+            });
+            navigator.mediaSession.setActionHandler('nexttrack', () => {
+                nextT();
+            });
+            navigator.mediaSession.setActionHandler('seekto', (details) => {
+                if (details.seekTime !== undefined && audio.duration) {
+                    audio.currentTime = details.seekTime;
+                    updatePositionState();
+                }
+            });
+            mediaSessionHandlersRegistered = true;
+        } catch (e) {
+            console.warn("Failed to register Media Session handlers:", e);
+        }
+    }
+}
+
+function updatePositionState() {
+    if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+        try {
+            if (audio.duration && !isNaN(audio.duration) && audio.currentTime !== undefined && !isNaN(audio.currentTime)) {
+                navigator.mediaSession.setPositionState({
+                    duration: audio.duration,
+                    playbackRate: audio.playbackRate || 1.0,
+                    position: audio.currentTime
+                });
+            }
+        } catch (e) {
+            console.warn("Failed to set position state:", e);
+        }
+    }
+}
+
 // ── SLEEP TIMER ──
 let sleepTimer = null;
 let sleepEnd = 0;
@@ -116,6 +199,8 @@ const GENRE_COLORS = {
     'Melody': 'url(assets/melody.jpg) center center / cover no-repeat',
     'Sad': 'url(assets/sad.png) center 50% / cover no-repeat',
     'Happy': 'linear-gradient(135deg, #f97316, #ea580c)',
+    'Marriage Hits': 'linear-gradient(135deg, #ec4899, #be185d)',
+    'Band': 'linear-gradient(135deg, #7c3aed, #a855f7)',
 };
 
 // ════════════════════════════════════
@@ -252,41 +337,38 @@ async function doLogin() {
                 mobileWithPrefix = '+91' + em;
             }
             const { data: users, error } = await supabaseTimeout(
-                eo_supabase.from('users')
-                    .select('*')
-                    .or(`email.eq.${em},mobile.eq.${em},mobile.eq.${mobileWithPrefix}`)
+                eo_supabase.rpc('login_user', {
+                    p_email_or_mobile: em,
+                    p_password: pw
+                })
             );
             setButtonLoading('btn-do-login', false);
             if (error) throw error;
 
             if (users && users.length > 0) {
                 const u = users[0];
-                if (u.password === pw) {
-                    currentUser = {
-                        id: u.id,
-                        name: u.name,
-                        email: u.email,
-                        mobile: u.mobile || '',
-                        initial: u.name.charAt(0).toUpperCase()
-                    };
-                    eo_localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
-                    
-                    // Sync locally
-                    const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
-                    const idx = localUsersList.findIndex(x => x.email.toLowerCase() === u.email.toLowerCase());
-                    if (idx >= 0) localUsersList[idx] = u;
-                    else localUsersList.push(u);
-                    eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
-                    localUsers = localUsersList;
+                currentUser = {
+                    id: u.id,
+                    name: u.name,
+                    email: u.email,
+                    mobile: u.mobile || '',
+                    initial: u.name.charAt(0).toUpperCase()
+                };
+                eo_localStorage.setItem('eo_currentUser', JSON.stringify(currentUser));
+                
+                // Sync locally
+                const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
+                const idx = localUsersList.findIndex(x => x.email.toLowerCase() === u.email.toLowerCase());
+                const uWithPass = { ...u, password: pw };
+                if (idx >= 0) localUsersList[idx] = uWithPass;
+                else localUsersList.push(uWithPass);
+                eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+                localUsers = localUsersList;
 
-                    errEl.style.display = 'none';
-                    document.getElementById('auth').classList.remove('active');
-                    enterApp();
-                    showToast('Welcome back, ' + currentUser.name + '! ✦');
-                } else {
-                    errEl.textContent = 'Invalid password';
-                    errEl.style.display = 'block';
-                }
+                errEl.style.display = 'none';
+                document.getElementById('auth').classList.remove('active');
+                enterApp();
+                showToast('Welcome back, ' + currentUser.name + '! ✦');
             } else {
                 errEl.textContent = 'Account not found. Please Sign Up first.';
                 errEl.style.display = 'block';
@@ -359,23 +441,22 @@ async function doSignup() {
     if (eo_supabase) {
         setButtonLoading('btn-do-signup', true, 'Create Account &#8594;', 'Signing Up...');
         try {
-            const { data: emailCheck, error: err1 } = await supabaseTimeout(
-                eo_supabase.from('users').select('id').eq('email', em)
+            const { data: existCheck, error: checkErr } = await supabaseTimeout(
+                eo_supabase.rpc('check_user_exists', {
+                    p_email: em,
+                    p_mobile: formattedMobile
+                })
             );
-            if (err1) throw err1;
-            if (emailCheck && emailCheck.length > 0) {
-                setButtonLoading('btn-do-signup', false);
-                errEl.textContent = 'Email already exists';
-                errEl.style.display = 'block';
-                return;
-            }
-            
-            if (formattedMobile) {
-                const { data: mobileCheck, error: err2 } = await supabaseTimeout(
-                    eo_supabase.from('users').select('id').eq('mobile', formattedMobile)
-                );
-                if (err2) throw err2;
-                if (mobileCheck && mobileCheck.length > 0) {
+            if (checkErr) throw checkErr;
+            if (existCheck && existCheck.length > 0) {
+                const check = existCheck[0];
+                if (check.email_exists) {
+                    setButtonLoading('btn-do-signup', false);
+                    errEl.textContent = 'Email already exists';
+                    errEl.style.display = 'block';
+                    return;
+                }
+                if (check.mobile_exists) {
                     setButtonLoading('btn-do-signup', false);
                     errEl.textContent = 'Mobile number already registered';
                     errEl.style.display = 'block';
@@ -384,9 +465,12 @@ async function doSignup() {
             }
             
             const { data: newUser, error: err3 } = await supabaseTimeout(
-                eo_supabase.from('users')
-                    .insert([{ name: nm, email: em, mobile: formattedMobile, password: pw }])
-                    .select()
+                eo_supabase.rpc('register_user', {
+                    p_name: nm,
+                    p_email: em,
+                    p_mobile: formattedMobile,
+                    p_password: pw
+                })
             );
             setButtonLoading('btn-do-signup', false);
             if (err3) throw err3;
@@ -999,6 +1083,9 @@ function loadAndPlay(song) {
 
     // Sync mobile player
     syncMobilePlayer();
+
+    // Update Media Session for lock screen & notifications
+    updateMediaSession(song);
 }
 
 function togPlay() {
@@ -1044,6 +1131,11 @@ function updatePlayBtn() {
 
     // Sync mobile player
     syncMobilePlayer();
+
+    // Sync Media Session playback state
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+    }
 }
 
 function nextT() {
@@ -1081,6 +1173,9 @@ audio.addEventListener('timeupdate', () => {
     if (mCT) mCT.textContent = fmtTime(audio.currentTime);
     const mTotT = document.getElementById('m-totT');
     if (mTotT) mTotT.textContent = fmtTime(audio.duration);
+
+    // Update Media Session progress position
+    updatePositionState();
 });
 
 audio.addEventListener('ended', () => {
@@ -1831,24 +1926,20 @@ function openFeedbackModal(defaultType = 'contact') {
     // Clear and reset form fields
     document.getElementById('fb-message').value = '';
     
-    // Prefill name and email if logged in
+    // Prefill name and email if logged in, but keep them editable in case of typos
     const nameInput = document.getElementById('fb-name');
     const emailInput = document.getElementById('fb-email');
     if (currentUser) {
         nameInput.value = currentUser.name || '';
         emailInput.value = currentUser.email || '';
-        nameInput.disabled = true;
-        emailInput.disabled = true;
-        nameInput.style.opacity = '0.6';
-        emailInput.style.opacity = '0.6';
     } else {
         nameInput.value = '';
         emailInput.value = '';
-        nameInput.disabled = false;
-        emailInput.disabled = false;
-        nameInput.style.opacity = '1';
-        emailInput.style.opacity = '1';
     }
+    nameInput.disabled = false;
+    emailInput.disabled = false;
+    nameInput.style.opacity = '1';
+    emailInput.style.opacity = '1';
     
     selectFeedbackTab(defaultType);
 }
@@ -1958,8 +2049,8 @@ async function submitFeedback() {
         return;
     }
 
-    if (!message) {
-        showToast(currentFeedbackType === 'rating' ? 'Please write a review comment' : 'Please fill in details / message');
+    if (!message && currentFeedbackType !== 'rating') {
+        showToast('Please fill in details / message');
         return;
     }
 
@@ -1967,7 +2058,7 @@ async function submitFeedback() {
         type: currentFeedbackType,
         name: name,
         email: email,
-        message: message,
+        message: message || '',
         user_id: currentUser ? currentUser.id : 0
     };
 
@@ -1982,21 +2073,43 @@ async function submitFeedback() {
     
     setButtonLoading('btn-fb-submit', true, `<span id="fb-submit-icon">${originalIcon}</span> <span id="fb-submit-text">${originalText}</span>`, 'Submitting...');
 
-    if (eo_supabase) {
-        try {
-            const { error } = await supabaseTimeout(
-                eo_supabase.from('feedback').insert([payload])
-            );
+    // Post feedback to PHP API backend to send emails
+    try {
+        const response = await fetch(API + '?action=feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            // Background sync to Supabase if defined
+            if (eo_supabase) {
+                eo_supabase.from('feedback').insert([payload]).catch(e => console.warn("Background Supabase feedback fail:", e));
+            }
             setButtonLoading('btn-fb-submit', false);
-            if (error) throw error;
-            showToast('✓ Feedback submitted online!');
+            showToast('✓ Submitted successfully!');
             renderFeedbackSuccessStep();
-        } catch (err) {
-            console.warn("Supabase feedback submit failed, falling back to local:", err);
+        } else {
+            throw new Error(data.error || 'Server error');
+        }
+    } catch (err) {
+        console.warn("Feedback API failed, trying Supabase:", err);
+        if (eo_supabase) {
+            try {
+                const { error } = await supabaseTimeout(
+                    eo_supabase.from('feedback').insert([payload])
+                );
+                setButtonLoading('btn-fb-submit', false);
+                if (error) throw error;
+                showToast('✓ Feedback submitted online (Supabase)!');
+                renderFeedbackSuccessStep();
+            } catch (supErr) {
+                fallbackLocalFeedback(payload);
+            }
+        } else {
             fallbackLocalFeedback(payload);
         }
-    } else {
-        fallbackLocalFeedback(payload);
     }
 }
 
@@ -2008,7 +2121,7 @@ function fallbackLocalFeedback(payload) {
         payload: payload
     });
     eo_localStorage.setItem('eo_feedback', JSON.stringify(feedbackList));
-    showToast('✓ Message saved locally (Offline)!');
+    showToast('✓ Saved locally (Offline)!');
     renderFeedbackSuccessStep();
 }
 
@@ -2103,47 +2216,77 @@ async function sendResetOtp() {
     }
 
     setButtonLoading('btn-send-reset', true, 'Send Reset Link →', 'Sending...');
-    if (eo_supabase) {
-        try {
-            let mobileWithPrefix = ident;
-            if (/^[0-9]{10}$/.test(ident)) {
-                mobileWithPrefix = '+91' + ident;
-            }
-            const { data: users, error } = await supabaseTimeout(
-                eo_supabase.from('users')
-                    .select('*')
-                    .or(`email.eq.${ident},mobile.eq.${ident},mobile.eq.${mobileWithPrefix}`)
-            );
-            setButtonLoading('btn-send-reset', false);
-            if (error) throw error;
+    try {
+        const response = await fetch(API + '?action=forgot_password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email_or_mobile: ident })
+        });
+        const data = await response.json();
+        setButtonLoading('btn-send-reset', false);
 
-            if (users && users.length > 0) {
-                const u = users[0];
-                resetIdentity = u.email;
-                verifiedResetOtp = 'supabase_reset_token'; // local token verification bypass
-                
-                showToast('✓ Reset link generated successfully!');
-                
-                document.getElementById('forgotStepSub').textContent = 'Reset link has been generated.';
-                document.getElementById('forgotStep1').style.display = 'none';
-                document.getElementById('forgotStep2').style.display = 'flex';
-                
-                const successMsgEl = document.getElementById('forgotStep2Msg');
-                const localResetLink = window.location.origin + window.location.pathname + `?action=reset_password&email=${encodeURIComponent(u.email)}&token=supabase_reset_token`;
-                if (successMsgEl) {
-                    successMsgEl.innerHTML = `📩 <strong>Reset Link Generated!</strong><br><br>Since the mail server is bypassed, please click the secure link below to reset your password:<br><br>
-                    <a href="${localResetLink}" style="color:var(--acc); font-size:12px; word-break:break-all; font-weight:bold; text-decoration:underline;">${localResetLink}</a>`;
-                }
-            } else {
-                showToast('⚠️ Account not found. Please Sign Up first.');
+        if (data.success) {
+            resetIdentity = data.delivery_target || ident;
+            // The token is sent in the link. When page loads with that token, it is used
+            showToast('✓ Reset email sent successfully!');
+
+            document.getElementById('forgotStepSub').textContent = 'Check your email inbox or spam folder.';
+            document.getElementById('forgotStep1').style.display = 'none';
+            document.getElementById('forgotStep2').style.display = 'flex';
+
+            const successMsgEl = document.getElementById('forgotStep2Msg');
+            if (successMsgEl) {
+                successMsgEl.innerHTML = `📩 <strong>Reset Email Sent!</strong><br><br>
+                We have sent a secure password reset link to your registered email:<br>
+                <strong style="color: var(--acc);">${data.masked_email || ident}</strong><br><br>
+                Please check your Inbox and Spam/Junk folder. Click the link in that email to reset your password.<br><br>
+                <span style="font-size: 11px; opacity: 0.7;">Note: The link is valid for 1 hour.</span>`;
             }
-        } catch (err) {
-            setButtonLoading('btn-send-reset', false);
-            console.warn("Supabase sendResetOtp failed, falling back to local:", err);
+        } else {
+            showToast('⚠️ ' + (data.error || 'Failed to send reset link'));
+        }
+    } catch (err) {
+        console.warn("Forgot password API failed, trying Supabase fallback:", err);
+        if (eo_supabase) {
+            try {
+                let mobileWithPrefix = ident;
+                if (/^[0-9]{10}$/.test(ident)) {
+                    mobileWithPrefix = '+91' + ident;
+                }
+                const { data: users, error } = await supabaseTimeout(
+                    eo_supabase.rpc('request_password_reset', {
+                        p_identity: ident
+                    })
+                );
+                setButtonLoading('btn-send-reset', false);
+                if (error) throw error;
+
+                if (users && users.length > 0) {
+                    const u = users[0];
+                    resetIdentity = u.email;
+                    verifiedResetOtp = 'supabase_reset_token';
+                    showToast('✓ Reset link generated! (Supabase)');
+                    
+                    document.getElementById('forgotStepSub').textContent = 'Reset link has been generated.';
+                    document.getElementById('forgotStep1').style.display = 'none';
+                    document.getElementById('forgotStep2').style.display = 'flex';
+                    
+                    const successMsgEl = document.getElementById('forgotStep2Msg');
+                    const localResetLink = window.location.origin + window.location.pathname + `?action=reset_password&email=${encodeURIComponent(u.email)}&token=supabase_reset_token`;
+                    if (successMsgEl) {
+                        successMsgEl.innerHTML = `📩 <strong>Reset Link Generated!</strong><br><br>
+                        Since the mail server is bypassed, please click the secure link below to reset your password:<br><br>
+                        <a href="${localResetLink}" style="color:var(--acc); font-size:12px; word-break:break-all; font-weight:bold; text-decoration:underline;">${localResetLink}</a>`;
+                    }
+                } else {
+                    showToast('⚠️ Account not found. Please Sign Up first.');
+                }
+            } catch (supErr) {
+                fallbackLocalSendResetOtp(ident);
+            }
+        } else {
             fallbackLocalSendResetOtp(ident);
         }
-    } else {
-        fallbackLocalSendResetOtp(ident);
     }
 }
 
@@ -2214,38 +2357,82 @@ async function submitNewPassword() {
     }
 
     setButtonLoading('btn-pwd-update', true, 'Update Password & Sign In ✓', 'Updating...');
-    if (eo_supabase) {
-        try {
-            const { error } = await supabaseTimeout(
-                eo_supabase.from('users')
-                    .update({ password: pwd1 })
-                    .eq('email', resetIdentity)
-            );
-            setButtonLoading('btn-pwd-update', false);
-            if (error) throw error;
-            
-            // Update local storage too to keep in sync
-            const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
-            const idx = localUsersList.findIndex(x => x.email.toLowerCase() === resetIdentity.toLowerCase());
-            if (idx >= 0) {
-                localUsersList[idx].password = pwd1;
-                eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
-                localUsers = localUsersList;
+
+    // If it's a supabase bypass token
+    if (verifiedResetOtp === 'supabase_reset_token') {
+        if (eo_supabase) {
+            try {
+                const { error } = await supabaseTimeout(
+                    eo_supabase.rpc('reset_user_password', {
+                        p_email: resetIdentity,
+                        p_new_password: pwd1
+                    })
+                );
+                setButtonLoading('btn-pwd-update', false);
+                if (error) throw error;
+                syncLocalPassword(pwd1);
+                showToast('✓ Password updated successfully!');
+                closeForgotModal();
+                window.history.replaceState({}, document.title, window.location.pathname);
+                document.getElementById('li-em').value = resetIdentity;
+                document.getElementById('li-pw').value = pwd1;
+                doLogin();
+            } catch (err) {
+                fallbackLocalSubmitNewPassword(pwd1);
             }
-            
-            showToast('✓ Password updated successfully!');
-            closeForgotModal();
-            window.history.replaceState({}, document.title, window.location.pathname);
-            
-            document.getElementById('li-em').value = resetIdentity;
-            document.getElementById('li-pw').value = pwd1;
-            doLogin();
-        } catch (err) {
-            console.warn("Supabase password update failed, falling back to local:", err);
+        } else {
             fallbackLocalSubmitNewPassword(pwd1);
         }
-    } else {
+    } else if (verifiedResetOtp === 'local_reset_token') {
         fallbackLocalSubmitNewPassword(pwd1);
+    } else {
+        // Real PHP API token update!
+        try {
+            const response = await fetch(API + '?action=reset_password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email_or_mobile: resetIdentity,
+                    otp: verifiedResetOtp,
+                    new_password: pwd1
+                })
+            });
+            const data = await response.json();
+            setButtonLoading('btn-pwd-update', false);
+
+            if (data.success) {
+                // Background sync to Supabase if available
+                if (eo_supabase) {
+                    eo_supabase.rpc('reset_user_password', {
+                        p_email: resetIdentity,
+                        p_new_password: pwd1
+                    }).catch(() => {});
+                }
+                syncLocalPassword(pwd1);
+                showToast('✓ Password updated successfully!');
+                closeForgotModal();
+                window.history.replaceState({}, document.title, window.location.pathname);
+                document.getElementById('li-em').value = resetIdentity;
+                document.getElementById('li-pw').value = pwd1;
+                doLogin();
+            } else {
+                showToast('⚠️ ' + (data.error || 'Password update failed'));
+            }
+        } catch (err) {
+            console.error("Forgot password reset API failed:", err);
+            setButtonLoading('btn-pwd-update', false);
+            showToast('⚠️ Connection to password reset server failed');
+        }
+    }
+}
+
+function syncLocalPassword(pwd1) {
+    const localUsersList = JSON.parse(eo_localStorage.getItem('eo_users') || '[]');
+    const idx = localUsersList.findIndex(x => x.email.toLowerCase() === resetIdentity.toLowerCase());
+    if (idx >= 0) {
+        localUsersList[idx].password = pwd1;
+        eo_localStorage.setItem('eo_users', JSON.stringify(localUsersList));
+        localUsers = localUsersList;
     }
 }
 
@@ -2291,25 +2478,35 @@ function triggerPasswordResetFromSettings() {
     }
     
     showToast('Sending password reset link...');
-    if (eo_supabase) {
+    fetch(API + '?action=forgot_password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email_or_mobile: currentUser.email })
+    })
+    .then(res => res.json())
+    .then(data => {
         if (resetSpan) {
             resetSpan.style.pointerEvents = 'auto';
             resetSpan.style.opacity = '1';
             resetSpan.textContent = originalText;
         }
-        const localResetLink = window.location.origin + window.location.pathname + `?action=reset_password&email=${encodeURIComponent(currentUser.email)}&token=supabase_reset_token`;
-        showToast('✓ Password reset link generated! Redirecting...');
+        if (data.success) {
+            showToast('✓ Reset email sent to ' + currentUser.email);
+        } else {
+            showToast('⚠️ ' + (data.error || 'Failed to send reset email'));
+        }
+    })
+    .catch(() => {
+        if (resetSpan) {
+            resetSpan.style.pointerEvents = 'auto';
+            resetSpan.style.opacity = '1';
+            resetSpan.textContent = originalText;
+        }
+        showToast('⚠️ Server connection failed. Trying local reset...');
         setTimeout(() => {
-            window.location.href = localResetLink;
+            fallbackLocalTriggerPasswordReset();
         }, 1500);
-    } else {
-        if (resetSpan) {
-            resetSpan.style.pointerEvents = 'auto';
-            resetSpan.style.opacity = '1';
-            resetSpan.textContent = originalText;
-        }
-        fallbackLocalTriggerPasswordReset();
-    }
+    });
 }
 
 function fallbackLocalTriggerPasswordReset() {

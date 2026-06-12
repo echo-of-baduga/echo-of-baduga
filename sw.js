@@ -1,6 +1,7 @@
-const CACHE_NAME = 'echo-baduga-v4';
+const CACHE_NAME = 'echo-baduga-v5';
 const ASSETS = [
   'index.html',
+  'player.html',
   'app.js',
   'songs_array.js',
   'manifest.json',
