@@ -3461,7 +3461,7 @@ const DEMO_SONGS = [
     },
     {
         "id": 450,
-        "title": "Aaluna Gamalu Hbbgoa",
+        "title": "Aaluna Gamalu",
         "artist_name": "Baduga Artist",
         "cover_emoji": "🗾",
         "duration": "3:45",
@@ -4111,7 +4111,7 @@ const DEMO_SONGS = [
     },
     {
         "id": 515,
-        "title": "Enna Easare Yeagi Koruchuvane New Song",
+        "title": "Enna Easare Yeagi Koruchuvane",
         "artist_name": "Ctn Chandran",
         "cover_emoji": "💖",
         "duration": "3:45",
