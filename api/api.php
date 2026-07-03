@@ -40,8 +40,11 @@ $conn->query("CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    mobile VARCHAR(20) NULL,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) DEFAULT 'listener',
+    otp_code VARCHAR(100) NULL,
+    otp_expiry DATETIME NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) CHARSET=utf8mb4");
 
@@ -60,6 +63,7 @@ $conn->query("CREATE TABLE IF NOT EXISTS songs (
 ) CHARSET=utf8mb4");
 
 // Populate songs table with some initial default local songs if empty
+/*
 $res_songs = $conn->query("SELECT COUNT(*) as cnt FROM songs");
 $song_count = 0;
 if ($res_songs) {
@@ -74,6 +78,7 @@ if ($song_count === 0) {
     ('Hetheya Gava', 'New', 'songs/devotional/Hetheya%20Gava.mp3', 'Devotional'),
     ('Hetheya Morana Naalu', 'Annikorai Mano', 'songs/devotional/Hetheya%20Morana%20Naalu.mp3', 'Devotional')");
 }
+*/
 
 // ── EMAIL & SMS DELIVERY CONFIGURATION ──
 define('SMTP_HOST', 'ssl://smtp.gmail.com'); // e.g. ssl://smtp.gmail.com for port 465, or tls://smtp.gmail.com for 587
@@ -128,18 +133,34 @@ function send_email($to, $subject, $message) {
     }
     $messageId = "<" . md5(uniqid(time(), true)) . "@" . $domain . ">";
 
-    // If SMTP credentials are empty or placeholders, fall back to built-in PHP mail()
-    if (empty($host) || empty($user) || empty($pass) || strpos($user, 'your-gmail') !== false) {
-        $headers = "From: Echo of Badaga <" . $from . ">\r\n";
-        $headers .= "Reply-To: " . $from . "\r\n";
+    // Host domain calculation for DMARC-compliant From header in PHP mail()
+    $host_domain = $_SERVER['HTTP_HOST'] ?? 'echobaduga.com';
+    $host_domain = preg_replace('/:\d+$/', '', $host_domain);
+    if ($host_domain === 'localhost' || filter_var($host_domain, FILTER_VALIDATE_IP)) {
+        $host_domain = 'echobaduga.com';
+    }
+    $from_email = "noreply@" . $host_domain;
+
+    // Helper for PHP mail() execution
+    $run_mail_fallback = function() use ($to, $subject, $message, $from, $from_email, $messageId) {
+        $headers = "MIME-Version: 1.0\r\n";
+        $headers .= "Content-type: text/html; charset=utf-8\r\n";
+        $headers .= "From: Echo of Badaga <" . $from_email . ">\r\n";
+        $headers .= "Reply-To: <" . $from . ">\r\n";
+        $headers .= "Sender: <" . $from_email . ">\r\n";
         $headers .= "Message-ID: " . $messageId . "\r\n";
-        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
         $headers .= "X-Mailer: PHP/" . phpversion();
         $headers = str_replace(["\r\n", "\r", "\n"], "\r\n", $headers);
         $sent_mail = @mail($to, $subject, $message, $headers);
-        $log_msg = "PHP mail() execution result: " . ($sent_mail ? "SUCCESS" : "FAILED") . "\n";
+        $log_msg = "PHP mail() execution result: " . ($sent_mail ? "SUCCESS" : "FAILED") . " | From: $from_email | To: $to\n";
         error_log($log_msg);
+        file_put_contents(__DIR__ . '/../otp_debug.txt', $log_msg, FILE_APPEND);
         return $sent_mail;
+    };
+
+    // If SMTP credentials are empty or placeholders, fall back to built-in PHP mail() immediately
+    if (empty($host) || empty($user) || empty($pass) || strpos($user, 'your-gmail') !== false || $pass === 'YOUR_SMTP_PASSWORD') {
+        return $run_mail_fallback();
     }
 
     $timeout = 4; // Reduced timeout to fail fast and keep the frontend responsive
@@ -154,10 +175,10 @@ function send_email($to, $subject, $message) {
     
     $socket = @stream_socket_client("$host:$port", $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context);
     if (!$socket) {
-        $error_log_msg = "SMTP Socket connection failed: $errno - $errstr. Host: $host, Port: $port\n";
+        $error_log_msg = "SMTP Socket connection failed: $errno - $errstr. Host: $host, Port: $port. Falling back to PHP mail().\n";
         error_log($error_log_msg);
         file_put_contents(__DIR__ . '/../otp_debug.txt', $error_log_msg, FILE_APPEND);
-        return false;
+        return $run_mail_fallback();
     }
 
     get_smtp_response($socket); // welcome message
@@ -172,10 +193,10 @@ function send_email($to, $subject, $message) {
         get_smtp_response($socket);
         if (!@stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
             fclose($socket);
-            $tls_err = "SMTP Error: STARTTLS handshake failed\n";
+            $tls_err = "SMTP Error: STARTTLS handshake failed. Falling back to PHP mail().\n";
             error_log($tls_err);
             file_put_contents(__DIR__ . '/../otp_debug.txt', $tls_err, FILE_APPEND);
-            return false;
+            return $run_mail_fallback();
         }
         fwrite($socket, "EHLO localhost\r\n");
         get_smtp_response($socket);
@@ -193,10 +214,10 @@ function send_email($to, $subject, $message) {
     
     if (strpos($response, '235') === false) {
         fclose($socket);
-        $auth_err = "SMTP Auth failed for user $user. Code/Response: " . trim($response) . "\n";
+        $auth_err = "SMTP Auth failed for user $user. Code/Response: " . trim($response) . ". Falling back to PHP mail().\n";
         error_log($auth_err);
         file_put_contents(__DIR__ . '/../otp_debug.txt', $auth_err, FILE_APPEND);
-        return false;
+        return $run_mail_fallback();
     }
 
     // MAIL FROM
@@ -314,13 +335,8 @@ switch ($action) {
         $res = $conn->query("SELECT * FROM users WHERE email='$emailOrMobile' OR mobile='$emailOrMobile' OR mobile='$mobileWithPrefix'");
         if ($res && $res->num_rows > 0) {
             $u = $res->fetch_assoc();
-            // Secure verification with password_verify, supports plain text fallback for compatibility
-            if (password_verify($password, $u['password']) || $password === $u['password']) {
-                // If it's plain text, automatically upgrade it to a hashed password!
-                if ($password === $u['password'] && password_needs_rehash($u['password'], PASSWORD_DEFAULT)) {
-                    $newHash = password_hash($password, PASSWORD_DEFAULT);
-                    $conn->query("UPDATE users SET password='$newHash' WHERE id=" . $u['id']);
-                }
+            // Secure verification with password_verify strictly
+            if (password_verify($password, $u['password'])) {
                 
                 echo json_encode([
                     "success" => true,
@@ -428,7 +444,7 @@ switch ($action) {
             $domainName = $_SERVER['HTTP_HOST'];
             $scriptUri = $_SERVER['REQUEST_URI'];
             $baseDir = preg_replace('/api\/api\.php.*/', '', $scriptUri);
-            $resetLink = $protocol . $domainName . $baseDir . "index.html?action=reset_password&email=" . urlencode($u['email']) . "&token=" . $token;
+            $resetLink = $protocol . $domainName . $baseDir . "player.html?action=reset_password&email=" . urlencode($u['email']) . "&token=" . $token;
             
             // Check if identity entered is a mobile number (contains only digits and optional +)
             $is_mobile = preg_match('/^\+?[0-9]{10,15}$/', $identity);
@@ -567,11 +583,74 @@ switch ($action) {
             $g = $conn->real_escape_string($genre);
             $q .= " WHERE genre='$g'";
         }
-        $q .= " ORDER BY play_count DESC LIMIT 20";
+        $q .= " ORDER BY play_count DESC LIMIT 1000"; // Increased limit to support 600+ songs!
         $res = $conn->query($q);
         $songs = [];
         while ($row = $res->fetch_assoc()) { $songs[] = $row; }
         echo json_encode(["success" => true, "songs" => $songs, "count" => count($songs)]);
+        break;
+
+    case 'import_from_js':
+        // Ensure only local requests can run this for security
+        $is_local = in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
+        if (!$is_local) {
+            echo json_encode(["success" => false, "error" => "Database import is restricted to localhost requests for security."]);
+            break;
+        }
+
+        $js_path = __DIR__ . '/../songs_array.js';
+        if (!file_exists($js_path)) {
+            echo json_encode(["success" => false, "error" => "songs_array.js file not found at " . $js_path]);
+            break;
+        }
+
+        $content = file_get_contents($js_path);
+        
+        // Match JSON-like structures in JS file
+        preg_match_all('/\{\s*id:\s*(\d+),\s*title:\s*"([^"]+)",\s*artist_name:\s*"([^"]+)",\s*cover_emoji:\s*"([^"]+)",\s*duration:\s*"([^"]+)",\s*like_count:\s*(\d+),\s*genre:\s*"([^"]+)",\s*file_url:\s*"([^"]+)"\s*\}/', $content, $matches, PREG_SET_ORDER);
+        
+        if (empty($matches)) {
+            echo json_encode(["success" => false, "error" => "No songs found in songs_array.js or formatting is not standard."]);
+            break;
+        }
+
+        $inserted = 0;
+        $skipped = 0;
+        $errors = 0;
+
+        foreach ($matches as $match) {
+            $id = (int)$match[1];
+            $title = $conn->real_escape_string($match[2]);
+            $artist_name = $conn->real_escape_string($match[3]);
+            $cover_emoji = $conn->real_escape_string($match[4]);
+            $duration = $conn->real_escape_string($match[5]);
+            $like_count = (int)$match[6];
+            $genre = $conn->real_escape_string($match[7]);
+            $file_url = $conn->real_escape_string($match[8]);
+
+            // Check if file_url already exists in MySQL
+            $check = $conn->query("SELECT id FROM songs WHERE file_url='$file_url'");
+            if ($check && $check->num_rows > 0) {
+                $skipped++;
+            } else {
+                $sql = "INSERT INTO songs (title, artist_name, cover_emoji, duration, like_count, genre, file_url) 
+                        VALUES ('$title', '$artist_name', '$cover_emoji', '$duration', $like_count, '$genre', '$file_url')";
+                if ($conn->query($sql)) {
+                    $inserted++;
+                } else {
+                    $errors++;
+                }
+            }
+        }
+
+        echo json_encode([
+            "success" => true,
+            "message" => "Import finished!",
+            "total_parsed" => count($matches),
+            "inserted" => $inserted,
+            "skipped_duplicates" => $skipped,
+            "errors" => $errors
+        ]);
         break;
 
     case 'search':
@@ -624,6 +703,11 @@ switch ($action) {
         $email = $conn->real_escape_string($input['email'] ?? '');
         $rating = isset($input['rating']) ? (int)$input['rating'] : null;
         $message = $conn->real_escape_string($input['message'] ?? '');
+
+        // For rating, let the review text be optional by providing a default placeholder message
+        if ($type === 'rating' && empty($message)) {
+            $message = "Submitted $rating star rating.";
+        }
 
         if (empty($email) || empty($message)) {
             echo json_encode(["success" => false, "error" => "Email and message are required"]);

@@ -13,6 +13,7 @@
     "@capacitor/android": "^5.7.0",
     "@capacitor/core": "^5.7.0",
     "@capacitor/ios": "^5.7.0",
+    "@capacitor/local-notifications": "^5.0.8",
     "jsdom": "^29.1.1"
   },
   "devDependencies": {

@@ -145,6 +145,8 @@
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
         input, textarea {
@@ -327,20 +329,18 @@
         }
 
         /* ═══════════ AUTH ═══════════ */
+        /* ═══════════ AUTH ═══════════ */
         #auth {
-            background: var(--bg);
-            flex-direction: row;
-        }
-
-        .a-left {
-            flex: 1;
+            background: radial-gradient(circle at center, #0d1627 0%, #050811 100%) !important;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(150deg, var(--bg1), var(--bg2), var(--bg3));
-            border-right: 1px solid var(--bdr);
-            position: relative;
-            overflow: hidden;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .a-left {
+            display: none !important;
         }
 
         .a-left-grid {
@@ -530,18 +530,24 @@
         }
 
         .a-right {
-            width: 480px;
-            flex-shrink: 0;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 50px 52px;
+            width: 100% !important;
+            max-width: 420px !important;
+            background: var(--card) !important;
+            border: 1px solid var(--bdr2) !important;
+            border-radius: 24px !important;
+            padding: 40px 32px !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(16, 185, 129, 0.08) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            margin: auto !important;
+            flex-shrink: 1 !important;
             overflow-y: auto;
         }
 
         .a-logo-top {
+            display: flex;
+            justify-content: center;
+            width: 100%;
             margin-bottom: 26px;
         }
 
@@ -757,6 +763,30 @@
 
         .pwd-tog:hover {
             color: var(--acc);
+        }
+
+        /* Hide native browser password reveal eye and clear buttons */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        input::-webkit-contacts-auto-fill-button,
+        input::-webkit-credentials-auto-fill-button,
+        input::-webkit-strong-password-auto-fill-button {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        /* Disable native input-specific reveal highlights in Android WebViews */
+        input[type="password"]::-webkit-reveal-button {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
         }
 
         /* ═══════════ MAIN APP ═══════════ */
@@ -1086,26 +1116,23 @@
             margin-left: auto;
         }
 
-        .th-tog {
+        .theme-btn {
             display: flex;
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr2);
-            border-radius: 22px;
-            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            width: 33px;
+            height: 33px;
             cursor: pointer;
+            border: 1px solid var(--bdr2);
+            transition: all 0.2s;
+            position: relative;
+            box-sizing: border-box;
         }
-
-        .tho {
-            padding: 6px 14px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: var(--text2);
-            transition: all .2s;
-        }
-
-        .tho.on {
-            background: var(--acc);
-            color: #fff;
+        .theme-btn:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.12);
         }
 
         .u-av {
@@ -1322,6 +1349,35 @@
             padding: 16px;
         }
 
+        .gc-play-btn {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            width: 34px;
+            height: 34px;
+            background: var(--acc5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            z-index: 5;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .gc-play-btn:hover {
+            transform: scale(1.1);
+            background: var(--acc);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+        }
+
+        .gc-play-btn svg {
+            margin-left: 2px;
+        }
+
         .gc:hover {
             border-color: var(--acc2);
             box-shadow: 0 12px 36px var(--shadow);
@@ -1350,6 +1406,7 @@
         .gc-body {
             position: relative;
             z-index: 2;
+            padding-right: 56px;
         }
 
         .gc-i {
@@ -1368,6 +1425,50 @@
             font-size: 11px;
             color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
+        }
+
+        /* FEATURED ARTISTS SWIPE ROW */
+        .artist-row {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .ac {
+            text-align: center;
+            cursor: pointer;
+        }
+        .ac-art {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 8px;
+            border: 2px solid var(--bdr2);
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .ac:hover .ac-art {
+            transform: scale(1.05);
+            border-color: var(--acc);
+            box-shadow: 0 6px 18px var(--shadow);
+        }
+        .ac-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .ac-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.15s;
+        }
+        .ac:hover .ac-name {
+            color: var(--text);
         }
 
         /* TRACK LIST */
@@ -1429,8 +1530,8 @@
         }
 
         .tname {
-            font-size: 13.5px;
-            font-weight: 600;
+            font-size: 12.5px;
+            font-weight: 500;
             color: var(--text);
             white-space: nowrap;
             overflow: hidden;
@@ -1443,7 +1544,7 @@
         }
 
         .tartname {
-            font-size: 11.5px;
+            font-size: 10.5px;
             color: var(--text2);
         }
 
@@ -1475,6 +1576,59 @@
 
         .ti:hover .tmore {
             opacity: 1;
+        }
+
+        /* 3-dot more button on track rows */
+        .t3dot {
+            font-size: 18px;
+            line-height: 1;
+            color: var(--text3);
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+            user-select: none;
+            flex-shrink: 0;
+        }
+        .t3dot:hover {
+            background: var(--hover);
+            color: var(--text);
+        }
+
+        /* Floating context menu */
+        .track-ctx-menu {
+            position: fixed;
+            z-index: 9999;
+            background: var(--card2, #1e2130);
+            border: 1px solid var(--bdr2, rgba(255,255,255,0.1));
+            border-radius: 12px;
+            padding: 6px;
+            min-width: 175px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+            animation: ctxFadeIn 0.12s ease;
+        }
+        @keyframes ctxFadeIn {
+            from { opacity: 0; transform: scale(0.94); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .ctx-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #e5e7eb !important;
+            transition: background 0.12s;
+        }
+        .ctx-item:hover {
+            background: var(--hover, rgba(255,255,255,0.07));
+            color: #ffffff !important;
+        }
+        .ctx-item svg {
+            flex-shrink: 0;
         }
 
         /* WAVEFORM */
@@ -1632,6 +1786,56 @@
             background: var(--hover);
             color: var(--acc4);
             transform: scale(1.08);
+        }
+
+        .pdl {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            color: var(--text2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .15s;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+        .pdl:hover, .mp-download:hover {
+            background: var(--hover);
+            color: var(--acc4);
+            transform: scale(1.08);
+            opacity: 1 !important;
+        }
+        .pdl.on, .mp-download.on {
+            color: var(--acc4) !important;
+            opacity: 1 !important;
+        }
+        .pdl.loading svg, .mp-download.loading svg, .tdl.loading svg {
+            animation: spin 1s linear infinite;
+            color: var(--acc5) !important;
+        }
+        .tdl {
+            margin-right: 12px;
+            cursor: pointer;
+            color: var(--text2);
+            opacity: 0.6;
+            transition: all 0.2s;
+            display: inline-block;
+            vertical-align: middle;
+            width: 16px;
+            height: 16px;
+        }
+        .tdl:hover {
+            color: var(--acc);
+            opacity: 1;
+        }
+        .tdl.on {
+            color: var(--acc) !important;
+            opacity: 1 !important;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
 
         .pc {
@@ -1930,9 +2134,17 @@
             text-overflow: ellipsis;
         }
 
+        .uq-meta {
+            flex: 1;
+            min-width: 0;
+        }
+
         .uqar {
             font-size: 11px;
             color: var(--text2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .lyr-hd {
@@ -2825,10 +3037,46 @@
                 z-index: 199;
             }
             
-            /* Responsive Genre Grid */
+            /* Categories: vertical 2-column grid on mobile */
             .gg {
+                display: grid !important;
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
+                overflow-x: unset !important;
+                flex-wrap: unset !important;
+                width: 100% !important;
+                padding-bottom: 0 !important;
+            }
+            .gc {
+                flex: unset !important;
+                height: 110px !important;
+                scroll-snap-align: unset !important;
+            }
+
+            .artist-row {
+                display: flex !important;
+                overflow-x: auto !important;
+                scroll-snap-type: x mandatory !important;
+                -webkit-overflow-scrolling: touch !important;
+                padding-bottom: 8px !important;
+                width: 100% !important;
+                flex-wrap: nowrap !important;
+                gap: 14px !important;
+            }
+            .artist-row::-webkit-scrollbar {
+                display: none !important;
+            }
+            .artist-row {
+                -ms-overflow-style: none !important;
+                scrollbar-width: none !important;
+            }
+            .ac {
+                flex: 0 0 92px !important;
+                scroll-snap-align: start !important;
+            }
+            .ac-art {
+                width: 72px !important;
+                height: 72px !important;
             }
             
             /* Centered Hero Banner on Mobile */
@@ -2910,14 +3158,14 @@
                 white-space: nowrap !important;
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
-                max-width: 80px !important;
+                max-width: 150px !important;
             }
             .pl .par {
                 font-size: 10px !important;
                 white-space: nowrap !important;
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
-                max-width: 80px !important;
+                max-width: 150px !important;
             }
             .plk {
                 display: flex !important;
@@ -2936,8 +3184,9 @@
                 width: auto !important;
                 margin: 0 !important;
                 display: flex !important;
+                flex-direction: column !important;
                 align-items: center !important;
-                gap: 4px !important;
+                gap: 2px !important;
                 padding: 0 !important;
             }
             .pb {
@@ -3021,10 +3270,10 @@
                 justify-content: space-between !important;
             }
             .pl .pnm {
-                max-width: 90px !important;
+                max-width: 150px !important;
             }
             .pl .par {
-                max-width: 90px !important;
+                max-width: 150px !important;
             }
         }
 
@@ -3107,11 +3356,11 @@
                 margin-bottom: 12px !important;
             }
             .gg {
-                grid-template-columns: repeat(4, 1fr) !important;
+                grid-template-columns: repeat(2, 1fr) !important;
                 gap: 8px !important;
             }
             .gc {
-                height: 96px !important;
+                height: 100px !important;
                 padding: 10px !important;
             }
             .gc-n {
@@ -3310,7 +3559,7 @@
             padding-right: 16px;
         }
         .mp-name {
-            font-size: 23px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--text);
             white-space: nowrap;
@@ -3596,6 +3845,507 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* ── EQUALIZER MODAL STYLES ── */
+        .eq-presets-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .eq-preset-btn {
+            background: rgba(0, 230, 118, 0.06);
+            border: none;
+            color: var(--text);
+            padding: 12px 6px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+        .eq-preset-btn:hover {
+            background: rgba(0, 230, 118, 0.12);
+        }
+        .eq-preset-btn.active {
+            background: linear-gradient(135deg, var(--acc), var(--acc2));
+            color: #ffffff;
+            box-shadow: 0 4px 12px var(--glow);
+        }
+        .eq-sliders-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 180px;
+            margin-bottom: 24px;
+        }
+        .eq-slider-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: space-between;
+        }
+        .eq-db {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 600;
+            text-align: center;
+        }
+        .eq-vertical-slider {
+            -webkit-appearance: none;
+            width: 4px;
+            height: 120px;
+            background: var(--bdr2);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+            writing-mode: bt-lr;
+            -webkit-appearance: slider-vertical;
+            accent-color: var(--acc) !important;
+        }
+        .eq-vertical-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--acc);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px var(--glow);
+            transition: transform 0.1s;
+        }
+        .eq-vertical-slider::-webkit-slider-thumb:active {
+            transform: scale(1.2);
+        }
+        .eq-lbl {
+            font-size: 11px;
+            color: var(--text2);
+            font-weight: 600;
+        }
+        .eq-effects-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 16px;
+            padding-top: 24px;
+        }
+        .eq-knob-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .eq-knob {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: var(--bg2);
+            position: relative;
+            cursor: grab;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            touch-action: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .eq-knob:active {
+            cursor: grabbing;
+        }
+
+        .theme-pill {
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .theme-pill:active {
+            transform: scale(0.92);
+        }
+        .theme-pill.active {
+            border: 2px solid var(--acc) !important;
+            box-shadow: 0 0 10px var(--glow);
+        }
+
+        /* ── THEMED PLAYER DISC STYLES ── */
+        
+        /* 1. LIGHT THEME -> Square Box Style */
+        [data-theme="light"] .mp-disk-glow {
+            display: none !important;
+        }
+        [data-theme="light"] .mp-disk {
+            border-radius: 16px !important;
+            border: 2px solid var(--bdr2) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12) !important;
+            animation: none !important; /* No rotation */
+        }
+        [data-theme="light"] .mp-logo {
+            border-radius: 12px !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* 2. EMERALD THEME -> 3D Disk Style */
+        [data-theme="emerald"] .mp-disk-container {
+            perspective: 800px;
+        }
+        [data-theme="emerald"] .mp-disk {
+            transform: rotateX(15deg) rotateY(-15deg);
+            box-shadow: -15px 20px 35px rgba(0,0,0,0.4), inset 0 2px 10px rgba(255,255,255,0.15) !important;
+            transition: transform 0.5s ease;
+            animation: none !important; /* Overriden by 3D rotation keyframes when playing */
+        }
+        [data-theme="emerald"] .mp-disk.playing {
+            animation: rotate3DDisk 20s linear infinite !important;
+            animation-play-state: running !important;
+        }
+        @keyframes rotate3DDisk {
+            from { transform: rotateX(15deg) rotateY(-15deg) rotate(0deg); }
+            to { transform: rotateX(15deg) rotateY(-15deg) rotate(360deg); }
+        }
+        [data-theme="emerald"] .mp-disk-glow {
+            background: var(--acc) !important;
+            filter: blur(15px) !important;
+            opacity: 0.4 !important;
+        }
+
+        /* 3. AMBER THEME -> Turntable Vinyl style with pivoting stick tonearm */
+        [data-theme="amber"] .mp-disk-glow {
+            display: none !important;
+        }
+        [data-theme="amber"] .mp-disk {
+            background: 
+                radial-gradient(circle, transparent 38%, rgba(0,0,0,0.7) 39%, rgba(0,0,0,0.7) 40%, transparent 41%),
+                radial-gradient(circle, transparent 48%, rgba(0,0,0,0.7) 49%, rgba(0,0,0,0.7) 50%, transparent 51%),
+                radial-gradient(circle, transparent 58%, rgba(0,0,0,0.7) 59%, rgba(0,0,0,0.7) 60%, transparent 61%),
+                radial-gradient(circle, transparent 68%, rgba(0,0,0,0.7) 69%, rgba(0,0,0,0.7) 70%, transparent 71%),
+                radial-gradient(circle, #1a1a1a 32%, #080808 100%) !important;
+            border: 6px solid #111 !important;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.9) !important;
+        }
+        [data-theme="amber"] .mp-logo {
+            width: 36% !important;
+            height: 36% !important;
+            border-radius: 50% !important;
+            border: 3px solid #1a1a1a !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        /* Tonearm container position */
+        .mp-tonearm {
+            position: absolute;
+            top: -24px;
+            right: 16px;
+            width: 70px;
+            height: 140px;
+            transform-origin: 50px 40px;
+            transform: rotate(-25deg);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            display: none;
+            pointer-events: none;
+        }
+        [data-theme="amber"] .mp-tonearm {
+            display: block;
+        }
+        /* Rotate tonearm onto spinning vinyl when playing */
+        .mp-disk-container.playing .mp-tonearm {
+            transform: rotate(8deg);
+        }
+
+        /* ── THEMED MODERN PLAYER DESIGNS ── */
+        .style-default .mp-disk-glow {
+            display: block;
+        }
+        .style-default #mpVisualizer {
+            display: block;
+        }
+
+        /* Common disables for other styles */
+        .style-glassmorphic .mp-disk-glow,
+        .style-cyberpunk .mp-disk-glow,
+        .style-orbit .mp-disk-glow,
+        .style-spectrum .mp-disk-glow {
+            display: none !important;
+        }
+        .style-glassmorphic #mpVisualizer,
+        .style-cyberpunk #mpVisualizer,
+        .style-orbit #mpVisualizer,
+        .style-spectrum #mpVisualizer {
+            display: none !important;
+        }
+
+        /* 1. 3D Glassmorphism Style */
+        .style-glassmorphic {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        .style-glassmorphic .mp-disk {
+            background: rgba(255, 255, 255, 0.03) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: -15px 25px 45px rgba(0,0,0,0.65), 
+                        inset 0 2px 12px rgba(255,255,255,0.05),
+                        0 0 30px var(--glow) !important;
+            transform: rotateX(22deg) rotateY(-12deg) rotate(0deg);
+            animation: rotate3DDiskGlassmorphic 20s linear infinite !important;
+            animation-play-state: paused !important;
+            transform-style: preserve-3d;
+        }
+        .style-glassmorphic .mp-disk.playing {
+            animation-play-state: running !important;
+        }
+        @keyframes rotate3DDiskGlassmorphic {
+            from { transform: rotateX(22deg) rotateY(-12deg) rotate(0deg); }
+            to { transform: rotateX(22deg) rotateY(-12deg) rotate(360deg); }
+        }
+        .glass-reflection {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .style-glassmorphic .glass-reflection {
+            display: block;
+        }
+
+        /* 3D Turntable Vinyl Style */
+        .style-vinyl3d {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        .style-vinyl3d .mp-disk {
+            background: 
+                radial-gradient(circle, transparent 38%, rgba(0,0,0,0.85) 39%, rgba(0,0,0,0.85) 40%, transparent 41%),
+                radial-gradient(circle, transparent 48%, rgba(0,0,0,0.85) 49%, rgba(0,0,0,0.85) 50%, transparent 51%),
+                radial-gradient(circle, transparent 58%, rgba(0,0,0,0.85) 59%, rgba(0,0,0,0.85) 60%, transparent 61%),
+                radial-gradient(circle, transparent 68%, rgba(0,0,0,0.85) 69%, rgba(0,0,0,0.85) 70%, transparent 71%),
+                radial-gradient(circle, #222 30%, #050505 100%) !important;
+            border: 6px solid #111 !important;
+            transform: rotateX(28deg) rotateY(-12deg) rotate(0deg);
+            box-shadow: -15px 25px 40px rgba(0,0,0,0.85), inset 0 0 15px rgba(0,0,0,0.9) !important;
+            animation: rotate3DDiskVinyl 20s linear infinite !important;
+            animation-play-state: paused !important;
+            transform-style: preserve-3d;
+        }
+        .style-vinyl3d .mp-disk.playing {
+            animation-play-state: running !important;
+        }
+        .style-vinyl3d .mp-logo {
+            width: 36% !important;
+            height: 36% !important;
+            border-radius: 50% !important;
+            border: 3px solid #222 !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+        }
+        @keyframes rotate3DDiskVinyl {
+            from { transform: rotateX(28deg) rotateY(-12deg) rotate(0deg); }
+            to { transform: rotateX(28deg) rotateY(-12deg) rotate(360deg); }
+        }
+
+        /* 3D Retro Hologram Style */
+        .style-hologram3d {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        .style-hologram3d .mp-disk {
+            background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(3,7,26,0.9) 100%) !important;
+            border: 3px solid #10b981 !important;
+            transform: rotateX(22deg) rotateY(15deg) rotate(0deg);
+            box-shadow: 0 0 35px rgba(16,185,129,0.5), inset 0 0 20px rgba(16,185,129,0.4) !important;
+            animation: rotate3DHologram 18s linear infinite !important;
+            animation-play-state: paused !important;
+            transform-style: preserve-3d;
+        }
+        .style-hologram3d .mp-disk.playing {
+            animation-play-state: running !important;
+        }
+        @keyframes rotate3DHologram {
+            from { transform: rotateX(22deg) rotateY(15deg) rotate(0deg); }
+            to { transform: rotateX(22deg) rotateY(15deg) rotate(360deg); }
+        }
+
+        /* 2. Cyberpunk Tech Grid Style */
+        .style-cyberpunk .mp-disk {
+            background: radial-gradient(circle, #090e18 0%, #030509 100%) !important;
+            border: 3px solid var(--acc) !important;
+            box-shadow: 0 0 30px var(--glow), inset 0 0 20px var(--glow) !important;
+        }
+        .hud-grid {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: repeating-radial-gradient(
+                circle,
+                transparent 0px,
+                transparent 14px,
+                rgba(16, 185, 129, 0.08) 15px,
+                rgba(16, 185, 129, 0.08) 17px
+            );
+            pointer-events: none;
+            z-index: 2;
+        }
+        .style-cyberpunk .hud-grid {
+            display: block;
+        }
+        .hud-scanner {
+            display: none;
+            position: absolute;
+            top: 0; bottom: 0; width: 3px;
+            background: var(--acc);
+            box-shadow: 0 0 10px var(--glow);
+            opacity: 0.8;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .style-cyberpunk.playing .hud-scanner {
+            display: block;
+            animation: sweepScanner 3s ease-in-out infinite alternate;
+        }
+        @keyframes sweepScanner {
+            0% { left: 10%; }
+            100% { left: 90%; }
+        }
+
+        /* 3. Neon Orbit Style */
+        .style-orbit .mp-disk {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .style-orbit .mp-logo {
+            width: 140px !important;
+            height: 140px !important;
+            border: 4px solid var(--acc2) !important;
+            box-shadow: 0 0 25px var(--glow);
+            border-radius: 50%;
+            object-fit: cover;
+            animation: rotateDisk 12s linear infinite;
+        }
+        .orbit-ring-1 {
+            display: none;
+            position: absolute;
+            border-radius: 50%;
+            border: 2px dashed var(--acc);
+            pointer-events: none;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            box-shadow: 0 0 12px var(--glow);
+            opacity: 0.7;
+        }
+        .style-orbit .orbit-ring-1 {
+            display: block;
+            animation: rotateOrbit1 20s linear infinite;
+        }
+        .orbit-ring-2 {
+            display: none;
+            position: absolute;
+            border-radius: 50%;
+            border: 2.2px dashed var(--acc3);
+            pointer-events: none;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            opacity: 0.45;
+        }
+        .style-orbit .orbit-ring-2 {
+            display: block;
+            animation: rotateOrbit2 12s linear infinite;
+        }
+        @keyframes rotateOrbit1 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes rotateOrbit2 {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        /* 4. Glow Spectrum Style */
+        .style-spectrum .mp-disk {
+            background: radial-gradient(circle, #064e3b 0%, #022c22 45%, #020617 100%) !important;
+            border: 4px solid var(--acc3) !important;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7) !important;
+        }
+        .spectrum-wave {
+            display: none;
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border-radius: 50%;
+            border: 3px solid var(--acc2);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .style-spectrum.playing .spectrum-wave {
+            display: block;
+            animation: pulseWave 2s ease-out infinite;
+        }
+        @keyframes pulseWave {
+            0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 5px var(--glow); }
+            100% { transform: scale(1.15); opacity: 0; box-shadow: 0 0 25px var(--glow); }
+        }
+
+        /* Completely disable the retro tonearm needle as it does not suit modern style */
+        .mp-tonearm {
+            display: none !important;
+        }
+
+        /* Style Selector Cards */
+        .style-card {
+            background: var(--card);
+            border: 1px solid var(--bdr);
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .style-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--acc);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .style-preview-container {
+            height: 100px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .style-card-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .style-applied-badge {
+            display: none;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: var(--acc);
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 6px var(--glow);
+        }
+        .style-card.active {
+            border-color: var(--acc) !important;
+            box-shadow: 0 0 15px var(--glow);
+            background: var(--active);
+        }
+        .style-card.active .style-applied-badge {
+            display: block;
+        }
+
     </style>
 </head>
 
@@ -3649,13 +4399,13 @@
             <!-- Login Form -->
             <div class="af-form" id="loginF">
                 <div>
-                    <label class="fl">Email</label>
-                    <input class="fi" id="li-em" type="email" placeholder="you@example.com">
+                    <label class="fl">Email or Mobile</label>
+                    <input class="fi" id="li-em" type="text" placeholder="Enter email or mobile number" autocomplete="off">
                 </div>
                 <div>
                     <label class="fl">Password</label>
                     <div class="pwd-field">
-                        <input class="fi" id="li-pw" type="password" placeholder="Enter your password">
+                        <input class="fi" id="li-pw" type="password" placeholder="Enter your password" autocomplete="new-password">
                         <span class="pwd-tog" onclick="togPwd('li-pw',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
                     </div>
                 </div>
@@ -3667,26 +4417,25 @@
             <div class="af-form" id="signupF" style="display:none;">
                 <div>
                     <label class="fl">Full Name</label>
-                    <input class="fi" id="su-nm" type="text" placeholder="Your full name">
+                    <input class="fi" id="su-nm" type="text" placeholder="Your full name" autocomplete="off">
                 </div>
                 <div>
                     <label class="fl">Email</label>
-                    <input class="fi" id="su-em" type="email" placeholder="you@example.com">
+                    <input class="fi" id="su-em" type="email" placeholder="Enter email address" autocomplete="off">
                 </div>
                 <div>
                     <label class="fl">Mobile Number (optional)</label>
                     <div style="display:flex; gap:8px; align-items:stretch;">
                         <span style="background:var(--bg2); border:1.5px solid var(--bdr2); border-radius:10px; padding:0 12px; font-weight:700; color:var(--text3); font-size:13.5px; display:flex; align-items:center; user-select:none;">+91</span>
-                        <input class="fi" id="su-mobile" type="tel" maxlength="10" placeholder="10-digit number" style="flex:1; margin:0;">
+                        <input class="fi" id="su-mobile" type="tel" maxlength="10" placeholder="10-digit number" style="flex:1; margin:0;" autocomplete="off">
                     </div>
                 </div>
                 <div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                         <label class="fl" style="margin:0;">Password</label>
-                        <span onclick="generateAndShowSuggestedPwd()" style="color:var(--acc4); font-size:11.5px; cursor:pointer; font-weight:600; user-select:none;">Suggest a strong password</span>
                     </div>
                     <div class="pwd-field">
-                        <input class="fi" id="su-pw" type="password" placeholder="Min 6 characters">
+                        <input class="fi" id="su-pw" type="password" placeholder="Min 6 characters" autocomplete="new-password">
                         <span class="pwd-tog" onclick="togPwd('su-pw',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
                     </div>
                     <div id="pw-strength-container" style="display:none; margin-top:6px; font-size:11.5px; font-weight:500;">
@@ -3694,13 +4443,6 @@
                         <div style="background:var(--bdr2); height:4px; border-radius:2px; margin-top:3px; overflow:hidden;">
                             <div id="pw-strength-bar" style="background:#ff4466; width:20%; height:100%; transition:width 0.2s, background-color 0.2s;"></div>
                         </div>
-                    </div>
-                    <div id="pwd-suggestion-box" style="display:none; margin-top:8px; font-size:12px; color:var(--text3); background:rgba(255,255,255,0.03); border:1.5px solid var(--bdr2); border-radius:10px; padding:10px; text-align:left;">
-                        <div style="font-weight:600; color:var(--text2); margin-bottom:4px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>💡 Suggested Password</span>
-                            <button type="button" onclick="applySuggestedPwd()" style="background:var(--acc); border:none; border-radius:6px; color:#fff; font-size:11px; font-weight:700; padding:4px 8px; cursor:pointer;">Use This</button>
-                        </div>
-                        <div id="suggested-pwd-text" style="font-family:monospace; font-size:13.5px; color:var(--acc4); letter-spacing:1px; word-break:break-all; font-weight:700; background:rgba(0,0,0,0.2); padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.05); text-align:center; user-select:all;"></div>
                     </div>
                 </div>
                 <div id="signupErr" style="color:#ff4466;font-size:12.5px;font-weight:600;display:none;text-align:center;"></div>
@@ -3730,7 +4472,7 @@
                 <nav>
                     <div class="ng">Explore</div>
                     <div class="ni on" onclick="setNav(this,showHome)"><span class="ni-ic">⌂</span>Home</div>
-                    <div class="ni" onclick="setNav(this,null);focusSearch()"><span class="ni-ic">⊙</span>Search</div>
+                    <div class="ni" onclick="setNav(this,null);event.stopPropagation();focusSearch()"><span class="ni-ic">⊙</span>Search</div>
                     <div class="ni" onclick="setNav(this,showArtists)"><span
                             class="ni-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3740,6 +4482,7 @@
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                             </svg></span>Artists</div>
                     <div class="ni" onclick="setNav(this,loadLikedSongs)"><span class="ni-ic" style="color:var(--acc)">♥</span>Liked Songs</div>
+                    <div class="ni" onclick="setNav(this,showDownloads)"><span class="ni-ic" style="color:var(--acc4)">⬇️</span>Downloads</div>
                 </nav>
                 <div class="sb-pls">
                     <div class="ng" style="padding-left:0;margin-top:4px">Your Music</div>
@@ -3758,8 +4501,12 @@
                 <div class="topbar">
                     <div style="display:flex;gap:6px;align-items:center;">
                         <div class="topbar-mobile-menu" onclick="toggleSidebar()"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
-                        <div class="tnb" onclick="history.back()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
-                        <div class="tnb" onclick="history.forward()"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+                        <!-- App Back Button, toggles dynamically in subviews -->
+                        <div id="hdrBackButton" onclick="handleBackNavigation()" style="display:none; cursor:pointer; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.06); color:var(--text); margin-left:8px; border:1px solid var(--bdr2); transition:background 0.2s;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </div>
                         <div id="greetingMsg"
                             style="margin-left:14px;font-weight:700;color:var(--text);font-size:16px;"></div>
                     </div>
@@ -3776,10 +4523,12 @@
                             <div id="sdResults"></div>
                         </div>
                     </div>
-                    <div class="tb-r">
-                        <div class="th-tog" onclick="toggleTheme()">
-                            <div class="tho on" id="thDk"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Dark</div>
-                            <div class="tho" id="thLt"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>Light</div>
+                    <div class="tb-r" style="display:flex; align-items:center; gap:10px;">
+                        <div class="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                            <span id="themeToggleIcon" style="display:flex; align-items:center; justify-content:center; color:var(--text);">
+                                <svg id="themeMoonIcon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                <svg id="themeSunIcon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                            </span>
                         </div>
                         <div class="u-av" id="userAv" onclick="openSettings()">R</div>
                     </div>
@@ -3793,14 +4542,15 @@
                 <div class="pl">
                     <div class="pa" id="pArt"><img src="assets/logo.png" alt="Cover" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;"></div>
                     <div class="p-meta">
-                        <div class="pnm" id="pNm"></div>
+                        <div class="pnm" id="pNm">Select a song to play</div>
                         <div class="par" id="pAr"></div>
                     </div>
                     <div class="plk" id="pLk" onclick="event.stopPropagation();togLike()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
                 </div>
                 <div class="pc">
+                    <div id="pStatus" style="font-size:10px; color:var(--acc5); font-weight:700; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px; display:flex; align-items:center; gap:6px; justify-content:center;"></div>
                     <div class="pb">
-                        <button class="cb on" title="Shuffle" id="cbShuffle" onclick="toggleCb(this)"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
+                        <button class="cb" title="Shuffle" id="cbShuffle" onclick="toggleCb(this)"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
                         <button class="cb mp-prev" onclick="prevT()"><svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><rect x="5" y="4" width="2" height="16"/></svg></button>
                         <button class="pbtn" id="playBtn" onclick="togPlay()"><svg viewBox="0 0 24 24" class="svg-play"><path d="M8 5v14l11-7z"/></svg></button>
                         <button class="cb mp-next" onclick="nextT()"><svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><rect x="17" y="4" width="2" height="16"/></svg></button>
@@ -3848,55 +4598,70 @@
                 <div class="sh-ttl">Settings</div>
                 <div class="sh-cls" onclick="closeSettings()">✕</div>
             </div>
-            <div class="sh-body">
+            <div class="sh-body" style="padding: 20px;">
+                <!-- User Profile Card -->
                 <div class="set-pcard">
-                    <div class="set-av" id="setAv">R</div>
+                    <div class="set-av" id="setAv">U</div>
                     <div class="set-av-info">
-                        <div class="set-uname" id="setName">Ravi Kumar</div>
+                        <div class="set-uname" id="setName">User Name</div>
                         <div class="set-email" id="setEmail">user@example.com</div>
-                        <div class="set-plan">Premium & Totally Free</div>
+                        <div class="set-plan">Premium Account ✦</div>
                     </div>
                 </div>
-                <!-- Account -->
+
+                <!-- Account & Security -->
                 <div class="sset-sec">
-                    <div class="sset-lbl">Account</div>
-                    <div><label class="fl">Display Name</label><input class="fi" id="setNmInp" type="text"
-                            value="Ravi Kumar" oninput="syncProfile()"></div>
-                    <div><label class="fl">Email</label><input class="fi" id="setEmInp" type="email"
-                            value="user@example.com" oninput="syncProfile()"></div>
+                    <div class="sset-lbl">Account & Security</div>
                     <div class="srow" onclick="triggerPasswordResetFromSettings()">
-                        <div class="srow-l"><span class="srow-ic">🔑</span>
+                        <div class="srow-l">
+                            <span class="srow-ic">🔑</span>
                             <div class="srow-t">
                                 <div class="sr1">Change Password</div>
+                                <div class="sr2">Send verification and reset link</div>
                             </div>
                         </div>
-                        <div class="srow-r"><span
-                                style="color:var(--acc4);font-size:12px;font-weight:700;cursor:pointer;">Reset →</span>
-                        </div>
+                        <div class="srow-r"><span style="color:var(--acc4); font-size:12px; font-weight:700; cursor:pointer;">Reset →</span></div>
                     </div>
                 </div>
-                <!-- Equalizer -->
-                <div class="eq-sec">
-                    <div class="eq-stl">Equalizer</div>
-                    <div class="eq-presets" id="eqPresets">
-                        <div class="eqp on" onclick="setPreset(this,'flat')">Flat</div>
-                        <div class="eqp" onclick="setPreset(this,'bass')">Bass Boost</div>
-                        <div class="eqp" onclick="setPreset(this,'treble')">Treble</div>
-                        <div class="eqp" onclick="setPreset(this,'vocal')">Vocal</div>
-                        <div class="eqp" onclick="setPreset(this,'rock')">Rock</div>
-                        <div class="eqp" onclick="setPreset(this,'classical')">Classical</div>
-                              <div class="qo" onclick="setQual(this,'high')">
-                            <div class="qon">High</div>
-                            <div class="qos">320 kbps</div>
+
+                <!-- Audio Settings -->
+                <div class="sset-sec">
+                    <div class="sset-lbl">Audio Effects</div>
+                    <div class="srow" onclick="openEqualizer()">
+                        <div class="srow-l">
+                            <span class="srow-ic">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--acc)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="4" y1="21" x2="4" y2="14"/>
+                                    <line x1="4" y1="10" x2="4" y2="3"/>
+                                    <line x1="12" y1="21" x2="12" y2="12"/>
+                                    <line x1="12" y1="8" x2="12" y2="3"/>
+                                    <line x1="20" y1="21" x2="20" y2="16"/>
+                                    <line x1="20" y1="12" x2="20" y2="3"/>
+                                    <line x1="2" y1="14" x2="6" y2="14"/>
+                                    <line x1="10" y1="8" x2="14" y2="8"/>
+                                    <line x1="18" y1="16" x2="22" y2="16"/>
+                                </svg>
+                            </span>
+                            <div class="srow-t">
+                                <div class="sr1">Equalizer & Effects</div>
+                                <div class="sr2">Presets, Bass Boost & Immersive audio</div>
+                            </div>
                         </div>
-                        <div class="qo" onclick="setQual(this,'lossless')">
-                            <div class="qon">Lossless</div>
-                            <div class="qos">FLAC</div>
-                        </div>
+                        <div class="srow-r">→</div>
                     </div>
-                    <div class="eq-bands" id="eqBands" style="display: flex; gap: 15px; margin-top: 15px; overflow-x: auto; padding: 10px 0;"></div>
                 </div>
-                <!-- Playback -->
+
+                <!-- Preferences / Theme -->
+                <div class="sset-sec">
+                    <div class="sset-lbl">App Theme</div>
+                    <div class="theme-picker-grid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin: 6px 0 4px;">
+                        <button class="theme-pill" data-t="dark" onclick="setAppTheme('dark')" style="background:#0b0f19; border:2px solid rgba(255,255,255,0.1); border-radius:12px; height:40px; cursor:pointer;" title="Midnight Dark"></button>
+                        <button class="theme-pill" data-t="light" onclick="setAppTheme('light')" style="background:#ffffff; border:2px solid rgba(0,0,0,0.1); border-radius:12px; height:40px; cursor:pointer;" title="Classic Light"></button>
+                    </div>
+                    <div style="font-size:12px; font-weight:600; color:var(--text3); text-align:center;" id="thLbl">Midnight Dark</div>
+                </div>
+
+                <!-- Playback Preferences -->
                 <div class="sset-sec">
                     <div class="sset-lbl">Playback</div>
                     <div class="srow">
@@ -3915,119 +4680,92 @@
                         </div>
                         <div class="tsw" onclick="this.classList.toggle('on')"></div>
                     </div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🎵</span>
-                            <div class="srow-t">
-                                <div class="sr1">Gapless Playback</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" onclick="this.classList.toggle('on')"></div>
-                    </div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🔊</span>
-                            <div class="srow-t">
-                                <div class="sr1">Normalize Volume</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" onclick="this.classList.toggle('on')"></div>
-                    </div>
                 </div>
-                <!-- Notifications -->
+
+                <!-- Support & Feedback -->
                 <div class="sset-sec">
-                    <div class="sset-lbl">Notifications</div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🔔</span>
-                            <div class="srow-t">
-                                <div class="sr1">New Song Alerts</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" id="alertTog" onclick="toggleAlertSetting(this)"></div>
-                    </div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">📧</span>
-                            <div class="srow-t">
-                                <div class="sr1">Email Updates</div>
-                            </div>
-                        </div>
-                        <div class="tsw" onclick="this.classList.toggle('on')"></div>
-                    </div>
-                </div>
-                <div class="srow" onclick="toggleTheme()">
-                    <div class="srow-l"><span class="srow-ic">🎨</span>
-                        <div class="srow-t">
-                            <div class="sr1">Theme</div>
-                        </div>
-                    </div>
-                    <div class="srow-r">
-                        <div class="sbadge" id="thLbl">Dark Mode</div>
-                    </div>
-                </div>
-                <div class="sset-sec">
-                    <div class="sset-lbl">Privacy</div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">📊</span>
-                            <div class="srow-t">
-                                <div class="sr1">Listening History</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" id="historyTog" onclick="toggleHistorySetting(this)"></div>
-                    </div>
-                </div>
-                <!-- Contact & Support -->
-                <div class="sset-sec">
-                    <div class="sset-lbl">Contact &amp; Support</div>
-                    <a class="insta-card" href="https://www.instagram.com/_navanee_/" target="_blank">
-                        <div class="ig-ic">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#fff">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                        </div>
-                        <div class="ig-info">
-                            <div class="igi1">@_navanee_</div>
-                            <div class="igi2">Official Instagram</div>
-                        </div>
-                        <div class="ig-arr">↗</div>
-                    </a>
-                    <div class="srow" onclick="openFeedbackModal('contact')" style="margin-top:12px">
+                    <div class="sset-lbl">Support & Feedback</div>
+                    <div class="srow" onclick="openFeedbackModal('contact')">
                         <div class="srow-l"><span class="srow-ic">💬</span>
                             <div class="srow-t">
-                                <div class="sr1">Support &amp; Feedback</div>
-                                <div class="sr2">Get in touch, report bugs, or rate our app</div>
+                                <div class="sr1">Send Feedback</div>
+                                <div class="sr2">Get in touch or report bugs</div>
                             </div>
                         </div>
                         <div class="srow-r">→</div>
                     </div>
                 </div>
 
-                <!-- About -->
-                <div class="about-card" style="padding: 24px 16px;">
-                    <div style="text-align:center; font-size:20px; font-weight:800; margin-bottom:12px; color:var(--text); letter-spacing:-0.5px;">Echo of Baduga</div>
-                    <div style="font-size:13px; color:var(--text2); line-height:1.6; text-align:center; margin-bottom:24px;">
-                        We are passionate about exploring in and around our Badugu community. Echo of Baduga evolved to avail Badugu songs for easy streaming to anyone around the globe. Especially to keep the young generation in touch with Badugu music, culture, and language.
-                    </div>
-                    
-                    <div style="display:flex; flex-direction:column; align-items:center; margin-top:24px; padding-top:24px; border-top:1.5px dashed var(--bdr);">
-                        <div class="founder-img-container" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--acc4); box-shadow:0 6px 20px rgba(0,0,0,0.25); margin-bottom:14px; overflow:hidden; transition:transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor:pointer;" 
-                             onmouseover="this.style.transform='scale(1.08)'" 
-                             onmouseout="this.style.transform='scale(1)'" 
-                             onmousedown="this.style.transform='scale(0.95)'" 
-                             onmouseup="this.style.transform='scale(1.08)'" 
-                             ontouchstart="this.style.transform='scale(0.95)'" 
-                             ontouchend="this.style.transform='scale(1)'"
-                             onclick="window.open('https://www.instagram.com/_navanee_/', '_blank')">
-                            <img src="assets/navaneeth.jpg" alt="Navaneeth" style="width:100%; height:100%; object-fit:cover; display:block;">
+                <!-- About Us Link -->
+                <div class="sset-sec">
+                    <div class="srow" onclick="openAboutUs()">
+                        <div class="srow-l"><span class="srow-ic">👥</span>
+                            <div class="srow-t">
+                                <div class="sr1">Developer Team & About</div>
+                                <div class="sr2">Meet the developers and creators</div>
+                            </div>
                         </div>
-                        <div style="font-size:18px; font-weight:700; color:var(--text); text-align:center;">Navaneeth</div>
-                        <div style="font-size:12px; color:var(--text3); font-weight:500; margin-top:1px; margin-bottom:4px; text-align:center;">(Achanakkal)</div>
-                        <div style="font-size:12px; color:var(--acc); font-weight:700; margin-top:6px; letter-spacing:0.5px; text-transform:uppercase;">Founder & Developer</div>
+                        <div class="srow-r">→</div>
                     </div>
                 </div>
-                <button class="btn-logout" onclick="logout()">Sign Out</button>
+
+                <!-- Sign Out -->
+                <button class="btn-logout" onclick="logout()" style="margin: 8px 0 24px;">Sign Out</button>
             </div>
         </div>
     </div>
+
+    <!-- ABOUT US MODAL -->
+    <div class="set-ov" id="aboutUsOv" onclick="closeAboutUsBg(event)" style="z-index: 20010;">
+        <div class="set-drawer" style="background: var(--bg1);">
+            <div class="sh-hdr">
+                <div class="sh-ttl">Developer Team & About</div>
+                <div class="sh-cls" onclick="closeAboutUs()">✕</div>
+            </div>
+            <div class="sh-body" style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px;">
+                <!-- Description -->
+                <div style="background: var(--bg2); border: 1px solid var(--bdr2); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 4px 12px var(--shadow);">
+                    <div style="font-size: 20px; font-weight: 800; color: var(--acc5); margin-bottom: 10px; letter-spacing: -0.5px;">Echo of Baduga</div>
+                    <div style="font-size: 13px; color: var(--text2); line-height: 1.6;">
+                        We are passionate about exploring in and around our Badugu community. Echo of Baduga evolved to avail Badugu songs for easy streaming.
+                    </div>
+                </div>
+
+                <!-- Stacked Team Profiles -->
+                <div style="display: flex; flex-direction: column; gap: 18px;">
+                    <!-- Navaneeth -->
+                    <div style="background: var(--bg2); border: 1px solid var(--bdr2); border-radius: 16px; padding: 18px; display: flex; align-items: center; gap: 18px; cursor: pointer; transition: transform 0.2s;" onclick="window.open('https://www.instagram.com/_navanee_/', '_blank')">
+                        <div style="width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--acc4); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.25); flex-shrink: 0;">
+                            <img src="assets/navaneeth.jpg" alt="Navaneeth" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                            <div style="font-size: 16px; font-weight: 800; color: var(--text);">Navaneeth</div>
+                            <div style="font-size: 12px; color: var(--text3); font-weight: 500;">(Achanakkal)</div>
+                            <div style="font-size: 13px; color: var(--acc4); font-weight: 600; margin-top: 2px;">@_navanee_</div>
+                            <div style="font-size: 10px; color: var(--acc); font-weight: 700; margin-top: 6px; letter-spacing: 0.5px; text-transform: uppercase;">Lead App Developer</div>
+                        </div>
+                    </div>
+
+                    <!-- Kirthish Kumar -->
+                    <div style="background: var(--bg2); border: 1px solid var(--bdr2); border-radius: 16px; padding: 18px; display: flex; align-items: center; gap: 18px; cursor: pointer; transition: transform 0.2s;" onclick="window.open('https://www.instagram.com/kirthish_05/', '_blank')">
+                        <div style="width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--acc4); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.25); flex-shrink: 0;">
+                            <img src="assets/kirthish.jpg" alt="Kirthish Kumar" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; text-align: left;">
+                            <div style="font-size: 16px; font-weight: 800; color: var(--text);">Kirthish Kumar</div>
+                            <div style="font-size: 12px; color: var(--text3); font-weight: 500;">(Nanjanad)</div>
+                            <div style="font-size: 13px; color: var(--acc4); font-weight: 600; margin-top: 2px;">@kirthish_05</div>
+                            <div style="font-size: 10px; color: var(--acc); font-weight: 700; margin-top: 6px; letter-spacing: 0.5px; text-transform: uppercase;">Data Administrator</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Close Button -->
+                <button class="btn-logout" onclick="closeAboutUs()" style="margin-top: 16px; background: var(--bg3); border-color: var(--bdr);">Close</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- SLEEP MODAL -->
     <div class="slp-ov" id="sleepOv" onclick="closeSleepBg(event)">
@@ -4179,35 +4917,290 @@
         </div>
     </div>
 
+    <!-- PLAYER STYLES SELECTION DRAWER -->
+    <!-- PLAYER STYLES SELECTION DRAWER -->
+    <div class="slp-ov" id="playerStyleOv" onclick="closePlayerStyleBg(event)">
+        <div class="slp-sh" style="border-top-color: var(--acc); max-width: 440px;">
+            <div class="slp-hnd" onclick="closePlayerStyleModal()"></div>
+            <div class="slp-t" style="text-align: center; margin-bottom: 20px;">Player styles</div>
+            
+            <!-- Style Grid matching mockup -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-height: 480px; overflow-y: auto; padding-bottom: 12px;">
+                
+                <!-- 1. Default -->
+                <div class="style-card" id="card-style-default" onclick="selectPlayerStyle('default')">
+                    <div class="style-preview-container" style="background: radial-gradient(circle, var(--bg1) 0%, var(--bg) 100%);">
+                        <div class="mp-disk-glow" style="width: 60px; height: 60px; position: relative; margin: 0 auto; filter: blur(3px);"></div>
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #111; border: 2px solid var(--acc); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center;">
+                            <img src="assets/logo.png" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="style-card-title">Default Neon</div>
+                    <span class="style-applied-badge">Applied</span>
+                </div>
+
+                <!-- 2. Glassmorphism -->
+                <div class="style-card" id="card-style-glassmorphic" onclick="selectPlayerStyle('glassmorphic')">
+                    <div class="style-preview-container" style="background: linear-gradient(135deg, #111827 0%, #030712 100%);">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 0 10px var(--glow); position: relative; margin: 0 auto;">
+                            <img src="assets/logo.png" style="width: 32px; height: 32px; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="style-card-title">3D Glassmorphism</div>
+                    <span class="style-applied-badge">Applied</span>
+                </div>
+
+                <!-- 3. Cyberpunk HUD Grid -->
+                <div class="style-card" id="card-style-cyberpunk" onclick="selectPlayerStyle('cyberpunk')">
+                    <div class="style-preview-container" style="background: #030712;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #0e1e38 0%, #030509 100%); border: 2px solid var(--acc); box-shadow: 0 0 12px var(--glow), inset 0 0 8px var(--glow); position: relative; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 44px; height: 44px; border: 1.5px dashed rgba(16, 185, 129, 0.4); border-radius: 50%; position: absolute;"></div>
+                            <img src="assets/logo.png" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="style-card-title">Cyberpunk Grid</div>
+                    <span class="style-applied-badge">Applied</span>
+                </div>
+
+                <!-- 4. Neon Orbit -->
+                <div class="style-card" id="card-style-orbit" onclick="selectPlayerStyle('orbit')">
+                    <div class="style-preview-container" style="background: #020617; position: relative;">
+                        <!-- Dashed orbit paths -->
+                        <div style="width: 76px; height: 76px; border-radius: 50%; border: 1px dashed var(--acc); opacity: 0.5; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #111827; border: 2.2px solid var(--acc2); box-shadow: 0 0 10px var(--glow); position: relative; margin: 0 auto; display: flex; align-items: center; justify-content: center; z-index: 2;">
+                            <img src="assets/logo.png" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="style-card-title">Neon Orbit</div>
+                    <span class="style-applied-badge">Applied</span>
+                </div>
+
+                <!-- 5. Glow Spectrum -->
+                <div class="style-card" id="card-style-spectrum" onclick="selectPlayerStyle('spectrum')">
+                    <div class="style-preview-container" style="background: radial-gradient(circle, #022c22 0%, #020617 100%);">
+                        <div style="width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--acc3); position: absolute; opacity: 0.35;"></div>
+                        <div style="width: 56px; height: 56px; border-radius: 50%; background: #064e3b; border: 2px solid var(--acc2); position: relative; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px var(--glow);">
+                            <img src="assets/logo.png" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                        </div>
+                    </div>
+                    <div class="style-card-title">Glow Spectrum</div>
+                    <span class="style-applied-badge">Applied</span>
+                </div>
+
+                <!-- 6. 3D Turntable Vinyl -->
+                <div class="style-card" id="card-style-vinyl3d" onclick="selectPlayerStyle('vinyl3d')">
+                    <div class="style-preview-container" style="background: linear-gradient(135deg, #18181b 0%, #09090b 100%);">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #2a2a2a 35%, #0d0d0d 100%); border: 3px solid #111; position: relative; margin: 0 auto; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transform: rotateX(25deg) rotateY(-10deg);">
+                            <img src="assets/logo.png" style="width: 38%; height: 38%; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid #222;">
+                        </div>
+                    </div>
+                    <div class="style-card-title">3D Turntable Vinyl</div>
+                    <span class="style-applied-badge">Applied</span>
+                </div>
+
+                <!-- 7. 3D Retro Hologram -->
+                <div class="style-card" id="card-style-hologram3d" onclick="selectPlayerStyle('hologram3d')">
+                    <div class="style-preview-container" style="background: #040914;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(3,7,26,0.9) 100%); border: 2.2px solid #10b981; position: relative; margin: 0 auto; box-shadow: 0 0 15px rgba(16,185,129,0.4); transform: rotateX(20deg) rotateY(15deg);">
+                            <img src="assets/logo.png" style="width: 50%; height: 50%; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.85;">
+                        </div>
+                    </div>
+                    <div class="style-card-title">3D Retro Hologram</div>
+                    <span class="style-applied-badge">Applied</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- EQUALIZER & EFFECTS DRAWER -->
+    <div class="slp-ov" id="eqOv" onclick="closeEqBg(event)">
+        <div class="slp-sh" style="max-width: 460px; padding: 24px; border-radius: 28px 28px 0 0; background: var(--bg); color: var(--text);">
+            <!-- Header matching screenshot -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+                <button onclick="closeEqualizer()" style="background:none; border:none; color:var(--text); cursor:pointer; padding:4px; display:flex; align-items:center;">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <div style="font-size: 20px; font-weight: 700; text-align:center;">Equaliser</div>
+                <div style="display:flex; align-items:center;">
+                    <div class="tsw on" id="eqTogEnable" onclick="toggleEqEnabled(this)"></div>
+                </div>
+            </div>
+            
+            <!-- Presets Grid matching screenshot -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px;">
+                <button class="eq-preset-btn" onclick="setPreset('dance', this)">Dance</button>
+                <button class="eq-preset-btn active" id="preset-flat" onclick="setPreset('flat', this)">Flat</button>
+                <button class="eq-preset-btn" onclick="setPreset('folk', this)">Folk</button>
+                <button class="eq-preset-btn" onclick="setPreset('metal', this)">Heavy metal</button>
+                <button class="eq-preset-btn" onclick="setPreset('hiphop', this)">Hip-hop</button>
+                <button class="eq-preset-btn" onclick="setPreset('jazz', this)">Jazz</button>
+                <button class="eq-preset-btn" onclick="setPreset('pop', this)">Pop</button>
+                <button class="eq-preset-btn" onclick="setPreset('rock', this)">Rock</button>
+            </div>
+
+            <!-- Manual adjustment header -->
+            <div style="font-size: 17px; font-weight: 700; margin-bottom: 20px;">Manual adjustment</div>
+
+            <!-- Frequencies Sliders Row -->
+            <div class="eq-sliders-row" style="background:none; border:none; padding:0; height:180px; margin-bottom: 28px;">
+                <div class="eq-slider-col">
+                    <input type="range" class="eq-vertical-slider" id="eqs-0" min="-12" max="12" value="0" step="0.5" oninput="onEqSliderChange(0, this.value)">
+                    <div class="eq-lbl" style="margin-top: 10px; font-weight: 600; color: var(--text2);">60Hz</div>
+                    <div class="eq-db" id="eqval-0" style="font-size: 11px; color: var(--text3); font-weight: 600; font-family:inherit;">0</div>
+                </div>
+                <div class="eq-slider-col">
+                    <input type="range" class="eq-vertical-slider" id="eqs-1" min="-12" max="12" value="0" step="0.5" oninput="onEqSliderChange(1, this.value)">
+                    <div class="eq-lbl" style="margin-top: 10px; font-weight: 600; color: var(--text2);">230Hz</div>
+                    <div class="eq-db" id="eqval-1" style="font-size: 11px; color: var(--text3); font-weight: 600; font-family:inherit;">0</div>
+                </div>
+                <div class="eq-slider-col">
+                    <input type="range" class="eq-vertical-slider" id="eqs-2" min="-12" max="12" value="0" step="0.5" oninput="onEqSliderChange(2, this.value)">
+                    <div class="eq-lbl" style="margin-top: 10px; font-weight: 600; color: var(--text2);">910Hz</div>
+                    <div class="eq-db" id="eqval-2" style="font-size: 11px; color: var(--text3); font-weight: 600; font-family:inherit;">0</div>
+                </div>
+                <div class="eq-slider-col">
+                    <input type="range" class="eq-vertical-slider" id="eqs-3" min="-12" max="12" value="0" step="0.5" oninput="onEqSliderChange(3, this.value)">
+                    <div class="eq-lbl" style="margin-top: 10px; font-weight: 600; color: var(--text2);">3.6kHz</div>
+                    <div class="eq-db" id="eqval-3" style="font-size: 11px; color: var(--text3); font-weight: 600; font-family:inherit;">0</div>
+                </div>
+                <div class="eq-slider-col">
+                    <input type="range" class="eq-vertical-slider" id="eqs-4" min="-12" max="12" value="0" step="0.5" oninput="onEqSliderChange(4, this.value)">
+                    <div class="eq-lbl" style="margin-top: 10px; font-weight: 600; color: var(--text2);">14.0kHz</div>
+                    <div class="eq-db" id="eqval-4" style="font-size: 11px; color: var(--text3); font-weight: 600; font-family:inherit;">0</div>
+                </div>
+            </div>
+
+            <!-- Enhance sound section -->
+            <div style="font-size: 17px; font-weight: 700; margin-bottom: 4px;">Enhance sound</div>
+            <div style="font-size: 12px; color: var(--text3); display:flex; align-items:center; gap: 6px; margin-bottom: 24px;">
+                <span>🎧</span> Put in earphones before adjusting sound effects
+            </div>
+
+            <!-- Rotary Dials matching screenshot -->
+            <div class="eq-effects-row" style="border-top:none; padding-top:0; margin-top:0; justify-content:space-around;">
+                <div class="eq-knob-container">
+                    <div style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center;">
+                        <svg width="80" height="80" style="position:absolute; transform: rotate(135deg);">
+                            <circle cx="40" cy="40" r="32" stroke="var(--bdr2)" stroke-width="3" fill="none" stroke-dasharray="4,6"></circle>
+                            <circle id="knob-progress-bass" cx="40" cy="40" r="32" stroke="var(--acc)" stroke-width="3.5" fill="none" stroke-dasharray="0,200" style="transition: stroke-dasharray 0.05s ease;"></circle>
+                        </svg>
+                        <div class="eq-knob" id="knob-bass" data-type="bass" style="width:54px; height:54px; border:none; box-shadow:0 3px 10px rgba(0,0,0,0.15); background: var(--bg2); display:flex; align-items:center; justify-content:center; position:relative; overflow:visible; border-radius:50%;">
+                            <!-- Rotary indicator rotates around the center of the knob -->
+                            <div id="knob-indicator-bass" style="width:100%; height:100%; position:absolute; left:0; top:0; pointer-events:none; transition: transform 0.05s ease;">
+                                <div style="width:8px; height:8px; border-radius:50%; background:var(--acc); position:absolute; top:6px; left:50%; transform:translateX(-50%);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text3); margin-top: 4px;" id="val-bass">0%</div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text2);">Bass</div>
+                </div>
+
+                <div class="eq-knob-container">
+                    <div style="position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center;">
+                        <svg width="80" height="80" style="position:absolute; transform: rotate(135deg);">
+                            <circle cx="40" cy="40" r="32" stroke="var(--bdr2)" stroke-width="3" fill="none" stroke-dasharray="4,6"></circle>
+                            <circle id="knob-progress-3d" cx="40" cy="40" r="32" stroke="var(--acc)" stroke-width="3.5" fill="none" stroke-dasharray="0,200" style="transition: stroke-dasharray 0.05s ease;"></circle>
+                        </svg>
+                        <div class="eq-knob" id="knob-3d" data-type="widener" style="width:54px; height:54px; border:none; box-shadow:0 3px 10px rgba(0,0,0,0.15); background: var(--bg2); display:flex; align-items:center; justify-content:center; position:relative; overflow:visible; border-radius:50%;">
+                            <!-- Rotary indicator rotates around the center of the knob -->
+                            <div id="knob-indicator-3d" style="width:100%; height:100%; position:absolute; left:0; top:0; pointer-events:none; transition: transform 0.05s ease;">
+                                <div style="width:8px; height:8px; border-radius:50%; background:var(--acc); position:absolute; top:6px; left:50%; transform:translateX(-50%);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text3); margin-top: 4px;" id="val-3d">0%</div>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text2);">Immersive audio</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MOBILE FULL-SCREEN PLAYER -->
     <div id="mobilePlayer" class="mp-overlay">
         <!-- Top Navigation -->
         <div class="mp-top">
             <span class="mp-back" onclick="closeMobilePlayer()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></span>
             <span class="mp-title">Now Playing</span>
-            <div class="mp-top-actions">
-                <div class="slpw">
-                    <button class="mp-action-btn" onclick="openSleep()" title="Sleep Timer">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    </button>
-                    <span class="scnt" id="m-sCnt"></span>
-                </div>
-                <button class="mp-action-btn" onclick="openSettings()" title="Settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1-2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1-2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <div class="mp-top-actions" style="display:flex; align-items:center; gap:4px; position:relative;">
+                <!-- Equaliser action button representing its own symbol -->
+                <button class="mp-action-btn" onclick="openEqualizer()" title="Equaliser" style="background:none; border:none; color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; transition:background 0.2s;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- 4-knob panel block symbol -->
+                        <rect x="2" y="2" width="20" height="20" rx="4" ry="4"></rect>
+                        <!-- Top-Left Knob -->
+                        <circle cx="7.5" cy="7.5" r="2.5"></circle>
+                        <line x1="7.5" y1="7.5" x2="9" y2="6"></line>
+                        <!-- Top-Right Knob -->
+                        <circle cx="16.5" cy="7.5" r="2.5"></circle>
+                        <line x1="16.5" y1="7.5" x2="18" y2="9"></line>
+                        <!-- Bottom-Left Knob -->
+                        <circle cx="7.5" cy="16.5" r="2.5"></circle>
+                        <line x1="7.5" y1="16.5" x2="6" y2="15"></line>
+                        <!-- Bottom-Right Knob -->
+                        <circle cx="16.5" cy="16.5" r="2.5"></circle>
+                        <line x1="16.5" y1="16.5" x2="16.5" y2="14"></line>
+                    </svg>
                 </button>
-                <div class="th-tog" onclick="toggleTheme()">
-                    <div class="tho on" id="m-thDk"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Dark</div>
-                    <div class="tho" id="m-thLt"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>Light</div>
+
+                <!-- Single player styles button (Clothes Hanger symbol) -->
+                <button class="mp-action-btn" onclick="openPlayerStyleModal()" title="Player Styles" style="background:none; border:none; color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; transition:background 0.2s;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Hanger hook -->
+                        <path d="M12 7a3 3 0 1 0-3-3"></path>
+                        <!-- Hanger triangle -->
+                        <path d="M2 17l10-10 10 10z"></path>
+                    </svg>
+                </button>
+                
+                <!-- More options menu button -->
+                <button class="mp-action-btn" onclick="toggleMpMoreMenu(event)" title="More Options" style="background:none; border:none; color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; transition:background 0.2s;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="5" r="1.5"></circle>
+                        <circle cx="12" cy="12" r="1.5"></circle>
+                        <circle cx="12" cy="19" r="1.5"></circle>
+                    </svg>
+                </button>
+                
+                <!-- 3-dot dropdown menu popup -->
+                <div id="mpMoreMenu" style="display:none; position:absolute; top:42px; right:0; background:var(--card); border:1px solid var(--bdr2); border-radius:16px; padding:6px 0; min-width:170px; z-index:1100; box-shadow:0 10px 25px rgba(0,0,0,0.35); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px);">
+                    <div class="mp-menu-item" onclick="closeMpMoreMenu(); openSleep();" style="display:flex; align-items:center; gap:12px; padding:10px 16px; font-size:13.5px; font-weight:600; color:var(--text); cursor:pointer; text-align:left; position:relative;">
+                        <span>⏱️</span> Sleep Timer <span class="scnt" id="mMenu-sCnt" style="font-size:10px; background:var(--acc); color:#fff; padding:1px 6px; border-radius:10px; margin-left:auto; display:none;"></span>
+                    </div>
+                    <div class="mp-menu-item" onclick="closeMpMoreMenu(); openSettings();" style="display:flex; align-items:center; gap:12px; padding:10px 16px; font-size:13.5px; font-weight:600; color:var(--text); cursor:pointer; text-align:left;">
+                        <span>⚙️</span> Settings
+                    </div>
+                    <div class="mp-menu-item" onclick="closeMpMoreMenu(); openFeedbackModal();" style="display:flex; align-items:center; gap:12px; padding:10px 16px; font-size:13.5px; font-weight:600; color:var(--text); cursor:pointer; text-align:left;">
+                        <span>📬</span> Feedback
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Album Art / Rotating Disk -->
-        <div class="mp-disk-container">
+        <div class="mp-disk-container style-default" id="m-pDiskContainer">
+            <!-- 1. Default Style: Neon Glow & Visualizer -->
             <div class="mp-disk-glow" id="m-pDiskGlow"></div>
             <canvas id="mpVisualizer" width="320" height="320" style="position: absolute; z-index: 1; pointer-events: none; width: 320px; height: 320px;"></canvas>
+            
             <div class="mp-disk" id="m-pDisk">
-                <img src="assets/logo.png" alt="Cover" class="mp-logo">
+                <img src="assets/logo.png" alt="Cover" class="mp-logo" id="m-pLogo">
+                
+                <!-- Glassmorphism Glossy Reflection -->
+                <div class="glass-reflection"></div>
+                
+                <!-- Cyberpunk Tech HUD Grid & Scanner sweep -->
+                <div class="hud-grid"></div>
+                <div class="hud-scanner"></div>
             </div>
+            
+            <!-- Neon Orbit Ring overlays -->
+            <div class="orbit-ring-1"></div>
+            <div class="orbit-ring-2"></div>
+            
+            <!-- Glow Spectrum Pulsing Wave -->
+            <div class="spectrum-wave"></div>
         </div>
 
         <!-- Track Information -->
@@ -4215,8 +5208,13 @@
             <div class="mp-meta">
                 <div class="mp-name" id="m-pNm">Song Name</div>
                 <div class="mp-artist" id="m-pAr">Artist Name</div>
+                <div id="m-pStatus" style="font-size: 10px; color: var(--acc5); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px;"></div>
             </div>
-            <button class="mp-like" id="m-pLk" onclick="togLike()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="mp-like" id="m-pLk" onclick="togLike()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <!-- 3-dot more options for mobile player -->
+                <button onclick="openMobilePlayerMenu()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;line-height:1;padding:4px 8px;border-radius:8px;transition:background 0.15s;" title="More options">⋮</button>
+            </div>
         </div>
 
         <!-- Genre Chip -->
@@ -4235,13 +5233,35 @@
             </div>
         </div>
 
-        <!-- Control Buttons -->
-        <div class="mp-controls">
-            <button class="mp-cb" id="m-cbShuffle" onclick="toggleCb(document.getElementById('cbShuffle'))"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
-            <button class="mp-cb mp-prev" onclick="prevT()"><svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><rect x="5" y="4" width="2" height="16"/></svg></button>
+        <!-- Quick Settings & Mode Bar inside Playing Mode -->
+        <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 12px auto 16px; max-width: 320px;">
+            <!-- Styles Button -->
+            <button onclick="openPlayerStyleModal()" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--bdr2); color: var(--text2); padding: 6px 12px; border-radius: 16px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+                🎨 Styles
+            </button>
+            <!-- Equalizer & 3D Button -->
+            <button onclick="openEqualizer()" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--bdr2); color: var(--text2); padding: 6px 12px; border-radius: 16px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+                🎚️ 3D & EQ
+            </button>
+            <!-- Sleep Timer Button -->
+            <button onclick="openSleep()" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--bdr2); color: var(--text2); padding: 6px 12px; border-radius: 16px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+                ⏱️ Timer
+            </button>
+            <!-- Shuffle Button -->
+            <button id="m-quickShuffle" onclick="toggleCb(document.getElementById('cbShuffle'))" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--bdr2); color: var(--text2); padding: 6px 12px; border-radius: 16px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+                🔀 Shuffle
+            </button>
+            <!-- Repeat Button -->
+            <button id="m-quickRepeat" onclick="toggleCb(document.getElementById('cbRepeat'))" style="background: rgba(255, 255, 255, 0.06); border: 1px solid var(--bdr2); color: var(--text2); padding: 6px 12px; border-radius: 16px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s;">
+                🔁 Repeat
+            </button>
+        </div>
+
+        <!-- Control Buttons (Spacious 3-Button Layout) -->
+        <div class="mp-controls" style="justify-content: space-around; max-width: 260px; margin-top: 5px;">
+            <button class="mp-cb mp-prev" onclick="prevT()" style="width: 48px; height: 48px;"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px;"><polygon points="19 20 9 12 19 4 19 20"/><rect x="5" y="4" width="2" height="16"/></svg></button>
             <button class="mp-play" id="m-playBtn" onclick="togPlay()"><svg viewBox="0 0 24 24" class="svg-play"><path d="M8 5v14l11-7z"/></svg></button>
-            <button class="mp-cb mp-next" onclick="nextT()"><svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><rect x="17" y="4" width="2" height="16"/></svg></button>
-            <button class="mp-cb" id="m-cbRepeat" onclick="toggleCb(document.getElementById('cbRepeat'))"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+            <button class="mp-cb mp-next" onclick="nextT()" style="width: 48px; height: 48px;"><svg viewBox="0 0 24 24" style="width: 24px; height: 24px;"><polygon points="5 4 15 12 5 20 5 4"/><rect x="17" y="4" width="2" height="16"/></svg></button>
         </div>
     </div>
 
@@ -4264,14 +5284,131 @@
 
     <div class="toast" id="toastEl"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="songs_array.js?v=1.2"></script>
-    <script src="app.js?v=1.7"></script>
+    <style>
+    /* Mobile Player More Options Bottom Sheet */
+    #mpMoreSheet {
+        position: fixed; inset: 0; z-index: 10000;
+    }
+    .mp-sheet-backdrop {
+        position: absolute; inset: 0;
+        background: rgba(0,0,0,0.55);
+        backdrop-filter: blur(3px);
+    }
+    .mp-sheet-panel {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: var(--bg1, #0f1120);
+        border-top: 1px solid var(--bdr2, rgba(255,255,255,0.1));
+        border-radius: 22px 22px 0 0;
+        padding: 0 0 env(safe-area-inset-bottom, 16px);
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+    }
+    .mp-sheet-panel.open {
+        transform: translateY(0);
+    }
+    .mp-sheet-handle {
+        width: 36px; height: 4px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 2px;
+        margin: 12px auto 4px;
+    }
+    .mp-sheet-title {
+        font-size: 13px; font-weight: 600;
+        color: var(--text2);
+        padding: 8px 20px 12px;
+        border-bottom: 1px solid var(--bdr2, rgba(255,255,255,0.07));
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mp-sheet-items { padding: 8px 8px 8px; }
+    .mp-sheet-item {
+        display: flex; align-items: center; gap: 14px;
+        padding: 14px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px; font-weight: 500;
+        color: var(--text);
+        transition: background 0.12s;
+    }
+    .mp-sheet-item:hover, .mp-sheet-item:active {
+        background: var(--hover, rgba(255,255,255,0.07));
+    }
+    .mp-sheet-ic {
+        width: 32px; height: 32px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.06);
+        color: var(--text2);
+        flex-shrink: 0;
+    }
+    .mp-sheet-vol {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 14px 6px;
+        color: var(--text2);
+    }
+    .mp-sheet-vtr {
+        flex: 1; height: 4px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 2px; cursor: pointer;
+        position: relative;
+    }
+    .mp-sheet-vfl {
+        height: 100%; background: var(--acc5);
+        border-radius: 2px; width: 80%;
+        transition: width 0.1s;
+    }
+    .toast {
+        position: fixed;
+        bottom: 95px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: rgba(17, 24, 39, 0.9);
+        border: 1px solid var(--acc);
+        color: var(--text);
+        padding: 12px 24px;
+        border-radius: 20px;
+        font-size: 13.5px;
+        font-weight: 600;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--glow2);
+        z-index: 99999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s, transform 0.3s;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        text-align: center;
+        white-space: nowrap;
+        max-width: 90vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+    }
+    </style>
+
+    <script src="supabase-js.js?v=1.8"></script>
+    <script src="songs_array.js?v=1.8"></script>
+    <script src="app.js?v=1.8"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js?v=1.5')
-                    .then(reg => console.log('PWA Service Worker registered!', reg))
+                navigator.serviceWorker.register('sw.js?v=1.8')
+                    .then(reg => {
+                        console.log('PWA Service Worker registered!', reg);
+                        reg.onupdatefound = () => {
+                            const installingWorker = reg.installing;
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed') {
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('New content available; reloading...');
+                                        window.location.reload();
+                                    }
+                                }
+                            };
+                        };
+                    })
                     .catch(err => console.warn('PWA Service Worker registration failed!', err));
             });
         }

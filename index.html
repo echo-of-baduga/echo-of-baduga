@@ -1,4281 +1,761 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Echo of Baduga - Premium Baduga Music Streaming</title>
+    <title>Echo of Baduga - Premium Baduga Music & Culture Platform</title>
     
     <!-- Primary SEO Meta Tags -->
-    <meta name="title" content="Echo of Baduga - Premium Baduga Music Streaming">
-    <meta name="description" content="Echo of Baduga is the official music and culture platform for streaming authentic Baduga devotional, evergreen, love, melody, and sad songs from the Nilgiri Hills. Get our free app or stream online.">
-    <meta name="keywords" content="Echo of Baduga, Baduga songs, Baduga music, Baduga culture, Nilgiri Hills music, Baduga devotional songs, Baduga MP3, download Baduga app">
+    <meta name="title" content="Echo of Baduga - Premium Baduga Music & Culture">
+    <meta name="description" content="Welcome to the Echo of Baduga. Stream 600+ authentic Baduga devotional, melody, love, evergreen, and sad songs from Nilgiris. Access the web player or download our Android App.">
+    <meta name="keywords" content="Echo of Baduga, Baduga music, Baduga songs, Nilgiri Hills music, Baduga app, download Baduga APK, Baduga culture">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
     <meta name="author" content="Echo of Baduga">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://echo-of-baduga.github.io/echo-of-baduga/">
-    <meta property="og:title" content="Echo of Baduga - Stream Authentic Baduga Music">
-    <meta property="og:description" content="Stream authentic Baduga devotional, evergreen, love, melody, and sad songs directly from the Nilgiri Hills. Listen as a guest or download the app.">
-    <meta property="og:image" content="https://echo-of-baduga.github.io/echo-of-baduga/assets/logo.png">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://echo-of-baduga.github.io/echo-of-baduga/">
-    <meta property="twitter:title" content="Echo of Baduga - Stream Authentic Baduga Music">
-    <meta property="twitter:description" content="Stream authentic Baduga devotional, evergreen, love, melody, and sad songs directly from the Nilgiri Hills. Listen as a guest or download the app.">
-    <meta property="twitter:image" content="https://echo-of-baduga.github.io/echo-of-baduga/assets/logo.png">
-
-    <!-- Structured Schema JSON-LD Data for SEO Ranking -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "MusicPlaylist",
-      "name": "Echo of Baduga",
-      "description": "Premium music streaming application for authentic Baduga songs and culture.",
-      "url": "https://echo-of-baduga.github.io/echo-of-baduga/",
-      "image": "https://echo-of-baduga.github.io/echo-of-baduga/assets/logo.png",
-      "genre": ["Devotional", "Evergreen", "Love", "Melody", "Sad"],
-      "provider": {
-        "@type": "Organization",
-        "name": "Echo of Baduga",
-        "logo": "https://echo-of-baduga.github.io/echo-of-baduga/assets/logo.png"
-      }
-    }
-    </script>
-
-    <link rel="manifest" href="manifest.json">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <style>
-        /* ═══════════════════════════════════════
-   PREMIUM DARK THEME — Deep Emerald
-═══════════════════════════════════════ */
-        [data-theme="dark"] {
-            --bg: #0b0f19;
-            --bg1: #111827;
-            --bg2: #1f2937;
-            --bg3: #374151;
-            --bg4: #4b5563;
-            --acc: #10b981;
-            --acc2: #059669;
-            --acc3: #047857;
-            --acc4: #34d399;
-            --acc5: #6ee7b7;
-            --acc6: #a7f3d0;
-            --text: #f9fafb;
-            --text2: #d1d5db;
-            --text3: #9ca3af;
-            --text4: #6b7280;
-            --text5: #4b5563;
-            --bdr: rgba(255, 255, 255, 0.08);
-            --bdr2: rgba(255, 255, 255, 0.15);
-            --glow: rgba(16, 185, 129, 0.4);
-            --glow2: rgba(16, 185, 129, 0.15);
-            --card: rgba(17, 24, 39, 0.85);
-            --input: #1f2937;
-            --input-bg: #1f2937;
-            --input-border: rgba(255, 255, 255, 0.15);
-            --input-text: #f9fafb;
-            --input-placeholder: #9ca3af;
-            --input-focus-bg: rgba(255, 255, 255, 0.05);
-            --hover: rgba(255, 255, 255, 0.05);
-            --active: rgba(16, 185, 129, 0.2);
-            --shadow: rgba(0, 0, 0, 0.5);
-            --bg-gradient-top: rgba(13, 20, 38, 0.9);
-            --mp-bg: radial-gradient(circle at center, #1e2029 0%, #0a0b0e 100%);
-            --mp-disk-bg: #111;
-            --mp-disk-bdr: #14151a;
-            --mp-prog-bg: rgba(255, 255, 255, 0.1);
-            --sidebar-bg: rgba(10, 15, 28, 0.85);
-        }
-
-        /* ═══════════════════════════════════════
-   PREMIUM LIGHT THEME — Fresh White Emerald
-═══════════════════════════════════════ */
-        [data-theme="light"] {
-            --bg: #f3f4f6;
-            --bg1: #ffffff;
-            --bg2: #f9fafb;
-            --bg3: #e5e7eb;
-            --bg4: #d1d5db;
-            --acc: #059669;
-            --acc2: #10b981;
-            --acc3: #34d399;
-            --acc4: #047857;
-            --acc5: #065f46;
-            --acc6: #064e3b;
-            --text: #111827;
-            --text2: #1e293b;
-            --text3: #4b5563;
-            --text4: #6b7280;
-            --text5: #9ca3af;
-            --bdr: rgba(0, 0, 0, 0.08);
-            --bdr2: rgba(0, 0, 0, 0.15);
-            --glow: rgba(5, 150, 105, 0.25);
-            --glow2: rgba(5, 150, 105, 0.1);
-            --card: rgba(255, 255, 255, 0.9);
-            --input: #ffffff;
-            --input-bg: #f8fafc;
-            --input-border: #94a3b8;
-            --input-text: #0f172a;
-            --input-placeholder: #475569;
-            --input-focus-bg: #ffffff;
-            --hover: rgba(0, 0, 0, 0.04);
-            --active: rgba(5, 150, 105, 0.1);
-            --shadow: rgba(0, 0, 0, 0.08);
-            --bg-gradient-top: rgba(5, 150, 105, 0.06);
-            --mp-bg: radial-gradient(circle at center, #ffffff 0%, #f3f4f6 100%);
-            --mp-disk-bg: #ffffff;
-            --mp-disk-bdr: #e5e7eb;
-            --mp-prog-bg: rgba(0, 0, 0, 0.1);
-            --sidebar-bg: rgba(255, 255, 255, 0.9);
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-        }
-
-        input, textarea {
-            user-select: text !important;
-            -webkit-user-select: text !important;
-            -moz-user-select: text !important;
-        }
-
-        img {
-            -webkit-user-drag: none;
-            user-drag: none;
-            pointer-events: none;
-        }
-
-        @media print {
-            body { display: none !important; }
-        }
-
-        html,
-        body {
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: background .3s, color .3s;
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--bg4);
-            border-radius: 4px;
-        }
-
-        /* ═══ SCREENS ═══ */
-        .screen {
-            position: fixed;
-            inset: 0;
-            display: none;
-            z-index: 10;
-            flex-direction: column;
-        }
-
-        .screen.active {
-            display: flex;
-        }
-
-        /* ═══════════ SPLASH ═══════════ */
-        #splash {
-            background: var(--bg);
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            z-index: 100;
-        }
-
-        .sp-wrap {
-            position: relative;
-            width: 170px;
-            height: 170px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sp-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid;
-            animation: rp 3s ease-in-out infinite;
-        }
-
-        .sp-ring:nth-child(1) {
-            width: 170px;
-            height: 170px;
-            border-color: rgba(80, 112, 216, .1);
-            animation-delay: 0s;
-        }
-
-        .sp-ring:nth-child(2) {
-            width: 135px;
-            height: 135px;
-            border-color: rgba(80, 112, 216, .18);
-            animation-delay: .35s;
-        }
-
-        .sp-ring:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            border-color: rgba(80, 112, 216, .3);
-            animation-delay: .7s;
-        }
-
-        @keyframes rp {
-
-            0%,
-            100% {
-                opacity: .4;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-        }
-
-        .sp-brand {
-            text-align: center;
-            margin-top: 32px;
-        }
-
-        .sp-sub {
-            font-size: 11px;
-            letter-spacing: 7px;
-            color: var(--text2);
-            text-transform: uppercase;
-            animation: fu .8s .3s both;
-        }
-
-        .sp-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 38px;
-            font-weight: 700;
-            color: var(--text);
-            animation: fu .8s .5s both;
-            letter-spacing: 1px;
-        }
-
-        .sp-tagline {
-            font-size: 12px;
-            color: var(--text4);
-            animation: fu .8s .7s both;
-            margin-top: 4px;
-            letter-spacing: 2px;
-        }
-
-        .sp-bar {
-            width: 160px;
-            height: 2px;
-            background: var(--bg3);
-            border-radius: 2px;
-            overflow: hidden;
-            margin: 24px auto 0;
-            animation: fu .8s .9s both;
-        }
-
-        .sp-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--acc), var(--acc3), var(--acc5));
-            animation: fb 2.5s ease forwards;
-        }
-
-        @keyframes fb {
-            from {
-                width: 0
-            }
-
-            to {
-                width: 100%
-            }
-        }
-
-        @keyframes fu {
-            from {
-                opacity: 0;
-                transform: translateY(14px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        /* ═══════════ AUTH ═══════════ */
-        #auth {
-            background: var(--bg);
-            flex-direction: row;
-        }
-
-        .a-left {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(150deg, var(--bg1), var(--bg2), var(--bg3));
-            border-right: 1px solid var(--bdr);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .a-left-grid {
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(var(--bdr) 1px, transparent 1px), linear-gradient(90deg, var(--bdr) 1px, transparent 1px);
-            background-size: 44px 44px;
-        }
-
-        .a-glow {
-            position: absolute;
-            width: 520px;
-            height: 520px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(42, 70, 184, .3) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: ag 5s ease-in-out infinite;
-        }
-
-        @keyframes ag {
-
-            0%,
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-            }
-
-            50% {
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-        }
-
-        .a-left-body {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 44px;
-        }
-
-        .a-badge {
-            display: inline-block;
-            background: rgba(80, 112, 216, .15);
-            border: 1px solid rgba(80, 112, 216, .4);
-            border-radius: 20px;
-            padding: 5px 18px;
-            font-size: 10.5px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--acc5);
-            margin-bottom: 22px;
-        }
-
-        .a-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 40px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.1;
-            margin-bottom: 14px;
-        }
-
-        .a-desc {
-            font-size: 13.5px;
-            color: var(--text2);
-            line-height: 1.9;
-            max-width: 310px;
-            margin: 0 auto;
-        }
-
-        .a-feats {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 26px;
-            text-align: left;
-        }
-
-        .af {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, .04);
-            border: 1px solid rgba(80, 112, 216, .14);
-            border-radius: 10px;
-            padding: 11px 16px;
-        }
-
-        .af-ic {
-            font-size: 17px;
-            flex-shrink: 0;
-        }
-
-        .af-t {
-            font-size: 12.5px;
-            color: var(--text2);
-        }
-
-        .af-t b {
-            color: var(--text);
-            font-weight: 700;
-        }
-
-        /* EQ bars on auth */
-        .eq-row {
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            height: 40px;
-            justify-content: center;
-            margin-top: 22px;
-        }
-
-        .eqb {
-            border-radius: 3px 3px 0 0;
-            animation: eqa .8s ease-in-out infinite;
-        }
-
-        .eqb:nth-child(1) {
-            width: 6px;
-            height: 14px;
-            background: #e8001a;
-            animation-delay: 0s;
-        }
-
-        .eqb:nth-child(2) {
-            width: 6px;
-            height: 22px;
-            background: #ff5500;
-            animation-delay: .1s;
-        }
-
-        .eqb:nth-child(3) {
-            width: 6px;
-            height: 32px;
-            background: #ff9900;
-            animation-delay: .2s;
-        }
-
-        .eqb:nth-child(4) {
-            width: 6px;
-            height: 40px;
-            background: #ffcc00;
-            animation-delay: .3s;
-        }
-
-        .eqb:nth-child(5) {
-            width: 6px;
-            height: 34px;
-            background: #aadd00;
-            animation-delay: .4s;
-        }
-
-        .eqb:nth-child(6) {
-            width: 6px;
-            height: 24px;
-            background: #44cc00;
-            animation-delay: .3s;
-        }
-
-        .eqb:nth-child(7) {
-            width: 6px;
-            height: 16px;
-            background: #00aa44;
-            animation-delay: .2s;
-        }
-
-        .eqb:nth-child(8) {
-            width: 6px;
-            height: 10px;
-            background: #008844;
-            animation-delay: .1s;
-        }
-
-        @keyframes eqa {
-
-            0%,
-            100% {
-                transform: scaleY(1);
-            }
-
-            50% {
-                transform: scaleY(.2);
-                transform-origin: bottom;
-            }
-        }
-
-        .a-right {
-            width: 480px;
-            flex-shrink: 0;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 50px 52px;
-            overflow-y: auto;
-        }
-
-        .a-logo-top {
-            margin-bottom: 26px;
-        }
-
-        .a-heading {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 5px;
-            text-align: center;
-        }
-
-        .a-subh {
-            font-size: 13px;
-            color: var(--text2);
-            margin-bottom: 26px;
-            text-align: center;
-        }
-
-        .atabs {
-            display: flex;
-            background: var(--bg2);
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 22px;
-            width: 100%;
-        }
-
-        .at {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            border-radius: 9px;
-            font-size: 13.5px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all .2s;
-            color: var(--text2);
-        }
-
-        .at.on {
-            background: var(--acc2);
-            color: #fff;
-            box-shadow: 0 2px 14px var(--glow);
-        }
-
-        .af-form {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 13px;
-        }
-
-        .fl {
-            font-size: 10.5px;
-            font-weight: 700;
-            color: var(--text2);
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .fi {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1.5px solid var(--input-border);
-            border-radius: 10px;
-            padding: 13px 16px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 14px;
-            color: var(--input-text);
-            outline: none;
-            transition: all .2s;
-        }
-
-        .fi:focus {
-            border-color: var(--acc);
-            box-shadow: 0 0 0 4px var(--glow);
-            background: var(--input-focus-bg);
-        }
-
-        .fi::placeholder {
-            color: var(--input-placeholder);
-            opacity: 0.8;
-        }
-
-        .btn-pr {
-            background: linear-gradient(135deg, var(--acc), var(--acc2));
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            padding: 15px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 25px var(--glow);
-            letter-spacing: 0.5px;
-        }
-
-        .btn-pr:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px var(--glow);
-            filter: brightness(1.1);
-        }
-
-        /* Glassmorphism Refinements */
-        .screen {
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-
-        .sidebar {
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--bdr2);
-        }
-
-        .main-area {
-            background: linear-gradient(180deg, var(--bg-gradient-top), var(--bg));
-        }
-
-        .or-d {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 12px;
-            color: var(--text4);
-        }
-
-        .or-d::before,
-        .or-d::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--bdr);
-        }
-
-        .btn-g {
-            width: 100%;
-            background: transparent;
-            border: 1.5px solid var(--bdr2);
-            border-radius: 10px;
-            padding: 12px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--text2);
-            cursor: pointer;
-            transition: all .2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-g:hover {
-            background: var(--bg2);
-            border-color: var(--acc3);
-            color: var(--text);
-        }
-
-        .gdot {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: conic-gradient(#4285f4 0 90deg, #ea4335 90deg 180deg, #fbbc05 180deg 270deg, #34a853 270deg);
-        }
-
-        .a-sw {
-            font-size: 12.5px;
-            color: var(--text3);
-            text-align: center;
-            margin-top: 4px;
-        }
-
-        .a-sw span {
-            color: var(--acc4);
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        .a-sw span:hover {
-            color: var(--text);
-        }
-
-        .a-forgot:hover {
-            color: var(--text);
-        }
-
-        /* Password Toggle */
-        .pwd-field {
-            position: relative;
-            width: 100%;
-        }
-
-        .pwd-tog {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 16px;
-            color: var(--text3);
-            user-select: none;
-            transition: color .2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pwd-tog:hover {
-            color: var(--acc);
-        }
-
-        /* ═══════════ MAIN APP ═══════════ */
-        #appMain {
-            background: var(--bg);
-        }
-
-        .shell {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 218px 1fr 275px;
-            grid-template-rows: 1fr 88px;
-            overflow: hidden;
-            min-height: 0;
-        }
-
-        /* ── SIDEBAR ── */
-        .sidebar {
-            grid-column: 1;
-            grid-row: 1;
-            background: var(--bg1);
-            border-right: 1px solid var(--bdr);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .sb-logo {
-            padding: 20px 18px 18px;
-            border-bottom: 1px solid var(--bdr);
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            cursor: pointer;
-            transition: opacity .2s;
-        }
-
-        .sb-logo:hover {
-            opacity: .85;
-        }
-
-        .lwrap {
-            line-height: 1.15;
-        }
-
-        .lw1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: .5px;
-        }
-
-        .lw2 {
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--text3);
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
-        nav {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px 10px;
-        }
-
-        .ng {
-            font-size: 9px;
-            letter-spacing: 2.3px;
-            text-transform: uppercase;
-            color: var(--text4);
-            padding: 0 10px;
-            margin: 14px 0 5px;
-        }
-
-        .ni {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text2);
-            transition: all .18s;
-            position: relative;
-            user-select: none;
-        }
-
-        .ni:hover {
-            background: var(--hover);
-            color: var(--text);
-        }
-
-        .ni.on {
-            background: var(--active);
-            color: var(--text);
-        }
-
-        .ni.on::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 22%;
-            height: 56%;
-            width: 3px;
-            background: var(--acc3);
-            border-radius: 0 3px 3px 0;
-        }
-
-        .ni-ic {
-            font-size: 15px;
-            width: 20px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .nb {
-            margin-left: auto;
-            background: var(--acc);
-            color: #fff;
-            font-size: 9.5px;
-            font-weight: 800;
-            padding: 1px 7px;
-            border-radius: 10px;
-        }
-
-        .sb-pls {
-            padding: 10px 10px 16px;
-            border-top: 1px solid var(--bdr);
-        }
-
-        .pl-i {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            color: var(--text2);
-            transition: all .15s;
-        }
-
-        .pl-i:hover {
-            background: var(--hover);
-            color: var(--text);
-        }
-
-        .pld {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--acc3);
-            flex-shrink: 0;
-        }
-
-        /* ── TOPBAR ── */
-        .topbar {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            padding: 13px 22px;
-            background: linear-gradient(180deg, var(--bg1) 0%, transparent);
-            flex-shrink: 0;
-        }
-
-        .tnb {
-            width: 29px;
-            height: 29px;
-            background: var(--bg2);
-            border: 1px solid var(--bdr);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 13px;
-            color: var(--text2);
-            transition: all .15s;
-        }
-
-        .tnb:hover {
-            background: var(--bg3);
-            color: var(--text);
-        }
-
-        /* SEARCH BAR */
-        .srch-bar {
-            flex: 1;
-            max-width: 340px;
-            position: relative;
-        }
-
-        .srch-bar input {
-            width: 100%;
-            background: var(--input);
-            border: 1.5px solid var(--bdr2);
-            border-radius: 24px;
-            padding: 9px 16px 9px 40px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13.5px;
-            color: var(--text);
-            outline: none;
-            transition: all .2s;
-        }
-
-        .srch-bar input:focus {
-            border-color: var(--acc2);
-            box-shadow: 0 0 0 3px var(--glow2);
-        }
-
-        .srch-bar input::placeholder {
-            color: var(--text4);
-        }
-
-        .srch-ic {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 14px;
-            color: var(--text3);
-        }
-
-        /* SEARCH DROPDOWN */
-        .srch-drop {
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 0;
-            right: 0;
-            background: var(--bg1);
-            border: 1.5px solid var(--bdr2);
-            border-radius: 14px;
-            box-shadow: 0 12px 40px var(--shadow);
-            z-index: 100;
-            overflow: hidden;
-            display: none;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .srch-drop.open {
-            display: block;
-        }
-
-        .sd-section {
-            padding: 10px 14px 6px;
-        }
-
-        .sd-label {
-            font-size: 9.5px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text4);
-            margin-bottom: 8px;
-        }
-
-        .sd-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 9px 10px;
-            border-radius: 9px;
-            cursor: pointer;
-            transition: background .15s;
-        }
-
-        .sd-item:hover {
-            background: var(--hover);
-        }
-
-        .sd-art {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            background: var(--bg2);
-            border: 1px solid var(--bdr);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 17px;
-            flex-shrink: 0;
-        }
-
-        .sd-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .sd-sub {
-            font-size: 11px;
-            color: var(--text2);
-        }
-
-        .sd-empty {
-            padding: 22px;
-            text-align: center;
-            font-size: 13px;
-            color: var(--text4);
-        }
-
-        .sd-spin {
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .mini-spin {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--bg3);
-            border-top-color: var(--acc3);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        .tb-r {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin-left: auto;
-        }
-
-        .th-tog {
-            display: flex;
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr2);
-            border-radius: 22px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .tho {
-            padding: 6px 14px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: var(--text2);
-            transition: all .2s;
-        }
-
-        .tho.on {
-            background: var(--acc);
-            color: #fff;
-        }
-
-        .u-av {
-            width: 33px;
-            height: 33px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--acc), var(--acc3));
-            border: 2px solid var(--acc2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 800;
-            color: #fff;
-            cursor: pointer;
-            transition: all .2s;
-        }
-
-        .u-av:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 0 3px var(--glow2);
-        }
-
-        /* MAIN CONTENT */
-        .main-area {
-            grid-column: 2;
-            grid-row: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .feed {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 22px 26px;
-        }
-
-        /* HERO */
-        .hero {
-            background: var(--bg1);
-            border: 1px solid var(--bdr2);
-            border-radius: 18px;
-            position: relative;
-            overflow: hidden;
-            min-height: 196px;
-            display: flex;
-            align-items: flex-end;
-            padding: 26px;
-            cursor: pointer;
-            margin-bottom: 24px;
-            transition: transform .22s, border-color .2s;
-        }
-
-        .hero:hover {
-            transform: scale(1.005);
-            border-color: var(--acc3);
-        }
-
-        .hbg {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--bg2), var(--bg3), var(--bg2));
-        }
-
-        .hgrid {
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(var(--bdr) 1px, transparent 1px), linear-gradient(90deg, var(--bdr) 1px, transparent 1px);
-            background-size: 36px 36px;
-            opacity: .5;
-        }
-
-        .hglow {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 78% 30%, rgba(80, 112, 216, .28) 0%, transparent 55%);
-        }
-
-        .hline {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--acc2), var(--acc5), transparent);
-        }
-
-        .h-art {
-            position: absolute;
-            right: 28px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 124px;
-            height: 124px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, var(--bg3), var(--bg4));
-            border: 1px solid var(--bdr2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-            box-shadow: 0 16px 48px var(--shadow), 0 0 0 1px rgba(80, 112, 216, .2);
-        }
-
-        .h-body {
-            position: relative;
-            z-index: 2;
-        }
-
-        .h-tag {
-            display: inline-block;
-            background: rgba(80, 112, 216, .18);
-            border: 1px solid var(--acc2);
-            border-radius: 20px;
-            padding: 3px 12px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.8px;
-            text-transform: uppercase;
-            color: var(--acc5);
-            margin-bottom: 10px;
-        }
-
-        .h-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.1;
-            margin-bottom: 6px;
-        }
-
-        .h-sub {
-            font-size: 12.5px;
-            color: var(--text2);
-            margin-bottom: 16px;
-        }
-
-        .h-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, var(--acc), var(--acc2));
-            color: #fff;
-            border: none;
-            border-radius: 9px;
-            padding: 11px 22px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 18px var(--glow);
-            transition: all .2s;
-        }
-
-        .h-cta:hover {
-            background: linear-gradient(135deg, var(--acc2), var(--acc3));
-            transform: translateY(-1px);
-        }
-
-        /* SECTIONS */
-        .sec {
-            margin-bottom: 24px;
-        }
-
-        .sh {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 13px;
-        }
-
-        .st {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        .sm {
-            font-size: 10.5px;
-            font-weight: 700;
-            color: var(--text4);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: color .15s;
-        }
-
-        .sm:hover {
-            color: var(--acc4);
-        }
-
-        /* GENRE */
-        .gg {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .gc {
-            height: 140px;
-            background: var(--bg1);
-            border: 1px solid var(--bdr2);
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 16px;
-        }
-
-        .gc:hover {
-            border-color: var(--acc2);
-            box-shadow: 0 12px 36px var(--shadow);
-        }
-
-        .gc-bg {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            transition: transform .5s ease;
-            z-index: 0;
-        }
-
-        .gc:hover .gc-bg {
-            transform: scale(1.1);
-        }
-
-        .gc-ov {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(10, 15, 28, 0.9) 0%, rgba(10, 15, 28, 0.3) 50%, transparent 100%);
-            z-index: 1;
-        }
-
-        .gc-body {
-            position: relative;
-            z-index: 2;
-        }
-
-        .gc-i {
-            display: none;
-        }
-
-        .gc-n {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 2px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .gc-c {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-        }
-
-        /* TRACK LIST */
-        .tl {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ti {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            padding: 8px 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background .15s;
-        }
-
-        .ti:hover {
-            background: var(--hover);
-        }
-
-        .ti.now {
-            background: var(--active);
-        }
-
-        .tnum {
-            width: 18px;
-            font-size: 12px;
-            color: var(--text4);
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .ti.now .tnum {
-            color: var(--acc3);
-        }
-
-        .tart {
-            width: 42px;
-            height: 42px;
-            border-radius: 9px;
-            flex-shrink: 0;
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .ti.now .tart {
-            border-color: var(--acc2);
-        }
-
-        .tinfo {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .tname {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 2px;
-        }
-
-        .ti.now .tname {
-            color: var(--acc5);
-        }
-
-        .tartname {
-            font-size: 11.5px;
-            color: var(--text2);
-        }
-
-        .tmeta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
-        .tlk {
-            font-size: 11px;
-            color: var(--text4);
-        }
-
-        .tdur {
-            font-size: 12px;
-            color: var(--text2);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .tmore {
-            font-size: 14px;
-            color: var(--text4);
-            opacity: 0;
-            transition: opacity .12s;
-            padding: 0 3px;
-        }
-
-        .ti:hover .tmore {
-            opacity: 1;
-        }
-
-        /* WAVEFORM */
-        .wv {
-            display: flex;
-            align-items: center;
-            gap: 1.5px;
-            height: 16px;
-        }
-
-        .wvb {
-            width: 2.5px;
-            border-radius: 2px;
-            background: var(--acc3);
-            animation: wva .7s ease-in-out infinite;
-        }
-
-        .wvb:nth-child(1) {
-            height: 5px;
-            animation-delay: 0s;
-        }
-
-        .wvb:nth-child(2) {
-            height: 12px;
-            animation-delay: .12s;
-        }
-
-        .wvb:nth-child(3) {
-            height: 16px;
-            animation-delay: .24s;
-        }
-
-        .wvb:nth-child(4) {
-            height: 9px;
-            animation-delay: .36s;
-        }
-
-        .wvb:nth-child(5) {
-            height: 13px;
-            animation-delay: .48s;
-        }
-
-        @keyframes wva {
-
-            0%,
-            100% {
-                transform: scaleY(1);
-            }
-
-            50% {
-                transform: scaleY(.22);
-            }
-        }
-
-        /* ── PLAYER BAR ── */
-        .player {
-            grid-column: 1/4;
-            grid-row: 2;
-            background: var(--bg1);
-            border-top: 1px solid var(--bdr);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            position: relative;
-        }
-
-        .player::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--acc), var(--acc4), transparent);
-        }
-
-        .pl {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 235px;
-            flex-shrink: 0;
-        }
-
-        .p-meta {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .pa {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            flex-shrink: 0;
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 14px var(--shadow);
-        }
-
-        .pa.spin::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 10px;
-            border: 2px solid transparent;
-            border-top-color: var(--acc3);
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .pnm {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 1px;
-        }
-
-        .par {
-            font-size: 11px;
-            color: var(--text2);
-        }
-
-        .plk {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            color: var(--text2);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .15s;
-            flex-shrink: 0;
-        }
-
-        .plk.on {
-            color: var(--acc4);
-        }
-
-        .plk:hover {
-            background: var(--hover);
-            color: var(--acc4);
-            transform: scale(1.08);
-        }
-
-        .pc {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            padding: 0 12px;
-        }
-
-        .pb {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .cb {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            color: var(--text2);
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .15s;
-        }
-
-        .cb:hover {
-            background: var(--hover);
-            color: var(--text);
-        }
-
-        .cb.on {
-            color: var(--acc5);
-        }
-
-        .pbtn {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--acc), var(--acc2));
-            border-radius: 50%;
-            border: none;
-            color: #fff;
-            font-size: 17px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px var(--glow);
-            transition: all .18s;
-            margin: 0 4px;
-        }
-
-        .pbtn:hover {
-            background: linear-gradient(135deg, var(--acc2), var(--acc3));
-            transform: scale(1.07);
-        }
-
-        .pp {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-            max-width: 470px;
-        }
-
-        .tt {
-            font-size: 10px;
-            color: var(--text4);
-            font-variant-numeric: tabular-nums;
-            width: 27px;
-            flex-shrink: 0;
-        }
-
-        .tt:last-child {
-            text-align: right;
-        }
-
-        .pbar {
-            flex: 1;
-            height: 3px;
-            background: var(--bg3);
-            border-radius: 3px;
-            cursor: pointer;
-            transition: height .15s;
-        }
-
-        .pbar:hover {
-            height: 5px;
-        }
-
-        .pfill {
-            height: 100%;
-            border-radius: 3px;
-            background: linear-gradient(90deg, var(--acc), var(--acc3), var(--acc5));
-            width: 38%;
-            position: relative;
-        }
-
-        .pfill::after {
-            content: '';
-            position: absolute;
-            right: -5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--acc5);
-            opacity: 0;
-            transition: opacity .12s;
-        }
-
-        .pbar:hover .pfill::after {
-            opacity: 1;
-        }
-
-        .prx {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            width: 235px;
-            justify-content: flex-end;
-            flex-shrink: 0;
-        }
-
-        .xb {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            border: none;
-            background: transparent;
-            color: var(--text2);
-            font-size: 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all .15s;
-        }
-
-        .xb:hover {
-            background: var(--hover);
-            color: var(--acc4);
-        }
-
-        .xb.on {
-            color: var(--acc4);
-        }
-
-        .slpw {
-            position: relative;
-        }
-
-        .scnt {
-            position: absolute;
-            top: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg2);
-            border: 1px solid var(--acc);
-            border-radius: 7px;
-            padding: 2px 8px;
-            font-size: 9.5px;
-            color: var(--acc4);
-            white-space: nowrap;
-            display: none;
-        }
-
-        .vol {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .vic {
-            font-size: 14px;
-            color: var(--text2);
-        }
-
-        .vtr {
-            width: 70px;
-            height: 3px;
-            background: var(--bg3);
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .vfl {
-            height: 100%;
-            border-radius: 3px;
-            background: var(--text4);
-            width: 70%;
-            transition: background .15s;
-        }
-
-        .vol:hover .vfl {
-            background: var(--acc3);
-        }
-
-        /* ── RIGHT PANEL ── */
-        .rpanel {
-            grid-column: 3;
-            grid-row: 1;
-            background: var(--bg1);
-            border-left: 1px solid var(--bdr);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .rp-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--bdr);
-            flex-shrink: 0;
-        }
-
-        .rtab {
-            flex: 1;
-            padding: 13px 6px;
-            text-align: center;
-            font-size: 10.5px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text4);
-            cursor: pointer;
-            transition: all .15s;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
-        }
-
-        .rtab:hover {
-            color: var(--text2);
-        }
-
-        .rtab.on {
-            color: var(--acc5);
-            border-bottom-color: var(--acc2);
-        }
-
-        .rpb {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px;
-        }
-
-        #lyrPanel {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        #lyrPanel.show {
-            display: flex;
-        }
-
-        .uq {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px;
-            border-radius: 9px;
-            cursor: pointer;
-            transition: background .15s;
-        }
-
-        .uq:hover {
-            background: var(--hover);
-        }
-
-        .uqa {
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            background: var(--bg2);
-            border: 1px solid var(--bdr);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 17px;
-            flex-shrink: 0;
-        }
-
-        .uqn {
-            font-size: 12.5px;
-            font-weight: 600;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .uqar {
-            font-size: 11px;
-            color: var(--text2);
-        }
-
-        .lyr-hd {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 0 12px;
-            flex-shrink: 0;
-        }
-
-        .lyr-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(80, 112, 216, .12);
-            border: 1px solid var(--acc);
-            border-radius: 20px;
-            padding: 3px 10px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--acc5);
-        }
-
-        .ldot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--acc3);
-            animation: ldota 1.4s ease-in-out infinite;
-        }
-
-        @keyframes ldota {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: .2;
-            }
-        }
-
-        .lyr-regen {
-            background: transparent;
-            border: 1px solid var(--bdr);
-            border-radius: 8px;
-            padding: 5px 10px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text2);
-            cursor: pointer;
-            transition: all .15s;
-        }
-
-        .lyr-regen:hover {
-            border-color: var(--acc2);
-            color: var(--acc4);
-        }
-
-        .lyr-box {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .lline {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 15px;
-            line-height: 2.1;
-            color: var(--text4);
-            cursor: default;
-            transition: all .3s;
-            padding: 1px 8px;
-            border-radius: 5px;
-            display: block;
-        }
-
-        .lline.active {
-            color: var(--text);
-            font-weight: 600;
-            background: var(--active);
-            padding-left: 14px;
-            border-left: 3px solid var(--acc3);
-        }
-
-        .lline:hover:not(.active) {
-            color: var(--text2);
-        }
-
-        .chorus-lbl {
-            display: block;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 9px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--acc3);
-            font-weight: 800;
-            margin-top: 10px;
-            margin-bottom: 2px;
-        }
-
-        .ai-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            gap: 14px;
-        }
-
-        .ai-spin {
-            width: 26px;
-            height: 26px;
-            border: 2px solid var(--bg3);
-            border-top-color: var(--acc2);
-            border-right-color: var(--acc4);
-            border-radius: 50%;
-            animation: spin .9s linear infinite;
-        }
-
-        .ai-lbl {
-            font-size: 11.5px;
-            color: var(--text3);
-            text-align: center;
-            line-height: 1.7;
-        }
-
-        .ai-lbl em {
-            color: var(--acc4);
-            font-style: normal;
-            font-weight: 700;
-        }
-
-        .ai-err {
-            background: var(--bg2);
-            border: 1px solid var(--bdr);
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 12.5px;
-            color: var(--text2);
-            line-height: 1.65;
-        }
-
-        .retry-btn {
-            display: inline-block;
-            margin-top: 10px;
-            background: rgba(80, 112, 216, .12);
-            border: 1px solid var(--acc);
-            border-radius: 7px;
-            padding: 6px 14px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: var(--acc4);
-            cursor: pointer;
-            transition: all .15s;
-        }
-
-        .retry-btn:hover {
-            background: var(--acc);
-            color: #fff;
-        }
-
-        /* ═══════════ SETTINGS OVERLAY ═══════════ */
-        .set-ov {
-            position: fixed;
-            inset: 0;
-            background: rgba(3, 7, 26, .88);
-            backdrop-filter: blur(6px);
-            z-index: 20000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .25s;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .set-ov.open {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .set-drawer {
-            width: 400px;
-            background: var(--bg1);
-            border-left: 1px solid var(--bdr2);
-            height: 100%;
-            overflow-y: auto;
-            transform: translateX(100%);
-            transition: transform .3s cubic-bezier(.4, 0, .2, 1);
-        }
-
-        .set-ov.open .set-drawer {
-            transform: translateX(0);
-        }
-
-        .sh-hdr {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 22px;
-            border-bottom: 1px solid var(--bdr);
-            position: sticky;
-            top: 0;
-            background: var(--bg1);
-            z-index: 2;
-        }
-
-        .sh-ttl {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 21px;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        .sh-cls {
-            width: 32px;
-            height: 32px;
-            background: var(--bg2);
-            border: 1px solid var(--bdr);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 15px;
-            color: var(--text2);
-            transition: all .15s;
-        }
-
-        .sh-cls:hover {
-            background: var(--bg3);
-            color: var(--text);
-        }
-
-        .sh-body {
-            padding: 20px 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-        }
-
-        /* Profile */
-        .set-pcard {
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr2);
-            border-radius: 14px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .set-pcard::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(80, 112, 216, .1), transparent);
-            pointer-events: none;
-        }
-
-        .set-av {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--acc), var(--acc3));
-            border: 2px solid var(--acc2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 800;
-            color: #fff;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .set-av-info {
-            position: relative;
-            z-index: 1;
-            min-width: 0;
-        }
-
-        .set-uname {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-
-        .set-email {
-            font-size: 11.5px;
-            color: var(--text2);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .set-plan {
-            display: inline-block;
-            background: rgba(80, 112, 216, .18);
-            border: 1px solid var(--acc);
-            border-radius: 6px;
-            padding: 2px 9px;
-            font-size: 9.5px;
-            font-weight: 800;
-            color: var(--acc5);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-
-        /* Section */
-        .sset-sec {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .sset-lbl {
-            font-size: 9.5px;
-            font-weight: 800;
-            color: var(--text4);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-
-        .srow {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr);
-            border-radius: 11px;
-            padding: 12px 15px;
-            transition: all .15s;
-        }
-
-        .srow:hover {
-            background: var(--bg3);
-            border-color: var(--bdr2);
-        }
-
-        .srow-l {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .srow-ic {
-            font-size: 17px;
-            width: 22px;
-            text-align: center;
-        }
-
-        .srow-t .sr1 {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .srow-t .sr2 {
-            font-size: 11px;
-            color: var(--text3);
-            margin-top: 1px;
-        }
-
-        .srow-r {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sbadge {
-            background: var(--active);
-            border: 1px solid var(--acc);
-            border-radius: 6px;
-            padding: 2px 9px;
-            font-size: 10.5px;
-            font-weight: 700;
-            color: var(--acc4);
-        }
-
-        /* Toggle */
-        .tsw {
-            width: 42px;
-            height: 24px;
-            background: var(--bg3);
-            border-radius: 12px;
-            position: relative;
-            cursor: pointer;
-            transition: background .2s;
-            border: 1px solid var(--bdr2);
-        }
-
-        .tsw.on {
-            background: var(--acc2);
-        }
-
-        .tsw::after {
-            content: '';
-            position: absolute;
-            left: 2px;
-            top: 2px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #fff;
-            transition: transform .2s;
-        }
-
-        .tsw.on::after {
-            transform: translateX(18px);
-        }
-
-        /* EQ */
-        .eq-sec {
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr);
-            border-radius: 13px;
-            padding: 18px;
-        }
-
-        .eq-stl {
-            font-size: 9.5px;
-            font-weight: 800;
-            color: var(--text4);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-
-        .eq-presets {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .eqp {
-            background: var(--bg3);
-            border: 1px solid var(--bdr);
-            border-radius: 8px;
-            padding: 5px 12px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: var(--text2);
-            cursor: pointer;
-            transition: all .15s;
-        }
-
-        .eqp:hover {
-            background: var(--bg4);
-            color: var(--text);
-        }
-
-        .eqp.on {
-            background: var(--active);
-            border-color: var(--acc2);
-            color: var(--acc5);
-        }
-
-        .eq-bands {
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-            justify-content: space-between;
-            height: 110px;
-            padding: 0 2px;
-        }
-
-        .eq-band {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            flex: 1;
-        }
-
-        .eq-blbl {
-            font-size: 8.5px;
-            color: var(--text4);
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .eq-swrap {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .eq-sl {
-            -webkit-appearance: none;
-            appearance: none;
-            writing-mode: vertical-lr;
-            direction: rtl;
-            width: 4px;
-            height: 82px;
-            background: var(--bg3);
-            border-radius: 4px;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .eq-sl::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--acc3);
-            border: 2px solid var(--acc5);
-            cursor: pointer;
-            transition: all .15s;
-        }
-
-        .eq-sl::-webkit-slider-thumb:hover {
-            background: var(--acc5);
-            transform: scale(1.2);
-        }
-
-        .eq-val {
-            font-size: 9.5px;
-            color: var(--acc4);
-            font-weight: 700;
-            min-width: 28px;
-            text-align: center;
-        }
-
-        /* Quality */
-        .qual-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .qo {
-            flex: 1;
-            background: var(--bg3);
-            border: 1.5px solid var(--bdr);
-            border-radius: 9px;
-            padding: 10px 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all .15s;
-        }
-
-        .qo:hover {
-            background: var(--bg4);
-        }
-
-        .qo.on {
-            background: var(--active);
-            border-color: var(--acc2);
-        }
-
-        .qon {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-
-        .qos {
-            font-size: 10px;
-            color: var(--text3);
-        }
-
-        .qo.on .qon {
-            color: var(--acc5);
-        }
-
-        /* Instagram card */
-        .insta-card {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: linear-gradient(135deg, var(--bg2), var(--bg3));
-            border: 1.5px solid var(--bdr2);
-            border-radius: 13px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all .2s;
-            text-decoration: none;
-        }
-
-        .insta-card:hover {
-            border-color: var(--acc3);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px var(--shadow);
-        }
-
-        .ig-ic {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            flex-shrink: 0;
-        }
-
-        .ig-info .igi1 {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-
-        .ig-info .igi2 {
-            font-size: 11.5px;
-            color: var(--text2);
-        }
-
-        .ig-arr {
-            margin-left: auto;
-            font-size: 16px;
-            color: var(--text3);
-        }
-
-        /* About */
-        .about-card {
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr);
-            border-radius: 13px;
-            padding: 18px;
-            text-align: center;
-        }
-
-        .about-ver {
-            font-size: 11.5px;
-            color: var(--text3);
-            margin-bottom: 4px;
-        }
-
-        .about-copy {
-            font-size: 12px;
-            color: var(--text4);
-            line-height: 1.7;
-        }
-
-        .btn-logout {
-            width: 100%;
-            background: transparent;
-            border: 1.5px solid rgba(255, 80, 80, .3);
-            border-radius: 10px;
-            padding: 12px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13.5px;
-            font-weight: 700;
-            color: rgba(255, 110, 110, .8);
-            cursor: pointer;
-            transition: all .2s;
-            margin-top: 4px;
-        }
-
-        .btn-logout:hover {
-            background: rgba(255, 80, 80, .1);
-            border-color: rgba(255, 80, 80, .5);
-            color: rgb(255, 130, 130);
-        }
-
-        /* SLEEP MODAL */
-        .slp-ov {
-            position: fixed;
-            inset: 0;
-            background: rgba(3, 7, 26, .92);
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 20000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .22s;
-        }
-
-        .slp-ov.open {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .slp-sh {
-            background: var(--bg2);
-            border: 1.5px solid var(--bdr2);
-            border-top-color: var(--acc);
-            border-radius: 20px 20px 0 0;
-            padding: 20px 24px 32px;
-            width: 100%;
-            max-width: 440px;
-            transform: translateY(100%);
-            transition: transform .3s cubic-bezier(.34, 1.1, .64, 1);
-        }
-
-        .slp-ov.open .slp-sh {
-            transform: translateY(0);
-        }
-
-        .slp-hnd {
-            width: 36px;
-            height: 3px;
-            background: var(--bg4);
-            border-radius: 3px;
-            margin: 0 auto 18px;
-        }
-
-        .slp-t {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-
-        .slp-s {
-            font-size: 12px;
-            color: var(--text2);
-            margin-bottom: 16px;
-        }
-
-        .tgrid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 9px;
-        }
-
-        .topt {
-            background: var(--bg3);
-            border: 1.5px solid var(--bdr);
-            border-radius: 11px;
-            padding: 13px 14px;
-            cursor: pointer;
-            transition: all .15s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text2);
-        }
-
-        .topt:hover {
-            border-color: var(--acc2);
-            background: var(--hover);
-            color: var(--acc4);
-        }
-
-        .topt.sel {
-            border-color: var(--acc2);
-            background: var(--active);
-            color: var(--acc5);
-        }
-
-        .topt-full {
-            grid-column: 1/-1;
-        }
-
-        .slp-ab {
-            margin-top: 14px;
-            background: var(--active);
-            border: 1.5px solid var(--acc);
-            border-radius: 11px;
-            padding: 13px 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .slp-cd {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        /* Security: Anti-screenshot blur overlay */
-        .blur-protection-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 15, 28, 0.97);
-            z-index: 99999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(30px);
-        }
-        .blur-protection-overlay.active { display: flex; }
-        .blur-text { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-        .blur-subtext { font-size: 13px; color: var(--text3); }
-
-        /* Security watermark */
-        .security-watermark {
-            position: fixed;
-            inset: 0;
-            z-index: 99998;
-            pointer-events: none;
-            opacity: 0.008; /* extremely subtle & premium */
-            font-size: 13px;
-            color: var(--text);
-            overflow: hidden;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 100px 120px;
-            padding: 60px;
-            justify-content: space-around;
-            align-content: space-around;
-        }
-        .watermark-item {
-            transform: rotate(-25deg);
-            white-space: nowrap;
-            user-select: none;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-        /* ── RESPONSIVE MEDIA QUERIES ── */
-        .topbar-mobile-menu {
-            display: none;
-            font-size: 26px;
-            cursor: pointer;
-            color: var(--text2);
-            padding: 5px;
-            margin-right: 12px;
-            user-select: none;
-            transition: color 0.2s;
-        }
-        .topbar-mobile-menu:hover {
-            color: var(--acc5);
-        }
-
-        @media (max-width: 1024px) {
-            .shell {
-                grid-template-columns: 218px 1fr 0px !important;
-            }
-            .rpanel {
-                position: fixed;
-                right: -275px;
-                top: 0;
-                bottom: 72px; /* aligns with new mobile player height */
-                width: 275px;
-                z-index: 100;
-                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: -5px 0 25px rgba(0,0,0,0.6);
-            }
-            .rpanel.open {
-                right: 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .topbar-mobile-menu {
-                display: block;
-            }
-            .shell {
-                grid-template-columns: 0px 1fr 0px !important;
-                grid-template-rows: 1fr auto !important;
-            }
-            #auth {
-                flex-direction: column !important;
-            }
-            .a-left {
-                display: none !important;
-            }
-            .a-right {
-                width: 100% !important;
-                padding: 40px 24px !important;
-            }
-            .sidebar {
-                position: fixed;
-                left: -218px;
-                top: 0;
-                bottom: 0px;
-                width: 218px;
-                z-index: 200;
-                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 5px 0 25px rgba(0,0,0,0.6);
-            }
-            .sidebar.open {
-                left: 0;
-            }
-            .rpanel {
-                bottom: 0px;
-                height: calc(100% - 72px) !important;
-                z-index: 199;
-            }
-            
-            /* Responsive Genre Grid */
-            .gg {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
-            }
-            
-            /* Centered Hero Banner on Mobile */
-            .hero {
-                flex-direction: column !important;
-                height: auto !important;
-                min-height: 0 !important;
-                padding: 20px 16px !important;
-                align-items: center !important;
-                text-align: center !important;
-                gap: 14px !important;
-            }
-            .hbg {
-                background: linear-gradient(185deg, var(--bg2), var(--bg3), var(--bg2)) !important;
-            }
-            .h-art {
-                position: relative !important;
-                right: auto !important;
-                top: auto !important;
-                transform: none !important;
-                margin: 0 auto 4px !important;
-                width: 108px !important;
-                height: 108px !important;
-                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-            }
-            .h-body {
-                width: 100% !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-            }
-            .h-title {
-                font-size: 20px !important;
-                text-align: center !important;
-                line-height: 1.2 !important;
-                margin-top: 4px;
-            }
-            .h-sub {
-                text-align: center !important;
-                margin-bottom: 12px !important;
-                font-size: 12px !important;
-            }
-            .h-cta {
-                padding: 8px 18px !important;
-                font-size: 13px !important;
-            }
-            
-            /* PREMIUM COMPACT HORIZONTAL PLAYER FOR MOBILE */
-            .player {
-                flex-direction: row !important;
-                height: 72px !important;
-                padding: 0 12px !important;
-                gap: 8px !important;
-                background: var(--sidebar-bg) !important;
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                position: relative;
-                align-items: center;
-                justify-content: space-between;
-                border-top: 1px solid var(--bdr);
-                box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
-            }
-            .pl {
-                width: auto !important;
-                max-width: 40% !important;
-                flex: 1 !important;
-                gap: 6px !important;
-                justify-content: flex-start !important;
-                padding: 0 !important;
-            }
-            .pl .pa {
-                width: 42px !important;
-                height: 42px !important;
-                border-radius: 8px !important;
-            }
-            .pl .pnm {
-                font-size: 12px !important;
-                font-weight: 700 !important;
-                white-space: nowrap !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
-                max-width: 80px !important;
-            }
-            .pl .par {
-                font-size: 10px !important;
-                white-space: nowrap !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
-                max-width: 80px !important;
-            }
-            .plk {
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                margin-left: auto !important;
-                flex-shrink: 0 !important;
-            }
-            .plk svg {
-                width: 20px !important;
-                height: 20px !important;
-            }
-            
-            /* Player Controls on Mobile: Show all options beautifully (Shuffle, Prev, Play, Next, Repeat) */
-            .pc {
-                width: auto !important;
-                margin: 0 !important;
-                display: flex !important;
-                align-items: center !important;
-                gap: 4px !important;
-                padding: 0 !important;
-            }
-            .pb {
-                gap: 4px !important;
-                padding: 0 !important;
-            }
-            .pb .cb {
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                width: 28px !important;
-                height: 28px !important;
-                font-size: 15px !important;
-            }
-            .pbtn {
-                width: 36px !important;
-                height: 36px !important;
-                font-size: 15px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-            
-            /* Progress bar at the very top of the mobile player */
-            .pp {
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                width: 100% !important;
-                height: 3px !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            .pp .tt {
-                display: none !important; /* Hide timestamps on player bar to save space */
-            }
-            .pbar {
-                height: 3px !important;
-                border-radius: 0 !important;
-                background: var(--bg3) !important;
-                margin: 0 !important;
-            }
-            .pfill {
-                border-radius: 0 !important;
-            }
-
-            /* Extra Controls on Mobile: Hide volume, only show Settings (cog) and Queue (hamburger) */
-            .prx {
-                width: auto !important;
-                margin: 0 !important;
-                gap: 8px !important;
-                padding: 0 !important;
-            }
-            .prx .slpw, .prx .vol {
-                display: none !important; /* Hide sleep timer badge and volume slider */
-            }
-            .prx .xb {
-                width: 28px !important;
-                height: 28px !important;
-            }
-            .prx .xb svg {
-                width: 18px !important;
-                height: 18px !important;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .topbar {
-                flex-direction: column !important;
-                align-items: flex-start !important;
-                gap: 12px !important;
-                height: auto !important;
-                padding: 15px !important;
-            }
-            .srch-bar {
-                width: 100% !important;
-            }
-            .tb-r {
-                width: 100% !important;
-                justify-content: space-between !important;
-            }
-            .pl .pnm {
-                max-width: 90px !important;
-            }
-            .pl .par {
-                max-width: 90px !important;
-            }
-        }
-
-        /* 🚗 CAR / AUTOMOTIVE / LANDSCAPE INFOTAINMENT OPTIMIZATIONS (low-height widescreen) 🚗 */
-        @media (max-height: 640px) and (orientation: landscape) {
-            /* 1. Collapse sidebar to give maximum horizontal space */
-            .shell {
-                grid-template-columns: 0px 1fr 0px !important;
-                grid-template-rows: 1fr auto !important;
-            }
-            .sidebar {
-                position: fixed;
-                left: -218px;
-                top: 0;
-                bottom: 0;
-                width: 218px;
-                z-index: 200;
-                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 5px 0 25px rgba(0,0,0,0.6);
-            }
-            .sidebar.open {
-                left: 0;
-            }
-            .topbar-mobile-menu {
-                display: block !important;
-            }
-            
-            /* 2. Optimize bottom player bar with larger touch targets for in-car safety */
-            .player {
-                height: 76px !important;
-                padding: 0 16px !important;
-                gap: 12px !important;
-                background: var(--sidebar-bg) !important;
-            }
-            .player .pl {
-                max-width: 40% !important;
-                gap: 10px !important;
-            }
-            .player .pl .pa {
-                width: 48px !important;
-                height: 48px !important;
-            }
-            .player .pbtn {
-                width: 46px !important;
-                height: 46px !important;
-                font-size: 20px !important;
-            }
-            .player .cb.mp-prev, .player .cb.mp-next {
-                font-size: 24px !important;
-                width: 38px !important;
-                height: 38px !important;
-                display: flex !important;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            /* 3. Tighten vertical layouts to fit low landscape screen heights */
-            .topbar {
-                padding: 8px 16px !important;
-            }
-            .hero {
-                min-height: 120px !important;
-                padding: 16px !important;
-                margin-bottom: 12px !important;
-                align-items: center !important;
-            }
-            .hero .h-art {
-                width: 80px !important;
-                height: 80px !important;
-                top: 50% !important;
-                transform: translateY(-50%) !important;
-            }
-            .hero .h-title {
-                font-size: 22px !important;
-            }
-            .hero .h-sub {
-                margin-bottom: 8px !important;
-            }
-            .sec {
-                margin-bottom: 12px !important;
-            }
-            .gg {
-                grid-template-columns: repeat(4, 1fr) !important;
-                gap: 8px !important;
-            }
-            .gc {
-                height: 96px !important;
-                padding: 10px !important;
-            }
-            .gc-n {
-                font-size: 13px !important;
-            }
-            .feed {
-                padding: 0 16px 12px !important;
-            }
-        }
-
-        /* Unified Queue Collapse for Desktop */
-        .shell.queue-collapsed {
-            grid-template-columns: 218px 1fr 0px !important;
-        }
-        .shell.queue-collapsed .rpanel {
-            display: none !important;
-        }
-        
-        /* Floating Song Alerts */
-        .song-alert {
-            position: fixed;
-            bottom: 104px;
-            right: -320px;
-            width: 300px;
-            background: rgba(17, 24, 39, 0.95);
-            border: 1px solid var(--acc3);
-            border-left: 4px solid var(--acc);
-            border-radius: 12px;
-            padding: 12px 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 999;
-            transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-        }
-        .song-alert.show {
-            right: 24px;
-        }
-        .sa-art {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .sa-body {
-            flex: 1;
-            min-width: 0;
-        }
-        .sa-title {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sa-artist {
-            font-size: 11.5px;
-            color: var(--text3);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 2px;
-        }
-        .sa-badge {
-            font-size: 9px;
-            text-transform: uppercase;
-            font-weight: 800;
-            color: var(--acc);
-            background: rgba(16, 185, 129, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 4px;
-        }
-
-        /* 📱 MOBILE FULL-SCREEN PLAYER OVERLAY 📱 */
-        .mp-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--mp-bg);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 30px 24px;
-            box-sizing: border-box;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(100%);
-        }
-        .mp-overlay.open {
-            transform: translateY(0);
-        }
-        .mp-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            height: 40px;
-        }
-        .mp-back {
-            font-size: 26px;
-            color: var(--text2);
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            font-weight: 300;
-        }
-        .mp-title {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text3);
-        }
-        .mp-opt {
-            font-size: 20px;
-            color: var(--text2);
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
-        .mp-disk-container {
-            position: relative;
-            width: 250px;
-            height: 250px;
-            margin: 30px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .mp-disk-glow {
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ef4444, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #ef4444);
-            background-size: 400%;
-            z-index: 1;
-            filter: blur(10px);
-            animation: rgbGlow 12s linear infinite;
-            opacity: 0.8;
-            pointer-events: none;
-        }
-        .mp-disk {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--mp-disk-bg);
-            border: 5px solid var(--mp-disk-bdr);
-            z-index: 2;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-            animation: rotateDisk 20s linear infinite;
-            animation-play-state: paused;
-        }
-        .mp-disk.playing {
-            animation-play-state: running;
-        }
-        .mp-logo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .mp-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 310px;
-            margin: 0 auto;
-            text-align: left;
-        }
-        .mp-meta {
-            flex: 1;
-            min-width: 0;
-            padding-right: 16px;
-        }
-        .mp-name {
-            font-size: 23px;
-            font-weight: 700;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1.25;
-            font-family: inherit;
-        }
-        .mp-artist {
-            font-size: 13.5px;
-            color: var(--text3);
-            margin-top: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .mp-like {
-            background: none;
-            border: none;
-            font-size: 23px;
-            color: var(--text3);
-            cursor: pointer;
-            outline: none;
-            padding: 0;
-            transition: transform 0.2s;
-        }
-        .mp-like:active {
-            transform: scale(0.85);
-        }
-        .mp-like.on {
-            color: var(--acc);
-            text-shadow: 0 0 10px var(--glow);
-        }
-        .mp-genre-container {
-            width: 100%;
-            text-align: center;
-            margin-top: -5px;
-        }
-        .mp-genre {
-            font-size: 10.5px;
-            font-weight: 700;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--bdr);
-            padding: 5px 14px;
-            border-radius: 20px;
-            color: var(--text3);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .mp-seeker-container {
-            width: 100%;
-            max-width: 310px;
-            margin: 15px auto 0;
-        }
-        .mp-progress-bar {
-            width: 100%;
-            height: 4px;
-            background: var(--mp-prog-bg);
-            border-radius: 2px;
-            position: relative;
-            cursor: pointer;
-        }
-        .mp-progress-fill {
-            height: 100%;
-            background: var(--acc);
-            border-radius: 2px;
-            width: 0%;
-            position: relative;
-        }
-        .mp-progress-fill::after {
-            content: '';
-            position: absolute;
-            right: -5px;
-            top: -3px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--acc);
-            box-shadow: 0 0 8px var(--glow);
-        }
-        .mp-time-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--text3);
-            margin-top: 6px;
-            font-weight: 600;
-        }
-        .mp-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 310px;
-            margin: 15px auto 10px;
-        }
-        .mp-cb {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text2);
-            cursor: pointer;
-            outline: none;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: color 0.2s;
-        }
-        .mp-cb.on {
-            color: var(--acc);
-        }
-        .mp-play {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--acc), var(--acc2));
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px var(--glow);
-            cursor: pointer;
-            outline: none;
-            transition: transform 0.2s;
-        }
-
-        /* ── CLEAN SVG ICON STYLING ── */
-        .cb svg, .mp-cb svg {
-            width: 20px;
-            height: 20px;
-            display: block;
-            stroke: currentColor;
-            fill: none;
-        }
-        /* Prev/Next buttons have fill icons instead of stroke */
-        .cb.mp-prev svg, .cb.mp-next svg, .mp-cb.mp-prev svg, .mp-cb.mp-next svg {
-            fill: currentColor;
-            stroke: none;
-        }
-        .pbtn svg, .mp-play svg {
-            width: 18px;
-            height: 18px;
-            display: block;
-            fill: currentColor;
-        }
-        .mp-play svg {
-            width: 26px;
-            height: 26px;
-        }
-        /* Center play button content */
-        .pbtn, .mp-play {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Offset triangle so it is visually centered */
-        .pbtn svg.svg-play, .mp-play svg.svg-play {
-            margin-left: 2px;
-        }
-        .pbtn svg.svg-pause, .mp-play svg.svg-pause {
-            margin-left: 0;
-        }
-        /* Moon opt button style */
-        .mp-opt svg, .xb svg {
-            width: 18px;
-            height: 18px;
-            display: block;
-            stroke: currentColor;
-            fill: none;
-        }
-        /* Mobile player back chevron & topbar nav buttons styling */
-        .mp-back svg {
-            width: 24px;
-            height: 24px;
-            display: block;
-            stroke: currentColor;
-            fill: none;
-        }
-        .tnb svg {
-            width: 16px;
-            height: 16px;
-            display: block;
-            stroke: currentColor;
-            fill: none;
-        }
-        .topbar-mobile-menu svg {
-            width: 20px;
-            height: 20px;
-            display: block;
-            stroke: currentColor;
-            fill: none;
-        }
-        .topbar-mobile-menu {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Mobile Player Header Theme Toggle and Action Buttons styling */
-        .mp-top-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .mp-action-btn {
-            background: none;
-            border: none;
-            color: var(--text2);
-            cursor: pointer;
-            padding: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: color 0.2s, transform 0.2s;
-        }
-        .mp-action-btn:hover {
-            color: var(--acc);
-            transform: scale(1.05);
-        }
-        .mp-action-btn svg {
-            width: 20px;
-            height: 20px;
-            stroke: currentColor;
-            fill: none;
-        }
-        .mp-top-actions .th-tog {
-            transform: scale(0.9);
-            margin-right: -4px;
-        }
-        .u-av svg, .ni svg, .vic svg {
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .vic svg {
-            width: 14px;
-            height: 14px;
-            margin-right: 4px;
-        }
-        .vic svg polygon {
-            fill: currentColor;
-        }
-        .vic svg path {
-            stroke: currentColor;
-            stroke-width: 2.5;
-            stroke-linecap: round;
-            fill: none;
-        }
-        /* Heart SVG icon */
-        .plk svg, .mp-like svg, .tlk svg {
-            width: 22px;
-            height: 22px;
-            display: block;
-            transition: transform 0.2s;
-            stroke: currentColor;
-            fill: none;
-        }
-        .tlk svg {
-            width: 16px;
-            height: 16px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .plk.on svg, .mp-like.on svg, .tlk.on svg {
-            fill: var(--acc);
-            stroke: var(--acc);
-            color: var(--acc) !important;
-            filter: drop-shadow(0 0 4px var(--glow2));
-        }
-        .mp-play:active {
-            transform: scale(0.92);
-        }
-
-        @keyframes rotateDisk {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        @keyframes rgbGlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-    </style>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="landing.css">
 </head>
+<body>
 
-<body data-theme="dark">
-    <!-- SPLASH -->
-    <div id="splash" class="screen active">
-        <div class="sp-wrap">
-            <div class="sp-ring"></div>
-            <div class="sp-ring"></div>
-            <div class="sp-ring"></div>
-            <img src="assets/logo.png?v=1.1" alt="Logo" style="width:68px;height:68px;position:relative;z-index:2;object-fit:contain;">
-        </div>
-        <div class="sp-txt">
-            <div class="sp-sub">Streaming</div>
-            <div class="sp-name">Echo of Baduga</div>
-            <div class="sp-tagline">Baduga Music &middot; Culture &middot; Heritage</div>
-            <div class="sp-bar"><div class="sp-fill"></div></div>
-        </div>
-    </div>
-
-    <!-- AUTH SCREEN -->
-    <div id="auth" class="screen">
-        <div class="a-left">
-            <div class="a-left-grid"></div>
-            <div class="a-glow"></div>
-            <div class="a-left-body">
-                <div class="a-badge">&#127925; Baduga Heritage</div>
-                <div class="a-title">Music from the<br>Nilgiri Hills</div>
-                <div class="a-desc">Stream authentic Baduga music from the heart of the Nilgiri hills.</div>
-                <div class="a-feats">
-                    <div class="af"><span class="af-ic">&#9889;</span><span class="af-t"><b>Aesthetic</b> neon visualizer</span></div>
-                    <div class="af"><span class="af-ic">&#127908;</span><span class="af-t"><b>Local</b> artists &amp; culture</span></div>
-                    <div class="af"><span class="af-ic">&#128266;</span><span class="af-t"><b>HD</b> audio streaming</span></div>
-                </div>
-                <div class="eq-row">
-                    <div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div>
-                    <div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div>
-                </div>
-            </div>
-        </div>
-        <div class="a-right">
-            <div class="a-logo-top">
-                <img src="assets/logo.png?v=1.1" alt="Logo" style="width:42px;height:42px;object-fit:contain;">
-            </div>
-            <div class="a-heading" id="authH">Welcome back</div>
-            <div class="a-subh" id="authS">Sign in to continue your journey</div>
-            <div class="atabs">
-                <div class="at on" id="tabL" onclick="swAuth('login')">Sign In</div>
-                <div class="at" id="tabR" onclick="swAuth('signup')">Sign Up</div>
-            </div>
-            <!-- Login Form -->
-            <div class="af-form" id="loginF">
-                <div>
-                    <label class="fl">Email</label>
-                    <input class="fi" id="li-em" type="email" placeholder="you@example.com">
-                </div>
-                <div>
-                    <label class="fl">Password</label>
-                    <div class="pwd-field">
-                        <input class="fi" id="li-pw" type="password" placeholder="Enter your password">
-                        <span class="pwd-tog" onclick="togPwd('li-pw',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
-                    </div>
-                </div>
-                <div id="loginErr" style="color:#ff4466;font-size:12.5px;font-weight:600;display:none;text-align:center;"></div>
-                <button class="btn-pr" id="btn-do-login" onclick="doLogin()">Sign In &#8594;</button>
-                <div class="a-sw" style="margin-top:8px;"><span onclick="openForgotModal()" style="color:var(--acc4);cursor:pointer;font-weight:600;font-size:12px;">Forgot password?</span></div>
-            </div>
-            <!-- Signup Form -->
-            <div class="af-form" id="signupF" style="display:none;">
-                <div>
-                    <label class="fl">Full Name</label>
-                    <input class="fi" id="su-nm" type="text" placeholder="Your full name">
-                </div>
-                <div>
-                    <label class="fl">Email</label>
-                    <input class="fi" id="su-em" type="email" placeholder="you@example.com">
-                </div>
-                <div>
-                    <label class="fl">Mobile Number (optional)</label>
-                    <div style="display:flex; gap:8px; align-items:stretch;">
-                        <span style="background:var(--bg2); border:1.5px solid var(--bdr2); border-radius:10px; padding:0 12px; font-weight:700; color:var(--text3); font-size:13.5px; display:flex; align-items:center; user-select:none;">+91</span>
-                        <input class="fi" id="su-mobile" type="tel" maxlength="10" placeholder="10-digit number" style="flex:1; margin:0;">
-                    </div>
-                </div>
-                <div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                        <label class="fl" style="margin:0;">Password</label>
-                        <span onclick="generateAndShowSuggestedPwd()" style="color:var(--acc4); font-size:11.5px; cursor:pointer; font-weight:600; user-select:none;">Suggest a strong password</span>
-                    </div>
-                    <div class="pwd-field">
-                        <input class="fi" id="su-pw" type="password" placeholder="Min 6 characters">
-                        <span class="pwd-tog" onclick="togPwd('su-pw',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
-                    </div>
-                    <div id="pw-strength-container" style="display:none; margin-top:6px; font-size:11.5px; font-weight:500;">
-                        Password Strength: <span id="pw-strength-label" style="font-weight:700;">Weak</span>
-                        <div style="background:var(--bdr2); height:4px; border-radius:2px; margin-top:3px; overflow:hidden;">
-                            <div id="pw-strength-bar" style="background:#ff4466; width:20%; height:100%; transition:width 0.2s, background-color 0.2s;"></div>
-                        </div>
-                    </div>
-                    <div id="pwd-suggestion-box" style="display:none; margin-top:8px; font-size:12px; color:var(--text3); background:rgba(255,255,255,0.03); border:1.5px solid var(--bdr2); border-radius:10px; padding:10px; text-align:left;">
-                        <div style="font-weight:600; color:var(--text2); margin-bottom:4px; display:flex; justify-content:space-between; align-items:center;">
-                            <span>💡 Suggested Password</span>
-                            <button type="button" onclick="applySuggestedPwd()" style="background:var(--acc); border:none; border-radius:6px; color:#fff; font-size:11px; font-weight:700; padding:4px 8px; cursor:pointer;">Use This</button>
-                        </div>
-                        <div id="suggested-pwd-text" style="font-family:monospace; font-size:13.5px; color:var(--acc4); letter-spacing:1px; word-break:break-all; font-weight:700; background:rgba(0,0,0,0.2); padding:6px; border-radius:6px; border:1px solid rgba(255,255,255,0.05); text-align:center; user-select:all;"></div>
-                    </div>
-                </div>
-                <div id="signupErr" style="color:#ff4466;font-size:12.5px;font-weight:600;display:none;text-align:center;"></div>
-                <button class="btn-pr" id="btn-do-signup" onclick="doSignup()">Create Account &#8594;</button>
-                <div class="a-sw" style="margin-top:12px;">Have an account? <span onclick="swAuth('login')">Sign in</span></div>
-            </div>
-            <div id="authDownloadBanner" style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center;">
-                <p style="color: var(--text3); font-size: 12.5px; margin-bottom: 8px;">Want to listen on the go?</p>
-                <a href="app-release.apk" download style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid var(--bdr2); color: var(--text2); text-decoration: none; border-radius: 10px; padding: 10px 20px; font-weight: 700; font-size: 13px; transition: all 0.2s; cursor: pointer; width: 100%; justify-content: center;">
-                    <span>⬇️ Download Android App (APK)</span>
+    <!-- ── 1. STICKY HEADER ── -->
+    <header class="header-glass">
+        <div class="header-container">
+            <a href="#" class="logo-block">
+                <img src="assets/logo.png" alt="Echo of Baduga Logo" class="logo-img">
+                <span class="logo-title">Echo of Baduga</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#founder" class="nav-link">About Us</a></li>
+                    <li><a href="#faq" class="nav-link">FAQs</a></li>
+                    <li><a href="#contact" class="nav-link">Support</a></li>
+                </ul>
+            </nav>
+            
+            <div style="display:flex; align-items:center; gap:1.25rem;">
+                <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Theme" onclick="toggleTheme()">
+                    <span class="toggle-icon-dark">🌙</span>
+                    <span class="toggle-icon-light">☀️</span>
+                </button>
+                <a href="player.html" class="cta-button">
+                    <span>Open Web Player</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </a>
             </div>
-        </div>
-    </div>
-
-    <!-- ══════════ MAIN APP ══════════ -->
-    <div id="appMain" class="screen">
-        <div class="shell">
-            <aside class="sidebar">
-                <div class="sb-logo" onclick="showToast('Echo of Baduga')">
-                    <img src="assets/logo.png?v=1.1" alt="Logo" style="width: 32px; height: 32px; object-fit: contain;">
-                    <div class="lwrap">
-                        <div class="lw1">Echo of Baduga</div>
-                        <div class="lw2">Music · Culture</div>
-                    </div>
-                </div>
-                <nav>
-                    <div class="ng">Explore</div>
-                    <div class="ni on" onclick="setNav(this,showHome)"><span class="ni-ic">⌂</span>Home</div>
-                    <div class="ni" onclick="setNav(this,null);focusSearch()"><span class="ni-ic">⊙</span>Search</div>
-                    <div class="ni" onclick="setNav(this,showArtists)"><span
-                            class="ni-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg></span>Artists</div>
-                    <div class="ni" onclick="setNav(this,loadLikedSongs)"><span class="ni-ic" style="color:var(--acc)">♥</span>Liked Songs</div>
-                </nav>
-                <div class="sb-pls">
-                    <div class="ng" style="padding-left:0;margin-top:4px">Your Music</div>
-                    <div class="pl-i" onclick="loadRecent()">
-                        <div class="pld" style="background:var(--acc4)"></div>Recently Played
-                    </div>
-                </div>
-                <div class="sidebar-footer" id="webDownloadBtn" style="padding: 16px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); width: 100%;">
-                    <a href="app-release.apk" download style="display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #ffffff; text-decoration: none; border-radius: 10px; padding: 12px; font-weight: 700; font-size: 13px; box-shadow: 0 4px 15px var(--glow); transition: all 0.2s; width: 100%;">
-                        <span>⬇️ Download App</span>
-                    </a>
-                </div>
-            </aside>
-
-            <div class="main-area">
-                <div class="topbar">
-                    <div style="display:flex;gap:6px;align-items:center;">
-                        <div class="topbar-mobile-menu" onclick="toggleSidebar()"><svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
-                        <div class="tnb" onclick="history.back()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
-                        <div class="tnb" onclick="history.forward()"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
-                        <div id="greetingMsg"
-                            style="margin-left:14px;font-weight:700;color:var(--text);font-size:16px;"></div>
-                    </div>
-                    <!-- LIVE SEARCH -->
-                    <div class="srch-bar">
-                        <span class="srch-ic">⊙</span>
-                        <input type="text" id="searchInput" placeholder="Search songs, artists…"
-                            oninput="onSearch(this.value)" onfocus="showDrop()" autocomplete="off">
-                        <div class="srch-drop" id="searchDrop">
-                            <div class="sd-empty" id="sdEmpty">Type to search songs &amp; artists</div>
-                            <div class="sd-spin" id="sdSpin" style="display:none">
-                                <div class="mini-spin"></div>
-                            </div>
-                            <div id="sdResults"></div>
-                        </div>
-                    </div>
-                    <div class="tb-r">
-                        <div class="th-tog" onclick="toggleTheme()">
-                            <div class="tho on" id="thDk"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Dark</div>
-                            <div class="tho" id="thLt"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>Light</div>
-                        </div>
-                        <div class="u-av" id="userAv" onclick="openSettings()">R</div>
-                    </div>
-                </div>
-                <div class="feed" id="mainFeed">
-                    <!-- Home content rendered by JS -->
-                </div>
-            </div>
-
-            <div class="player">
-                <div class="pl">
-                    <div class="pa" id="pArt"><img src="assets/logo.png" alt="Cover" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;"></div>
-                    <div class="p-meta">
-                        <div class="pnm" id="pNm"></div>
-                        <div class="par" id="pAr"></div>
-                    </div>
-                    <div class="plk" id="pLk" onclick="event.stopPropagation();togLike()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
-                </div>
-                <div class="pc">
-                    <div class="pb">
-                        <button class="cb on" title="Shuffle" id="cbShuffle" onclick="toggleCb(this)"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
-                        <button class="cb mp-prev" onclick="prevT()"><svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><rect x="5" y="4" width="2" height="16"/></svg></button>
-                        <button class="pbtn" id="playBtn" onclick="togPlay()"><svg viewBox="0 0 24 24" class="svg-play"><path d="M8 5v14l11-7z"/></svg></button>
-                        <button class="cb mp-next" onclick="nextT()"><svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><rect x="17" y="4" width="2" height="16"/></svg></button>
-                        <button class="cb" title="Repeat" id="cbRepeat" onclick="toggleCb(this)"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
-                    </div>
-                    <div class="pp">
-                        <span class="tt" id="cT">0:00</span>
-                        <div class="pbar" onclick="seek(event)" ontouchstart="seek(event)" ontouchmove="seek(event)">
-                            <div class="pfill" id="pFill"></div>
-                        </div>
-                        <span class="tt" id="totT">0:00</span>
-                    </div>
-                </div>
-                <div class="prx">
-                    <div class="slpw"><button class="xb" id="slpBtn" onclick="openSleep()"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><span class="scnt"
-                            id="sCnt"></span></div>
-
-                    <button class="xb" onclick="openSettings()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1-2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1-2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-                    <button class="xb" title="Queue" onclick="toggleQueue()"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
-                    <div class="vol"><span class="vic"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
-                        <div class="vtr" onclick="setVol(event)" ontouchstart="setVol(event)" ontouchmove="setVol(event)">
-                            <div class="vfl" id="vFl"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT PANEL -->
-            <aside class="rpanel">
-                <div class="rp-tabs">
-                    <div class="rtab on" id="tabQ">Up Next</div>
-                </div>
-                <div class="rpb" id="qPanel">
-                    <div id="qList"></div>
-                </div>
-
-            </aside>
-        </div>
-    </div>
-
-    <!-- ══════════ SETTINGS DRAWER ══════════ -->
-    <div class="set-ov" id="setOv" onclick="closeSetBg(event)">
-        <div class="set-drawer">
-            <div class="sh-hdr">
-                <div class="sh-ttl">Settings</div>
-                <div class="sh-cls" onclick="closeSettings()">✕</div>
-            </div>
-            <div class="sh-body">
-                <div class="set-pcard">
-                    <div class="set-av" id="setAv">R</div>
-                    <div class="set-av-info">
-                        <div class="set-uname" id="setName">Ravi Kumar</div>
-                        <div class="set-email" id="setEmail">user@example.com</div>
-                        <div class="set-plan">Premium & Totally Free</div>
-                    </div>
-                </div>
-                <!-- Account -->
-                <div class="sset-sec">
-                    <div class="sset-lbl">Account</div>
-                    <div><label class="fl">Display Name</label><input class="fi" id="setNmInp" type="text"
-                            value="Ravi Kumar" oninput="syncProfile()"></div>
-                    <div><label class="fl">Email</label><input class="fi" id="setEmInp" type="email"
-                            value="user@example.com" oninput="syncProfile()"></div>
-                    <div class="srow" onclick="triggerPasswordResetFromSettings()">
-                        <div class="srow-l"><span class="srow-ic">🔑</span>
-                            <div class="srow-t">
-                                <div class="sr1">Change Password</div>
-                            </div>
-                        </div>
-                        <div class="srow-r"><span
-                                style="color:var(--acc4);font-size:12px;font-weight:700;cursor:pointer;">Reset →</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Equalizer -->
-                <div class="eq-sec">
-                    <div class="eq-stl">Equalizer</div>
-                    <div class="eq-presets" id="eqPresets">
-                        <div class="eqp on" onclick="setPreset(this,'flat')">Flat</div>
-                        <div class="eqp" onclick="setPreset(this,'bass')">Bass Boost</div>
-                        <div class="eqp" onclick="setPreset(this,'treble')">Treble</div>
-                        <div class="eqp" onclick="setPreset(this,'vocal')">Vocal</div>
-                        <div class="eqp" onclick="setPreset(this,'rock')">Rock</div>
-                        <div class="eqp" onclick="setPreset(this,'classical')">Classical</div>
-                              <div class="qo" onclick="setQual(this,'high')">
-                            <div class="qon">High</div>
-                            <div class="qos">320 kbps</div>
-                        </div>
-                        <div class="qo" onclick="setQual(this,'lossless')">
-                            <div class="qon">Lossless</div>
-                            <div class="qos">FLAC</div>
-                        </div>
-                    </div>
-                    <div class="eq-bands" id="eqBands" style="display: flex; gap: 15px; margin-top: 15px; overflow-x: auto; padding: 10px 0;"></div>
-                </div>
-                <!-- Playback -->
-                <div class="sset-sec">
-                    <div class="sset-lbl">Playback</div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🔀</span>
-                            <div class="srow-t">
-                                <div class="sr1">Auto Shuffle</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" onclick="this.classList.toggle('on')"></div>
-                    </div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🔁</span>
-                            <div class="srow-t">
-                                <div class="sr1">Repeat Mode</div>
-                            </div>
-                        </div>
-                        <div class="tsw" onclick="this.classList.toggle('on')"></div>
-                    </div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🎵</span>
-                            <div class="srow-t">
-                                <div class="sr1">Gapless Playback</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" onclick="this.classList.toggle('on')"></div>
-                    </div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🔊</span>
-                            <div class="srow-t">
-                                <div class="sr1">Normalize Volume</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" onclick="this.classList.toggle('on')"></div>
-                    </div>
-                </div>
-                <!-- Notifications -->
-                <div class="sset-sec">
-                    <div class="sset-lbl">Notifications</div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">🔔</span>
-                            <div class="srow-t">
-                                <div class="sr1">New Song Alerts</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" id="alertTog" onclick="toggleAlertSetting(this)"></div>
-                    </div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">📧</span>
-                            <div class="srow-t">
-                                <div class="sr1">Email Updates</div>
-                            </div>
-                        </div>
-                        <div class="tsw" onclick="this.classList.toggle('on')"></div>
-                    </div>
-                </div>
-                <div class="srow" onclick="toggleTheme()">
-                    <div class="srow-l"><span class="srow-ic">🎨</span>
-                        <div class="srow-t">
-                            <div class="sr1">Theme</div>
-                        </div>
-                    </div>
-                    <div class="srow-r">
-                        <div class="sbadge" id="thLbl">Dark Mode</div>
-                    </div>
-                </div>
-                <div class="sset-sec">
-                    <div class="sset-lbl">Privacy</div>
-                    <div class="srow">
-                        <div class="srow-l"><span class="srow-ic">📊</span>
-                            <div class="srow-t">
-                                <div class="sr1">Listening History</div>
-                            </div>
-                        </div>
-                        <div class="tsw on" id="historyTog" onclick="toggleHistorySetting(this)"></div>
-                    </div>
-                </div>
-                <!-- Contact & Support -->
-                <div class="sset-sec">
-                    <div class="sset-lbl">Contact &amp; Support</div>
-                    <a class="insta-card" href="https://www.instagram.com/_navanee_/" target="_blank">
-                        <div class="ig-ic">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#fff">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                        </div>
-                        <div class="ig-info">
-                            <div class="igi1">@_navanee_</div>
-                            <div class="igi2">Official Instagram</div>
-                        </div>
-                        <div class="ig-arr">↗</div>
-                    </a>
-                    <div class="srow" onclick="openFeedbackModal('contact')" style="margin-top:12px">
-                        <div class="srow-l"><span class="srow-ic">💬</span>
-                            <div class="srow-t">
-                                <div class="sr1">Support &amp; Feedback</div>
-                                <div class="sr2">Get in touch, report bugs, or rate our app</div>
-                            </div>
-                        </div>
-                        <div class="srow-r">→</div>
-                    </div>
-                </div>
-
-                <!-- About -->
-                <div class="about-card" style="padding: 24px 16px;">
-                    <div style="text-align:center; font-size:20px; font-weight:800; margin-bottom:12px; color:var(--text); letter-spacing:-0.5px;">Echo of Baduga</div>
-                    <div style="font-size:13px; color:var(--text2); line-height:1.6; text-align:center; margin-bottom:24px;">
-                        We are passionate about exploring in and around our Badugu community. Echo of Baduga evolved to avail Badugu songs for easy streaming to anyone around the globe. Especially to keep the young generation in touch with Badugu music, culture, and language.
-                    </div>
-                    
-                    <div style="display:flex; flex-direction:column; align-items:center; margin-top:24px; padding-top:24px; border-top:1.5px dashed var(--bdr);">
-                        <div class="founder-img-container" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--acc4); box-shadow:0 6px 20px rgba(0,0,0,0.25); margin-bottom:14px; overflow:hidden; transition:transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor:pointer;" 
-                             onmouseover="this.style.transform='scale(1.08)'" 
-                             onmouseout="this.style.transform='scale(1)'" 
-                             onmousedown="this.style.transform='scale(0.95)'" 
-                             onmouseup="this.style.transform='scale(1.08)'" 
-                             ontouchstart="this.style.transform='scale(0.95)'" 
-                             ontouchend="this.style.transform='scale(1)'"
-                             onclick="window.open('https://www.instagram.com/_navanee_/', '_blank')">
-                            <img src="assets/navaneeth.jpg" alt="Navaneeth" style="width:100%; height:100%; object-fit:cover; display:block;">
-                        </div>
-                        <div style="font-size:18px; font-weight:700; color:var(--text); text-align:center;">Navaneeth</div>
-                        <div style="font-size:12px; color:var(--text3); font-weight:500; margin-top:1px; margin-bottom:4px; text-align:center;">(Achanakkal)</div>
-                        <div style="font-size:12px; color:var(--acc); font-weight:700; margin-top:6px; letter-spacing:0.5px; text-transform:uppercase;">Founder & Developer</div>
-                        <a href="https://www.instagram.com/_navanee_/" target="_blank" style="margin-top:14px; font-size:13px; color:var(--text3); text-decoration:none; display:inline-block; padding:6px 16px; background:var(--bg3); border-radius:20px; transition:color 0.2s;" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--text3)'">📸 Instagram @_navanee_</a>
-                    </div>
-                </div>
-                <button class="btn-logout" onclick="logout()">Sign Out</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- SLEEP MODAL -->
-    <div class="slp-ov" id="sleepOv" onclick="closeSleepBg(event)">
-        <div class="slp-sh">
-            <div class="slp-hnd"></div>
-            <div class="slp-t">🌙 Sleep Timer</div>
-            <div class="slp-s">Playback fades and stops when timer ends.</div>
-            <div class="tgrid">
-                <div class="topt" id="t10" onclick="setTimer(10)">⏲ 10 minutes</div>
-                <div class="topt" id="t20" onclick="setTimer(20)">⏲ 20 minutes</div>
-                <div class="topt" id="t30" onclick="setTimer(30)">⏲ 30 minutes</div>
-                <div class="topt" id="t60" onclick="setTimer(60)">⏲ 1 hour</div>
-                <div class="topt topt-full" id="t0" onclick="setTimer(0)">🎵 End of current song</div>
-            </div>
-            <div class="custom-timer-sec" style="margin-top: 15px; padding-top: 15px; border-top: 1.5px dashed var(--bdr); display: flex; gap: 10px; align-items: center; justify-content: space-between;">
-                <div style="font-size: 12.5px; color: var(--text); font-weight: 600;">Custom Time (mins)</div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="number" id="customMinsInp" min="1" max="1440" placeholder="e.g. 45" style="width: 70px; background: var(--input); border: 1.5px solid var(--bdr2); border-radius: 8px; padding: 6px 10px; font-size: 13px; color: var(--text); outline: none; text-align: center;">
-                    <button class="btn-pr" onclick="setCustomTimer()" style="padding: 6px 14px; font-size: 12px; border-radius: 8px; width: auto; margin: 0; box-shadow: none;">Set</button>
-                </div>
-            </div>
-            <div class="slp-ab" id="slpAB" style="display:none">
-                <div>
-                    <div style="font-size:11px;color:var(--text2);margin-bottom:2px">Remaining</div>
-                    <div class="slp-cd" id="slpCD">—</div>
-                </div>
-                <button class="slp-cx" onclick="cancelTimer()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- UNIFIED FEEDBACK, SUPPORT & RATINGS MODAL -->
-    <div class="slp-ov" id="feedbackOv" onclick="closeFeedbackBg(event)">
-        <div class="slp-sh" style="max-width: 460px;">
-            <div class="slp-hnd" onclick="closeFeedbackModal()"></div>
-            <div class="slp-t" id="feedbackModalTitle">📬 Feedback &amp; Support</div>
-            <div class="slp-s" id="feedbackModalSub">We would love to hear from you. Select options below:</div>
             
-            <!-- Form Fields Wrapper -->
-            <div id="fb-form-fields" style="display: flex; flex-direction: column;">
-                <!-- Type Selector Tabs -->
-                <div class="feedback-tabs" style="display: flex; gap: 8px; margin-top: 16px; margin-bottom: 16px; border-bottom: 1.5px solid var(--bdr); padding-bottom: 12px;">
-                    <div class="fb-tab active" onclick="selectFeedbackTab('contact')" id="tab-fb-contact" style="flex: 1; text-align: center; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: var(--bg2); border: 1px solid var(--bdr); color: var(--text2);">
-                        📬 Contact
-                    </div>
-                    <div class="fb-tab" onclick="selectFeedbackTab('report')" id="tab-fb-report" style="flex: 1; text-align: center; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent; border: 1px solid transparent; color: var(--text3);">
-                        🚩 Bug Report
-                    </div>
-                    <div class="fb-tab" onclick="selectFeedbackTab('rating')" id="tab-fb-rating" style="flex: 1; text-align: center; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; background: transparent; border: 1px solid transparent; color: var(--text3);">
-                        ⭐ Rate App
-                    </div>
-                </div>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">☰</button>
+        </div>
+    </header>
 
-                <!-- Form Content -->
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <!-- Name & Email (Shown for guests, pre-filled/disabled for logged in users) -->
-                    <div id="fb-identity-fields" style="display: flex; gap: 12px;">
-                        <div style="flex: 1;">
-                            <label class="fl" style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text3); margin-bottom:6px; display:block;">Your Name</label>
-                            <input class="fi" id="fb-name" type="text" placeholder="Your Name" style="width:100%; border-radius:10px; background:var(--bg2); border:1.5px solid var(--bdr); color:var(--text); padding:10px; font-size:13px;">
-                        </div>
-                        <div style="flex: 1;">
-                            <label class="fl" style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text3); margin-bottom:6px; display:block;">Your Email</label>
-                            <input class="fi" id="fb-email" type="email" placeholder="you@example.com" style="width:100%; border-radius:10px; background:var(--bg2); border:1.5px solid var(--bdr); color:var(--text); padding:10px; font-size:13px;">
-                        </div>
-                    </div>
-
-                    <!-- Star Rating Selector (Only shown if 'rating' tab is selected) -->
-                    <div id="fb-rating-wrapper" style="display: none; flex-direction: column; align-items: center; padding: 12px 0; border: 1px dashed var(--bdr); border-radius: 12px; background: rgba(255,255,255,0.01);">
-                        <div style="font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px;">Tap stars to rate:</div>
-                        <div class="fb-stars" style="display: flex; gap: 8px; font-size: 28px; cursor: pointer; color: var(--text3);">
-                            <span class="fb-star" onclick="setFeedbackRating(1)" data-val="1" style="transition: transform 0.1s; display: inline-block;">★</span>
-                            <span class="fb-star" onclick="setFeedbackRating(2)" data-val="2" style="transition: transform 0.1s; display: inline-block;">★</span>
-                            <span class="fb-star" onclick="setFeedbackRating(3)" data-val="3" style="transition: transform 0.1s; display: inline-block;">★</span>
-                            <span class="fb-star" onclick="setFeedbackRating(4)" data-val="4" style="transition: transform 0.1s; display: inline-block;">★</span>
-                            <span class="fb-star" onclick="setFeedbackRating(5)" data-val="5" style="transition: transform 0.1s; display: inline-block;">★</span>
-                        </div>
-                        <div id="fb-rating-label" style="font-size: 11px; font-weight: 700; color: var(--acc4); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Select a rating</div>
-                    </div>
-
-                    <!-- Message Textarea -->
-                    <div>
-                        <label class="fl" id="fb-message-label" style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text3); margin-bottom:6px; display:block;">Your Message</label>
-                        <textarea id="fb-message" rows="4" style="width:100%; border-radius:12px; background:var(--bg2); border:1.5px solid var(--bdr); color:var(--text); padding:12px; font-size:14px; font-family:inherit; resize:none; outline:none;" placeholder="Write your message here..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button class="btn-pr" id="btn-fb-submit" style="margin-top: 20px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="submitFeedback()">
-                    <span id="fb-submit-icon">📬</span> <span id="fb-submit-text">Send Message</span>
+    <!-- ── 2. HERO SECTION ── -->
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                <span>Version 1.0 Live</span>
+            </div>
+            
+            <h1 class="hero-title">
+                Feel the Nilgiris,<br>
+                Stream the <span class="gradient-text">Echo</span>
+            </h1>
+            
+            <p class="hero-description">
+                Echo of Baduga is the ultimate home for authentic music, stories, and heritage from the Nilgiri Hills. Stream over 600+ traditional devotional, evergreen, love, melody, and sad tracks in high fidelity.
+            </p>
+            
+            <div class="hero-actions">
+                <a href="player.html" class="btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Access Web Player</span>
+                </a>
+                <button class="btn-secondary" onclick="downloadApkPrompt()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Download Android App</span>
                 </button>
             </div>
-
-            <!-- Success Step Wrapper -->
-            <div id="fb-success-step" style="display:none; gap: 16px; flex-direction: column; margin-top: 16px;">
-                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--acc3); border-radius: 12px; padding: 24px 20px; font-size: 14px; text-align: center; color: var(--acc5); line-height: 1.6;">
-                    <div style="font-size: 32px; margin-bottom: 12px;" id="fb-success-icon">📬</div>
-                    <strong style="font-size: 16px; color: var(--text);" id="fb-success-title">Message Sent!</strong><br><br>
-                    <span id="fb-success-text" style="color: var(--text2);">We have received your submission. Thank you for helping us improve Echo of Baduga!</span>
-                </div>
-                <button class="btn-pr" onclick="closeFeedbackModal()">Done</button>
-            </div>
         </div>
-    </div>
 
-    <!-- FORGOT PASSWORD MODAL (3-STEP REAL LINK FLOW) -->
-    <div class="slp-ov" id="forgotOv" onclick="closeForgotBg(event)">
-        <div class="slp-sh" style="border-top-color: var(--acc); max-width: 440px;">
-            <div class="slp-hnd" onclick="closeForgotModal()"></div>
-            <div class="slp-t">🔑 Reset Password</div>
-            <div class="slp-s" id="forgotStepSub">Enter your registered email or mobile number.</div>
+        <!-- Smartphone Mockup in Hero Section -->
+        <div class="visualizer-container">
+            <div class="visualizer-glow"></div>
+            <div class="visualizer-glow-purple"></div>
             
-            <!-- Step 1: Identity Entry -->
-            <div id="forgotStep1" class="af-form" style="gap: 16px; margin-top: 18px;">
-                <div>
-                    <label class="fl">Email or Mobile Number</label>
-                    <input class="fi" id="forgot-identity" type="text" placeholder="you@example.com or mobile">
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                
+                <div class="mock-app-header">
+                    <span>9:41</span>
+                    <span class="mock-app-title">Echo Player</span>
+                    <span>🔋</span>
                 </div>
-                <button class="btn-pr" id="btn-send-reset" onclick="sendResetOtp()">Send Reset Link →</button>
-            </div>
-            
-            <!-- Step 2: Link Sent Confirmation -->
-            <div id="forgotStep2" class="af-form" style="display:none; gap: 16px; margin-top: 18px;">
-                <div id="forgotStep2Msg" style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--acc3); border-radius: 12px; padding: 20px; font-size: 14px; text-align: center; color: var(--acc5); line-height: 1.6;">
-                    📩 <strong>Reset Link Sent!</strong><br><br>
-                    We have sent a secure password reset link to your personal inbox. Please check your spam folder if you do not receive it shortly.
-                </div>
-                <button class="btn-pr" onclick="closeForgotModal()">Done</button>
-            </div>
-            
-            <!-- Step 3: New Password Creation -->
-            <div id="forgotStep3" class="af-form" style="display:none; gap: 16px; margin-top: 18px;">
-                <div>
-                    <label class="fl">New Password</label>
-                    <div class="pwd-field">
-                        <input class="fi" id="forgot-new-pwd" type="password" placeholder="Min 8 chars, 1 number">
-                        <span class="pwd-tog" onclick="togPwd('forgot-new-pwd', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+                
+                <!-- Vinyl Disc Showcase -->
+                <div class="mock-disc-container">
+                    <div class="mock-vinyl" id="mockVinyl">
+                        <div class="mock-vinyl-logo">E</div>
                     </div>
                 </div>
-                <div>
-                    <label class="fl">Confirm Password</label>
-                    <div class="pwd-field">
-                        <input class="fi" id="forgot-confirm-pwd" type="password" placeholder="Confirm new password">
-                        <span class="pwd-tog" onclick="togPwd('forgot-confirm-pwd', this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></span>
+                
+                <!-- Song title -->
+                <div class="mock-song-info">
+                    <div class="mock-song-title" id="mockTitle">Eera Maasi Hethey</div>
+                    <div class="mock-song-artist" id="mockArtist">Bbh Productions</div>
+                </div>
+                
+                <!-- Equalizer bars -->
+                <div class="mock-equalizer" id="mockEqualizer">
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                    <div class="eq-bar"></div>
+                </div>
+                
+                <!-- Audio Controls -->
+                <div class="mock-timeline">
+                    <div class="mock-progress-bar" id="mockProgressBar" onclick="clickTimeline(event)">
+                        <div class="mock-progress-fill" id="mockProgressFill"></div>
+                    </div>
+                    <div class="mock-time-labels">
+                        <span id="mockCurrentTime">0:00</span>
+                        <span id="mockTotalTime">3:45</span>
                     </div>
                 </div>
-                <button class="btn-pr" id="btn-pwd-update" onclick="submitNewPassword()">Update Password & Sign In ✓</button>
+                
+                <div class="mock-controls">
+                    <span class="mock-btn-small" onclick="prevMockSong()">⏮</span>
+                    <span class="mock-btn-play" id="mockPlayBtn" onclick="toggleMockPlayback()">▶</span>
+                    <span class="mock-btn-small" onclick="nextMockSong()">⏭</span>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- MOBILE FULL-SCREEN PLAYER -->
-    <div id="mobilePlayer" class="mp-overlay">
-        <!-- Top Navigation -->
-        <div class="mp-top">
-            <span class="mp-back" onclick="closeMobilePlayer()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></span>
-            <span class="mp-title">Now Playing</span>
-            <div class="mp-top-actions">
-                <div class="slpw">
-                    <button class="mp-action-btn" onclick="openSleep()" title="Sleep Timer">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    </button>
-                    <span class="scnt" id="m-sCnt"></span>
+    <!-- ── 3. STATISTICS ROW ── -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-value">600+</span>
+                <span class="stat-label">Traditional Songs</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">Baduga</span>
+                <span class="stat-label">Language Preservation</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">100%</span>
+                <span class="stat-label">Non-Profit & Ad-Free</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── 4. FEATURES GRID ── -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <div class="badge">Features</div>
+            <h2 class="section-title">Designed for Baduga Listeners</h2>
+            <p class="section-subtitle">Experience a cutting-edge platform tailored to preserve and stream our music culture.</p>
+        </div>
+        
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">🎧</div>
+                <h3 class="feature-title">Diverse Music Catalog</h3>
+                <p class="feature-text">
+                    Explore curated albums divided into categories: Devotional prayers, evergreen oldies, beautiful romantic tunes, melodies, and sad melodies.
+                </p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">⚡</div>
+                <h3 class="feature-title">High Fidelity Streaming</h3>
+                <p class="feature-text">
+                    Optimized web-core engines ensure buffer-free audio playback even on cellular networks, providing high-quality digital streaming.
+                </p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="feature-card" onclick="downloadApkPrompt()" style="cursor:pointer;">
+                <div class="feature-icon-wrapper">📱</div>
+                <h3 class="feature-title">Android APK Release</h3>
+                <p class="feature-text">
+                    Install our native application for Android, featuring background media notifications, lock-screen controls, and offline loading behaviors.
+                </p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">♥</div>
+                <h3 class="feature-title">Personalized Library</h3>
+                <p class="feature-text">
+                    Create your free listener profile, like tracks to construct a favorite playlist, and check your recent streams instantly on any device.
+                </p>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">🌐</div>
+                <h3 class="feature-title">Progressive Web App</h3>
+                <p class="feature-text">
+                    Launch in any desktop or iOS safari browser and click "Add to Home Screen" to install it instantly as a web app.
+                </p>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">🛡</div>
+                <h3 class="feature-title">Secure & Transparent</h3>
+                <p class="feature-text">
+                    Real email notifications, OTP-based verified password resets, secure databases, and zero tracking cookies or ads.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── 5. ABOUT THE FOUNDER ── -->
+    <section class="about-section" id="founder">
+        <div class="about-card">
+            <div class="founder-photo-wrapper">
+                <div class="founder-photo-glow"></div>
+                <img src="assets/navaneeth.jpg" alt="Navaneeth" class="founder-photo">
+            </div>
+            
+            <div class="about-details">
+                <div class="badge">Founder</div>
+                <h2 class="founder-name">Navaneeth</h2>
+                <div class="founder-role">Creator of Echo of Baduga</div>
+                
+                <p class="about-bio">
+                    "Echo of Baduga was born out of a desire to preserve and promote the rich musical inheritance of the Baduga community. Our language and culture are beautifully captured in our songs. By creating this premium, accessible, and fast streaming application, we hope to connect listeners worldwide back to the sounds of the Nilgiris."
+                </p>
+                
+                <div class="about-socials">
+                    <a href="https://www.instagram.com/_navanee_/" target="_blank" rel="noopener" class="social-pill">
+                        <span>📸 Follow on Instagram</span>
+                    </a>
                 </div>
-                <button class="mp-action-btn" onclick="openSettings()" title="Settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1-2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1-2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── 6. FAQS SECTION ── -->
+    <section class="faq-section" id="faq">
+        <div class="section-header">
+            <div class="badge">FAQs</div>
+            <h2 class="section-title">Frequently Asked Questions</h2>
+        </div>
+        
+        <div class="faq-list">
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span>How can I download the Android application?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    You can download the APK package directly by clicking "Download Android App" in the hero section above. Once downloaded, tap the file on your device and permit installation from "Unknown Sources" if prompted.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span>Is the platform completely free to use?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    Yes, Echo of Baduga is entirely free and non-profit. There are no payment gates, subscriptions, or intrusive third-party advertisements.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span>Where are the audio files hosted?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    Our database pulls audio streams dynamically. Large catalog additions are integrated using secure cloud file servers to guarantee high delivery speeds and reliable uptime.
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-summary">
+                    <span>Can I suggest new songs to upload?</span>
+                    <span class="faq-toggle-icon">+</span>
+                </summary>
+                <div class="faq-content">
+                    Absolutely! We welcome contributions. You can contact us using the contact form below or reach out directly on Instagram to request specific songs or artists.
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ── 7. CONTACT & SUPPORT FORM ── -->
+    <section class="contact-section" id="contact">
+        <div class="contact-info">
+            <div class="badge">Support</div>
+            <h2 class="contact-title">Get in Touch</h2>
+            <p class="contact-text">
+                Have questions, encountered a bug, or want to contribute song links? Leave us a message and we'll reply as soon as possible.
+            </p>
+            
+            <div class="contact-meta">
+                <div class="meta-row">
+                    <div class="meta-icon">✉</div>
+                    <span>echoofbaduga@gmail.com</span>
+                </div>
+                <div class="meta-row">
+                    <div class="meta-icon">📍</div>
+                    <span>Nilgiri Hills, Tamil Nadu, India</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-card">
+            <div class="form-tabs">
+                <button class="form-tab active" id="tabContact" onclick="switchFormTab('contact')">Contact Support</button>
+                <button class="form-tab" id="tabReport" onclick="switchFormTab('report')">Report a Bug</button>
+            </div>
+            
+            <form id="supportForm" class="contact-form-element" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="formType" value="contact">
+                
+                <div class="form-group">
+                    <label for="formName" class="form-label">Full Name</label>
+                    <input type="text" id="formName" class="form-input" placeholder="e.g. Navaneeth" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="formEmail" class="form-label">Email Address</label>
+                    <input type="email" id="formEmail" class="form-input" placeholder="e.g. name@domain.com" required>
+                </div>
+                
+                <div class="form-group" id="ratingGroup" style="display:none;">
+                    <label class="form-label">Rate the App</label>
+                    <div class="rating-stars">
+                        <span class="rating-star" onclick="selectStar(1)">★</span>
+                        <span class="rating-star" onclick="selectStar(2)">★</span>
+                        <span class="rating-star" onclick="selectStar(3)">★</span>
+                        <span class="rating-star" onclick="selectStar(4)">★</span>
+                        <span class="rating-star" onclick="selectStar(5)">★</span>
+                    </div>
+                    <input type="hidden" id="formRating" value="">
+                </div>
+                
+                <div class="form-group">
+                    <label for="formMessage" class="form-label">Your Message</label>
+                    <textarea id="formMessage" class="form-input" placeholder="Write your message here..." required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span>Send Message</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
-                <div class="th-tog" onclick="toggleTheme()">
-                    <div class="tho on" id="m-thDk"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Dark</div>
-                    <div class="tho" id="m-thLt"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:5px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>Light</div>
-                </div>
-            </div>
+            </form>
         </div>
-        <!-- Album Art / Rotating Disk -->
-        <div class="mp-disk-container">
-            <div class="mp-disk-glow" id="m-pDiskGlow"></div>
-            <canvas id="mpVisualizer" width="320" height="320" style="position: absolute; z-index: 1; pointer-events: none; width: 320px; height: 320px;"></canvas>
-            <div class="mp-disk" id="m-pDisk">
-                <img src="assets/logo.png" alt="Cover" class="mp-logo">
-            </div>
-        </div>
+    </section>
 
-        <!-- Track Information -->
-        <div class="mp-info">
-            <div class="mp-meta">
-                <div class="mp-name" id="m-pNm">Song Name</div>
-                <div class="mp-artist" id="m-pAr">Artist Name</div>
+    <!-- ── 8. FOOTER ── -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="assets/logo.png" alt="Echo of Baduga Logo" style="width:32px; height:32px; border-radius:6px;">
+                <span class="logo-title" style="font-size:1.1rem;">Echo of Baduga</span>
             </div>
-            <button class="mp-like" id="m-pLk" onclick="togLike()"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-        </div>
-
-        <!-- Genre Chip -->
-        <div class="mp-genre-container">
-            <span class="mp-genre" id="m-pGenre">Harmonium Songs</span>
-        </div>
-
-        <!-- Progress Seeker -->
-        <div class="mp-seeker-container">
-            <div class="mp-progress-bar" onclick="seek(event)" ontouchstart="seek(event)" ontouchmove="seek(event)">
-                <div class="mp-progress-fill" id="m-pFill"></div>
-            </div>
-            <div class="mp-time-row">
-                <span id="m-cT">0:00</span>
-                <span id="m-totT">0:00</span>
+            
+            <ul class="footer-links">
+                <li><a onclick="openLegalModal('terms')" class="footer-link">Terms & Conditions</a></li>
+                <li><a onclick="openLegalModal('privacy')" class="footer-link">Privacy Policy</a></li>
+            </ul>
+            
+            <div class="footer-copyright">
+                &copy; <span id="currentYear">2026</span> Echo of Baduga. All rights reserved. Preserving the Sound of the Hills.
             </div>
         </div>
+    </footer>
 
-        <!-- Control Buttons -->
-        <div class="mp-controls">
-            <button class="mp-cb" id="m-cbShuffle" onclick="toggleCb(document.getElementById('cbShuffle'))"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
-            <button class="mp-cb mp-prev" onclick="prevT()"><svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><rect x="5" y="4" width="2" height="16"/></svg></button>
-            <button class="mp-play" id="m-playBtn" onclick="togPlay()"><svg viewBox="0 0 24 24" class="svg-play"><path d="M8 5v14l11-7z"/></svg></button>
-            <button class="mp-cb mp-next" onclick="nextT()"><svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><rect x="17" y="4" width="2" height="16"/></svg></button>
-            <button class="mp-cb" id="m-cbRepeat" onclick="toggleCb(document.getElementById('cbRepeat'))"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+    <!-- ── 9. LEGAL MODALS ── -->
+    <div class="modal-overlay" id="legalModal">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeLegalModal()">✕</button>
+            <h3 class="modal-title" id="modalTitle">Legal Information</h3>
+            <div class="modal-body" id="modalBody">
+                <!-- Content injected dynamically -->
+            </div>
         </div>
     </div>
 
-    <!-- SECURITY HARDENING: ANTI-SCREENSHOT VISUAL PROTECTIONS -->
-    <!-- Tab Blur Privacy Shield -->
-    <div class="blur-protection-overlay" id="blurShield">
-        <div style="text-align: center; padding: 32px;">
-            <div class="logo-wrap" style="width: 80px; height: 80px; margin: 0 auto 20px;">
-                <img src="assets/logo.png?v=1.1" alt="Logo" class="blur-logo" style="width:100%; height:100%; object-fit:contain;">
-            </div>
-            <div class="blur-text">Security Shield Active</div>
-            <div class="blur-subtext">Echo of Baduga is protected</div>
-        </div>
-    </div>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Dynamic Copyright Security Watermark Overlay -->
-    <div class="security-watermark" id="secWatermark"></div>
-
-
-
-    <div class="toast" id="toastEl"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="songs_array.js?v=1.2"></script>
-    <script src="app.js?v=1.6"></script>
+    <!-- ── 10. JAVASCRIPT LOGIC ── -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js?v=1.4')
-                    .then(reg => console.log('PWA Service Worker registered!', reg))
-                    .catch(err => console.warn('PWA Service Worker registration failed!', err));
+        // Set dynamic footer year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        mobileToggle.addEventListener('click', () => {
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // ── SIMULATED MOBILE PLAYER LOGIC (NO ACTUAL AUDIO PLAYBACK) ──
+        const mockTracks = [
+            { title: "Eera Maasi Hethey", artist: "Bbh Productions", duration: 225 },
+            { title: "Haalakeru Hallamadu New", artist: "Pedhuva Raman", duration: 225 },
+            { title: "Hetheya Gava", artist: "Baduga Devotional", duration: 225 },
+            { title: "Habba Collection", artist: "Nilgiris Music", duration: 225 }
+        ];
+        
+        let trackIdx = 0;
+        let isPlaying = false;
+        let playInterval = null;
+        let currentSeconds = 0;
+
+        function loadMockTrack() {
+            const track = mockTracks[trackIdx];
+            document.getElementById('mockTitle').textContent = track.title;
+            document.getElementById('mockArtist').textContent = track.artist;
+            document.getElementById('mockTotalTime').textContent = formatTime(track.duration);
+            resetTimeline();
+        }
+
+        function resetTimeline() {
+            currentSeconds = 0;
+            document.getElementById('mockCurrentTime').textContent = "0:00";
+            document.getElementById('mockProgressFill').style.width = "0%";
+        }
+
+        function setVisualState(state) {
+            const vinyl = document.getElementById('mockVinyl');
+            const eqBars = document.querySelectorAll('.eq-bar');
+            vinyl.style.animationPlayState = state;
+            eqBars.forEach(bar => {
+                bar.style.animationPlayState = state;
             });
         }
+
+        function toggleMockPlayback() {
+            const playBtn = document.getElementById('mockPlayBtn');
+            const track = mockTracks[trackIdx];
+            
+            if (isPlaying) {
+                // Pause
+                clearInterval(playInterval);
+                isPlaying = false;
+                playBtn.textContent = '▶';
+                setVisualState('paused');
+            } else {
+                // Play
+                isPlaying = true;
+                playBtn.textContent = '⏸';
+                setVisualState('running');
+                
+                playInterval = setInterval(() => {
+                    if (currentSeconds < track.duration) {
+                        currentSeconds++;
+                        document.getElementById('mockCurrentTime').textContent = formatTime(currentSeconds);
+                        const percent = (currentSeconds / track.duration) * 100;
+                        document.getElementById('mockProgressFill').style.width = `${percent}%`;
+                    } else {
+                        nextMockSong();
+                    }
+                }, 1000);
+            }
+        }
+
+        function nextMockSong() {
+            clearInterval(playInterval);
+            trackIdx = (trackIdx + 1) % mockTracks.length;
+            loadMockTrack();
+            if (isPlaying) {
+                isPlaying = false;
+                toggleMockPlayback();
+            } else {
+                setVisualState('paused');
+            }
+        }
+
+        function prevMockSong() {
+            clearInterval(playInterval);
+            trackIdx = (trackIdx - 1 + mockTracks.length) % mockTracks.length;
+            loadMockTrack();
+            if (isPlaying) {
+                isPlaying = false;
+                toggleMockPlayback();
+            } else {
+                setVisualState('paused');
+            }
+        }
+
+        function clickTimeline(e) {
+            const progressBar = document.getElementById('mockProgressBar');
+            const rect = progressBar.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const track = mockTracks[trackIdx];
+            
+            const targetSeconds = Math.floor((clickX / width) * track.duration);
+            currentSeconds = targetSeconds;
+            document.getElementById('mockCurrentTime').textContent = formatTime(currentSeconds);
+            const percent = (currentSeconds / track.duration) * 100;
+            document.getElementById('mockProgressFill').style.width = `${percent}%`;
+        }
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        // Initialize mock player visual state to paused initially
+        window.addEventListener('DOMContentLoaded', () => {
+            loadMockTrack();
+            setVisualState('paused');
+        });
+
+        // ── APK DOWNLOAD SIMULATED ALERT (PREVENT 404 BROKEN PAGE) ──
+        function downloadApkPrompt() {
+            // Attempt to head-fetch the APK file to check if it exists in the folder
+            fetch('app-release.apk', { method: 'HEAD' })
+                .then(res => {
+                    // Locally on file://, success status is typically 0 or 200
+                    const exists = res.ok || res.status === 200 || res.status === 0;
+                    if (exists) {
+                        triggerApkDownload();
+                    } else {
+                        openLegalModal('apk');
+                    }
+                })
+                .catch(() => {
+                    // Fetch failed (network error on file:// means file is missing)
+                    openLegalModal('apk');
+                });
+        }
+
+        function triggerApkDownload() {
+            const link = document.createElement('a');
+            link.href = 'app-release.apk';
+            link.download = 'app-release.apk';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("success", "Initiating APK download...");
+        }
+
+        // Form Tab Switcher
+        function switchFormTab(type) {
+            const tabContact = document.getElementById('tabContact');
+            const tabReport = document.getElementById('tabReport');
+            const formType = document.getElementById('formType');
+            const submitBtnText = document.querySelector('#submitBtn span');
+            const messageLabel = document.querySelector('label[for="formMessage"]');
+            
+            tabContact.classList.remove('active');
+            tabReport.classList.remove('active');
+            
+            if (type === 'contact') {
+                tabContact.classList.add('active');
+                formType.value = 'contact';
+                submitBtnText.textContent = "Send Message";
+                messageLabel.textContent = "Your Message";
+                document.getElementById('formMessage').placeholder = "Write your message here...";
+            } else {
+                tabReport.classList.add('active');
+                formType.value = 'report';
+                submitBtnText.textContent = "Submit Bug Report";
+                messageLabel.textContent = "Describe the Bug";
+                document.getElementById('formMessage').placeholder = "Provide details on what happened and how to replicate it...";
+            }
+        }
+
+        // AJAX Form Submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalBtnHtml = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>Submitting...</span>`;
+            
+            const formType = document.getElementById('formType').value;
+            const name = document.getElementById('formName').value;
+            const email = document.getElementById('formEmail').value;
+            const message = document.getElementById('formMessage').value;
+            
+            const payload = {
+                type: formType,
+                name: name,
+                email: email,
+                message: message,
+                user_id: 0
+            };
+            
+            const isLocalFile = window.location.protocol === 'file:';
+            const endpoint = isLocalFile ? 'http://localhost/echobaduga/api/api.php?action=contact' : 'api/api.php?action=contact';
+
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+                
+                if (data.success) {
+                    showToast("success", formType === 'contact' ? "Support message sent successfully!" : "Bug report submitted successfully!");
+                    document.getElementById('supportForm').reset();
+                } else {
+                    showToast("error", data.error || "Something went wrong. Please try again.");
+                }
+            })
+            .catch(err => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+                
+                if (isLocalFile) {
+                    showToast("success", `Demo Mode: Message simulated! (${formType === 'contact' ? 'Support mail' : 'Bug ticket'} is ready to deliver in production)`);
+                    document.getElementById('supportForm').reset();
+                } else {
+                    showToast("error", "Network connection failed. Please verify that your Apache/XAMPP server is running.");
+                }
+            });
+        }
+
+        // Custom Toast Notifications
+        function showToast(type, text) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = type === 'success' ? '✓' : '✕';
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span class="toast-message">${text}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    toast.remove();
+                }, 400);
+            }, 5000);
+        }
+
+        // Legal Modals Contents Data
+        const legalContents = {
+            terms: {
+                title: "Terms & Conditions",
+                body: `
+                    <h4>1. Introduction</h4>
+                    <p>Welcome to Echo of Baduga. By accessing our platform or downloading our Android application, you agree to comply with and be bound by these Terms and Conditions.</p>
+                    
+                    <h4>2. Service Provision</h4>
+                    <p>Our platform provides digital streaming of Baduga culture and music. The service is provided entirely free of cost on an "as is" and "as available" basis. We reserve the right to modify or discontinue streaming categories or server hosting configurations at any time without notice.</p>
+                    
+                    <h4>3. Acceptable Use</h4>
+                    <p>You agree not to bypass, disable, or tamper with any server endpoints or security-related features of the player, sw.js cache structure, or API files. You may not attempt to batch download or scrape catalog directories using unauthorized scripts.</p>
+                    
+                    <h4>4. Intellectual Property</h4>
+                    <p>All music streams, imagery, and logo assets are properties of their respective creators and copyright holders. Echo of Baduga functions as a non-commercial repository and preservation catalog.</p>
+                `
+            },
+            privacy: {
+                title: "Privacy Policy",
+                body: `
+                    <h4>1. Data We Collect</h4>
+                    <p>We values your privacy. When registering an account or sending support messages on our landing page, we collect basic identifiers such as your Full Name, Email Address, and Mobile number. We do not track location coordinates or sell user logs.</p>
+                    
+                    <h4>2. Use of Information</h4>
+                    <p>Email addresses and credentials are strictly used for user authentication (password verification, secure OTP reset links) and technical support correspondence.</p>
+                    
+                    <h4>3. Storage and Safety</h4>
+                    <p>All passwords are securely hashed using blowfish encryption before database insertion. We use standard secure server layers to ensure your account initial information is kept confidential.</p>
+                `
+            },
+            apk: {
+                title: "Android App Download Setup",
+                body: `
+                    <h4>Local Setup Instructions</h4>
+                    <p>You are previewing this website locally from your hard drive. To make the APK download work on your computer:</p>
+                    <ol style="margin-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li>Build your release APK in Android Studio (<strong>Build -> Build Bundle(s) / APK(s) -> Build APK(s)</strong>).</li>
+                        <li>Copy the generated <code>app-release.apk</code> file (from <code>android/app/build/outputs/apk/release/</code>) into your project root folder: <br><code style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px; font-size:11px; word-break:break-all;">c:\\Users\\ELCOT\\Desktop\\echo of badaga\\</code></li>
+                        <li>Ensure it is named exactly <strong><code>app-release.apk</code></strong>.</li>
+                    </ol>
+                    <p>Once you place the file there, clicking this button again will automatically download your Android app directly!</p>
+                `
+            }
+        };
+
+        // Open/Close Modals
+        function openLegalModal(type) {
+            const data = legalContents[type];
+            if (!data) return;
+            
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalBody').innerHTML = data.body;
+            
+            const modal = document.getElementById('legalModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLegalModal() {
+            const modal = document.getElementById('legalModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('legalModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLegalModal();
+            }
+        });
+
+        // Theme Toggle Logic
+        function initTheme() {
+            const savedTheme = localStorage.getItem('echo_theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            updateThemeToggleButton(savedTheme);
+        }
+        
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('echo_theme', newTheme);
+            updateThemeToggleButton(newTheme);
+        }
+        
+        function updateThemeToggleButton(theme) {
+            const btn = document.getElementById('themeToggleBtn');
+            if (theme === 'dark') {
+                btn.classList.add('dark-mode');
+                btn.classList.remove('light-mode');
+            } else {
+                btn.classList.add('light-mode');
+                btn.classList.remove('dark-mode');
+            }
+        }
+        
+        initTheme();
     </script>
 </body>
 </html>

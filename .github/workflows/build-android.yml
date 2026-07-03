@@ -36,7 +36,7 @@ jobs:
       - name: Build Web Assets
         run: |
           mkdir -p www
-          cp index.html www/
+          cp player.html www/index.html
           cp app.js www/
           cp songs_array.js www/
           cp -r assets www/ || true
@@ -80,7 +80,7 @@ jobs:
       - name: Build Web Assets
         run: |
           mkdir -p www
-          cp index.html www/
+          cp player.html www/index.html
           cp app.js www/
           cp songs_array.js www/
           cp -r assets www/ || true
@@ -136,6 +136,7 @@ jobs:
         run: |
           mkdir -p www
           cp index.html www/
+          cp player.html www/
           cp app.js www/
           cp songs_array.js www/
           cp -r assets www/ || true

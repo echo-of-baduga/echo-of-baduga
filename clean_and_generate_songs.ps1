@@ -145,11 +145,11 @@ $newSongsArrayBlock = "const DEMO_SONGS = [`n$jsSongs`n];"
 $targets = @(
     @{
         Type = "html"
-        Path = "c:\Users\ELCOT\Desktop\echo of badaga\index.html"
+        Path = "c:\Users\ELCOT\Desktop\echo of badaga\player.html"
     },
     @{
         Type = "html"
-        Path = "C:\xampp\htdocs\echobaduga\index.html"
+        Path = "C:\xampp\htdocs\echobaduga\player.html"
     },
     @{
         Type = "js"
@@ -174,7 +174,7 @@ foreach ($target in $targets) {
                 $content = $content -replace $pattern, $newSongsArrayBlock
                 # Save as UTF-8 without BOM to keep HTML standard
                 [System.IO.File]::WriteAllText($path, $content)
-                Write-Output "Successfully updated index.html at $path"
+                Write-Output "Successfully updated player.html at $path"
             } else {
                 Write-Warning "Could not find DEMO_SONGS pattern in $path"
             }

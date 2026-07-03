@@ -9,11 +9,12 @@ if (-not (Test-Path $wwwPath)) {
 
 # 2. Copy the web assets
 Write-Host "Copying core application files..." -ForegroundColor Green
-Copy-Item (Join-Path $PSScriptRoot "index.html") (Join-Path $wwwPath "index.html") -Force
+Copy-Item (Join-Path $PSScriptRoot "player.html") (Join-Path $wwwPath "index.html") -Force
 Copy-Item (Join-Path $PSScriptRoot "app.js") (Join-Path $wwwPath "app.js") -Force
 Copy-Item (Join-Path $PSScriptRoot "songs_array.js") (Join-Path $wwwPath "songs_array.js") -Force
 Copy-Item (Join-Path $PSScriptRoot "manifest.json") (Join-Path $wwwPath "manifest.json") -Force
 Copy-Item (Join-Path $PSScriptRoot "sw.js") (Join-Path $wwwPath "sw.js") -Force
+Copy-Item (Join-Path $PSScriptRoot "supabase-js.js") (Join-Path $wwwPath "supabase-js.js") -Force
 
 # Copy assets folder
 $wwwAssetsPath = Join-Path $wwwPath "assets"
