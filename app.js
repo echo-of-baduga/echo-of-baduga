@@ -562,10 +562,7 @@ async function doLogin() {
                 showWelcomeToast();
                 return; // Direct return on success
             } else {
-                setButtonLoading('btn-do-login', false);
-                errEl.textContent = 'Account not found. Please Sign Up first.';
-                errEl.style.display = 'block';
-                return;
+                throw new Error('User not found in Supabase');
             }
         } catch (supErr) {
             console.warn("Supabase login failed, checking Local PHP database next:", supErr);
