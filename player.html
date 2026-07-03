@@ -5388,13 +5388,13 @@
     }
     </style>
 
-    <script src="supabase-js.js?v=1.8"></script>
-    <script src="songs_array.js?v=1.8"></script>
-    <script src="app.js?v=1.8"></script>
+    <script src="supabase-js.js?v=1.9"></script>
+    <script src="songs_array.js?v=1.9"></script>
+    <script src="app.js?v=1.9"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js?v=1.8')
+                navigator.serviceWorker.register('sw.js?v=1.9')
                     .then(reg => {
                         console.log('PWA Service Worker registered!', reg);
                         reg.onupdatefound = () => {
